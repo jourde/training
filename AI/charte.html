@@ -252,7 +252,7 @@
   <!-- DÉROULÉ : rappel simple -->
   <section role="tabpanel" id="panel-deroule" aria-labelledby="tab-deroule" tabindex="0">
     <div class="panel-head"><h2>Déroulé de l'atelier</h2></div>
-    <p class="panel-intro">Trois heures, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
+    <p class="panel-intro" style="max-width:none;white-space:nowrap">Trois heures, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
     <ol class="agenda" id="agenda"></ol>
   </section>
 
@@ -307,25 +307,35 @@
     </dl>
     <p class="panel-intro">Tour de table sans jugement&nbsp;: on nomme ce qui se passe déjà, côté élèves comme côté personnels, et les doutes que cela soulève.</p>
     <div class="card">
-      <h3>Ma contribution au tour de table</h3>
-      <div class="field" style="margin-top:12px">
-        <label for="p1-eleves">Un usage observé côté élèves</label>
+      <h3>Côté élèves</h3>
+      <p class="hint" style="margin:6px 0 4px;color:var(--on-surface-variant)">Ce que vous observez chez les élèves.</p>
+      <div class="field" style="margin-top:10px">
+        <label for="p1-eleves">Un usage observé</label>
         <textarea id="p1-eleves" data-key="p1.eleves"></textarea>
       </div>
       <div class="field">
-        <label for="p1-doute-eleves">Le doute que cet usage (élèves) soulève</label>
+        <label for="p1-doute-eleves">Le doute qu'il soulève</label>
         <textarea id="p1-doute-eleves" data-key="p1.douteEleves"></textarea>
       </div>
-      <div class="field">
-        <label for="p1-perso">Un usage observé côté personnels</label>
+    </div>
+
+    <div class="card">
+      <h3>Côté personnels</h3>
+      <p class="hint" style="margin:6px 0 4px;color:var(--on-surface-variant)">Ce que vous observez chez les personnels (enseignants, vie scolaire, administratifs).</p>
+      <div class="field" style="margin-top:10px">
+        <label for="p1-perso">Un usage observé</label>
         <textarea id="p1-perso" data-key="p1.perso"></textarea>
       </div>
       <div class="field">
-        <label for="p1-doute-perso">Le doute que cet usage (personnels) soulève</label>
+        <label for="p1-doute-perso">Le doute qu'il soulève</label>
         <textarea id="p1-doute-perso" data-key="p1.doutePerso"></textarea>
       </div>
-      <div class="field">
-        <label for="p1-doute">Le doute principal que ces usages soulèvent (vue d'ensemble)</label>
+    </div>
+
+    <div class="card">
+      <h3>Vue d'ensemble</h3>
+      <div class="field" style="margin-top:10px">
+        <label for="p1-doute">Le doute principal que ces usages soulèvent</label>
         <textarea id="p1-doute" data-key="p1.doute"></textarea>
       </div>
       <p class="save-note">Enregistré sur cet appareil.</p>
@@ -515,7 +525,7 @@
 </main>
 
 <footer>
-  <p class="src">Support de l'atelier « Co-construire la charte IA de l'établissement ». Material Design 3 (gris profond) · WCAG 2.1 AA · données conservées localement sur votre appareil, jamais transmises.</p>
+  <p class="src">Toutes les données sont traitées localement dans le navigateur de l'utilisateur. — François Jourde (2026) — CC BY-SA</p>
 </footer>
 
 <script>
