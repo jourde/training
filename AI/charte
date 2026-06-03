@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier — Co-construire la charte IA · Support participant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Material Design 3 — "Deep Grey" neutral palette */
+    --primary:#37474f;
+    --primary-hover:#263238;
+    --on-primary:#ffffff;
+    --primary-container:#cfd8dc;
+    --on-primary-container:#102027;
+    --surface:#fafafa;
+    --surface-1:#ffffff;
+    --surface-2:#f1f3f4;
+    --surface-3:#e7eaec;
+    --outline:#5f6b71;
+    --outline-variant:#c4ccd0;
+    --on-surface:#1b1f22;
+    --on-surface-variant:#3c474d;
+    --cat-autorise:#1b5e20;
+    --cat-encadre:#8a4b00;
+    --cat-interdit:#b3261e;
+    --cat-arbitrer:#0d47a1;
+    --radius:16px;
+    --radius-s:10px;
+    --elev-1:0 1px 2px rgba(0,0,0,.30),0 1px 3px 1px rgba(0,0,0,.15);
+    --elev-2:0 1px 2px rgba(0,0,0,.30),0 2px 6px 2px rgba(0,0,0,.15);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    background:var(--surface);color:var(--on-surface);line-height:1.55;font-size:16px}
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--primary);color:#fff;
+    padding:12px 16px;z-index:100;border-radius:0 0 var(--radius-s) 0}
+  .skip-link:focus{left:0}
+
+  .topbar{position:sticky;top:0;z-index:30;box-shadow:var(--elev-2)}
+  header.app-bar{background:var(--primary);color:var(--on-primary)}
+  .app-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px}
+  .app-bar h1{font-size:1.15rem;font-weight:500;margin:0}
+  .app-bar .subtitle{display:block;font-size:.8rem;font-weight:400;opacity:.85;margin-top:2px}
+
+  nav.tabs{background:var(--surface-1);border-bottom:1px solid var(--outline-variant)}
+  .tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto}
+  [role=tab]{flex:0 0 auto;border:none;background:transparent;color:var(--on-surface-variant);
+    font-family:inherit;font-size:.95rem;font-weight:500;padding:14px 18px;cursor:pointer;
+    border-bottom:3px solid transparent;white-space:nowrap}
+  [role=tab][aria-selected=true]{color:var(--primary);border-bottom-color:var(--primary)}
+  [role=tab]:hover{background:var(--surface-2)}
+  button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
+  textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+
+  main{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+  [role=tabpanel][hidden]{display:none}
+  .panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin:0 0 6px}
+  .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
+  .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
+    background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
+  .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;max-width:72ch}
+  h3{font-size:1.05rem;font-weight:500;margin:0}
+
+  .card{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+    padding:18px 20px;margin:0 0 16px}
+  .card h3{margin-bottom:6px}
+  .grid{display:grid;gap:16px}
+
+  /* Déroulé overview */
+  ol.agenda{list-style:none;margin:0;padding:0}
+  ol.agenda li{display:flex;gap:16px;align-items:flex-start;background:var(--surface-1);
+    border-radius:var(--radius-s);box-shadow:var(--elev-1);padding:14px 16px;margin-bottom:10px}
+  ol.agenda .time{flex:0 0 auto;min-width:92px;font-weight:700;font-variant-numeric:tabular-nums;
+    color:var(--on-primary-container);background:var(--primary-container);border-radius:8px;
+    padding:6px 8px;text-align:center;font-size:.85rem}
+  ol.agenda .pause .time{background:var(--surface-3);color:var(--on-surface-variant)}
+  ol.agenda h3{margin-bottom:2px}
+  ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:.95rem}
+
+  details{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+    margin:0 0 12px;overflow:hidden}
+  details>summary{cursor:pointer;padding:16px 20px;font-weight:500;font-size:1.02rem;
+    list-style:none;display:flex;align-items:center;gap:12px}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"+";font-size:1.3rem;font-weight:700;color:var(--primary);
+    width:24px;text-align:center;flex:0 0 auto}
+  details[open]>summary::before{content:"\2212"}
+  details>summary:hover{background:var(--surface-2)}
+  .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant)}
+  .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+    border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
+  .phase-current{border:2px solid var(--primary)}
+  .phase-current summary{background:var(--primary-container)}
+  .tag-current{margin-left:auto;font-size:.72rem;font-weight:700;background:var(--primary);
+    color:#fff;border-radius:999px;padding:3px 10px}
+
+  /* Choice chips (radios) */
+  fieldset{border:none;margin:0;padding:0}
+  legend{font-size:.82rem;color:var(--on-surface-variant);padding:0;margin-bottom:8px;font-weight:500}
+  .choices{display:flex;flex-wrap:wrap;gap:8px}
+  .choice{position:relative}
+  .choice input{position:absolute;opacity:0;width:1px;height:1px}
+  .choice label{display:inline-block;border:1.5px solid var(--outline);border-radius:999px;
+    padding:8px 16px;font-size:.88rem;font-weight:500;cursor:pointer;color:var(--on-surface);
+    background:var(--surface-1)}
+  .choice label:hover{background:var(--surface-2)}
+  .choice input:focus-visible+label{outline:3px solid #ffd54f;outline-offset:2px}
+  .choice input:checked+label{color:#fff;border-color:transparent}
+  .choice[data-cat=autorise] input:checked+label{background:var(--cat-autorise)}
+  .choice[data-cat=encadre]  input:checked+label{background:var(--cat-encadre)}
+  .choice[data-cat=interdit] input:checked+label{background:var(--cat-interdit)}
+  .choice[data-cat=arbitrer] input:checked+label{background:var(--cat-arbitrer)}
+  .choice[data-cat=impose]   input:checked+label{background:var(--primary)}
+  .choice[data-cat=local]    input:checked+label{background:var(--cat-arbitrer)}
+  .choice[data-cat=nsp]      input:checked+label{background:var(--on-surface-variant)}
+
+  .case__dest,.tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    background:var(--surface-3);color:var(--on-surface-variant);border-radius:999px;padding:2px 10px;
+    display:inline-block}
+  .case__q{margin:6px 0 14px;font-weight:500}
+  .case-remark{margin-top:12px}
+  .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
+  .case-remark textarea{min-height:52px}
+
+  .field{margin:0 0 18px}
+  .field:last-child{margin-bottom:0}
+  .field label{display:block;font-weight:500;margin-bottom:6px}
+  .field .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+  textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
+    border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
+    color:var(--on-surface)}
+
+  .check-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;
+    border-bottom:1px solid var(--outline-variant)}
+  .check-item:last-child{border-bottom:none}
+  .check-item input{width:24px;height:24px;margin-top:2px;flex:0 0 auto;accent-color:var(--primary)}
+  .check-item label{cursor:pointer}
+  .slider-item{flex-direction:column;align-items:stretch;gap:10px}
+  .slider-item .slider-label{cursor:default}
+  .slider-row{display:flex;align-items:center;gap:14px}
+  .slider-row input[type=range]{flex:1 1 auto;width:auto;height:auto;margin:0;accent-color:var(--primary);cursor:pointer}
+  .slider-level{flex:0 0 auto;min-width:15ch;text-align:right;font-weight:600;color:var(--primary)}
+
+  .callout{background:var(--surface-2);border-left:6px solid var(--primary);border-radius:0 var(--radius-s) var(--radius-s) 0;
+    padding:14px 18px;margin:0 0 16px}
+  .callout h3{margin-bottom:8px}
+  .callout ul{margin:0;padding-left:20px}
+  .callout li{margin:6px 0;color:var(--on-surface-variant)}
+  .callout .warn{display:block;margin-top:10px;font-size:.9rem;color:var(--on-surface)}
+
+  .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
+    border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
+  .save-note{font-size:.82rem;color:var(--on-surface-variant);margin:4px 0 0}
+  .meta-block{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--surface-2);
+    border-radius:var(--radius-s);padding:12px 16px;margin:8px 0 18px}
+  .meta-block dt{font-weight:700;color:var(--primary);font-size:.74rem;text-transform:uppercase;
+    letter-spacing:.04em;align-self:start;padding-top:2px}
+  .meta-block dd{margin:0;color:var(--on-surface)}
+  .actions-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .btn{font-family:inherit;font-weight:500;font-size:.9rem;border-radius:999px;cursor:pointer;
+    border:1px solid var(--outline);background:var(--surface-1);color:var(--primary);padding:10px 20px}
+  .btn:hover{background:var(--surface-2)}
+  .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+  .btn--filled:hover{background:var(--primary-hover)}
+  .copy-prompt{border-style:dashed}
+  #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
+    width:min(580px,calc(100% - 24px));background:var(--primary);color:var(--on-primary);
+    border-radius:var(--radius);box-shadow:var(--elev-2);overflow:hidden}
+  #runclock[hidden]{display:none}
+  .rc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:8px 14px;font-weight:500;font-size:.9rem;background:rgba(0,0,0,.18)}
+  .rc-body{display:flex;align-items:center;gap:14px;padding:12px 14px;flex-wrap:wrap}
+  #rc-step{flex:1 1 170px;font-weight:500}
+  #rc-time{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.7rem;min-width:90px;text-align:center}
+  .rc-ctrl{display:flex;gap:8px}
+  #runclock button{font-family:inherit;cursor:pointer;border-radius:999px;border:2px solid rgba(255,255,255,.55);
+    background:transparent;color:#fff;padding:8px 14px;font-weight:500;font-size:.85rem}
+  #runclock button:hover{background:rgba(255,255,255,.16)}
+  #runclock button:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+  #rc-close{border:none;font-size:1.1rem;padding:2px 9px;line-height:1}
+  .rc-progress{height:6px;background:rgba(255,255,255,.22)}
+  #rc-bar{height:100%;background:#ffd54f;width:100%;transition:width .9s linear}
+  dialog#promptdlg{border:none;border-radius:var(--radius);padding:0;max-width:760px;width:calc(100% - 32px);
+    box-shadow:var(--elev-2);color:var(--on-surface)}
+  dialog#promptdlg::backdrop{background:rgba(0,0,0,.5)}
+  #promptdlg .dlg-head{display:flex;align-items:center;justify-content:space-between;
+    background:var(--primary);color:#fff;padding:12px 18px;font-size:1rem}
+  #promptdlg .dlg-head button{background:transparent;border:none;color:#fff;font-size:1.2rem;cursor:pointer;line-height:1}
+  #promptdlg .dlg-body{padding:16px 18px}
+  #promptdlg .dlg-hint{margin:0 0 10px;color:var(--on-surface-variant);font-size:.9rem}
+  #dlg-text{width:100%;min-height:46vh;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem;
+    border:1.5px solid var(--outline);border-radius:var(--radius-s);padding:12px;white-space:pre-wrap;
+    color:var(--on-surface);background:var(--surface-1);resize:vertical}
+  #promptdlg button:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+  .steps-list{background:var(--surface-1);border:1px solid var(--outline-variant);
+    border-radius:var(--radius-s);padding:10px 16px 12px;margin:0 0 18px}
+  .steps-title{margin:0 0 6px;font-size:.74rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.04em;color:var(--primary)}
+  .steps-list ol{margin:0;padding-left:22px}
+  .steps-list li{padding:3px 0}
+  .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
+
+  footer{max-width:1100px;margin:0 auto;padding:24px 20px;color:var(--on-surface-variant);font-size:.82rem}
+
+  @media print{
+    .topbar,.skip-link,.btn,#runclock,footer .src{display:none!important}
+    [role=tabpanel][hidden]{display:block!important}
+    [role=tabpanel]{margin-bottom:24px}
+    .card,details,ol.agenda li{box-shadow:none;border:1px solid #999}
+    .details__body{display:block!important}
+    body{background:#fff}
+    main{padding-top:8px}
+    .print-title{display:block!important}
+  }
+  .print-title{display:none}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<div class="topbar">
+  <header class="app-bar">
+    <div class="app-bar-inner">
+      <h1>Co-construire la charte IA de l'établissement
+        <span class="subtitle">Support participant · atelier 3 h · co-rédaction (phase 3 DRANE)</span>
+      </h1>
+    </div>
+  </header>
+  <nav class="tabs" aria-label="Phases de l'atelier">
+    <div class="tabs-inner" role="tablist">
+      <button role="tab" id="tab-deroule" aria-selected="true"  aria-controls="panel-deroule">Déroulé</button>
+      <button role="tab" id="tab-accueil" aria-selected="false" aria-controls="panel-accueil" tabindex="-1">Amorce</button>
+      <button role="tab" id="tab-reperes" aria-selected="false" aria-controls="panel-reperes" tabindex="-1">Repères</button>
+      <button role="tab" id="tab-p1" aria-selected="false" aria-controls="panel-p1" tabindex="-1">Phase 1</button>
+      <button role="tab" id="tab-p2" aria-selected="false" aria-controls="panel-p2" tabindex="-1">Phase 2</button>
+      <button role="tab" id="tab-p3" aria-selected="false" aria-controls="panel-p3" tabindex="-1">Phase 3</button>
+      <button role="tab" id="tab-p4" aria-selected="false" aria-controls="panel-p4" tabindex="-1">Phase 4</button>
+      <button role="tab" id="tab-p5" aria-selected="false" aria-controls="panel-p5" tabindex="-1">Phase 5</button>
+      <button role="tab" id="tab-cloture" aria-selected="false" aria-controls="panel-cloture" tabindex="-1">Clôture</button>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+  <p class="print-title"><strong>Atelier charte IA — mes notes</strong></p>
+
+  <!-- DÉROULÉ : rappel simple -->
+  <section role="tabpanel" id="panel-deroule" aria-labelledby="tab-deroule" tabindex="0">
+    <div class="panel-head"><h2>Déroulé de l'atelier</h2></div>
+    <p class="panel-intro">Trois heures, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
+    <ol class="agenda" id="agenda"></ol>
+  </section>
+
+  <!-- ACCUEIL -->
+  <section role="tabpanel" id="panel-accueil" aria-labelledby="tab-accueil" tabindex="0" hidden>
+    <div class="panel-head"><h2>Accueil, cadrage et acquisition</h2><span class="panel-time">0:00–0:15</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Situer ce qu'est (et n'est pas) une charte IA et où s'insère l'atelier ; relier le cadre à sa propre expérience.</dd>
+      <dt>Modalités</dt><dd>Réflexion personnelle (amorce écrite), puis apport en plénière.</dd>
+    </dl>
+    <p class="panel-intro">On part d'abord de votre réalité ; le cadre commun (idées-socles et démarche DRANE) est présenté dans l'onglet <strong>Repères</strong>.</p>
+
+    <div class="card">
+      <h3>Amorce — votre expérience</h3>
+      <p class="hint" style="margin:.3em 0 12px">Avant l'apport, notez pour vous un usage de l'IA déjà croisé dans votre établissement et le doute qu'il vous laisse.</p>
+      <div class="field">
+        <label for="acc-amorce" class="sr-only" style="position:absolute;left:-999px">Usage croisé et doute</label>
+        <textarea id="acc-amorce" data-key="acc.amorce" placeholder="Un usage observé… et le doute qu'il pose…"></textarea>
+      </div>
+      <p class="save-note">Enregistré sur cet appareil.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="amorce">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="amorce">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="amorce">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- REPÈRES -->
+  <section role="tabpanel" id="panel-reperes" aria-labelledby="tab-reperes" tabindex="0" hidden>
+    <div class="panel-head"><h2>Repères&nbsp;: la charte et la démarche</h2></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Disposer d'un cadre commun : la nature d'une charte IA et la démarche DRANE en cinq phases.</dd>
+      <dt>Modalités</dt><dd>Apport en plénière, fiche à l'appui ; consultable à tout moment.</dd>
+    </dl>
+    <p class="panel-intro">Le cadre commun posé pendant l'accueil&nbsp;: ce qu'est une charte IA et où s'insère cet atelier.</p>
+
+    <h3 style="margin:8px 0 10px">Sept idées-socles sur la charte</h3>
+    <div id="socles"></div>
+    <p class="save-note">D'après la « synthèse thématique transversale » des dossiers Réseau Canopé 2026, <em>Les IA génératives en éducation</em>.</p>
+
+    <h3 style="margin:24px 0 10px">La démarche DRANE en cinq phases</h3>
+    <p class="reminder">Cet atelier correspond à la <strong>phase 3 (co-rédaction)</strong>&nbsp;: il suppose les phases 1 et 2 amorcées et ouvre sur les phases 4 et 5.</p>
+    <div id="phases"></div>
+    <p class="save-note">Cinq phases adaptées de la DRANE Île-de-France, <a href="https://drane.region-academique-idf.fr/article591.html" target="_blank" rel="noopener">« Charte numérique à l'ère de l'Intelligence artificielle »</a> (mis à jour le 25 mars 2026).</p>
+  </section>
+
+  <!-- PHASE 1 -->
+  <section role="tabpanel" id="panel-p1" aria-labelledby="tab-p1" tabindex="0" hidden>
+    <div class="panel-head"><h2>Usages réels et tensions</h2><span class="panel-time">0:15–0:30</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Recenser les usages réels de l'IA (élèves et personnels) et nommer les doutes qu'ils soulèvent.</dd>
+      <dt>Modalités</dt><dd>Réflexion personnelle (notes), puis tour de table sans jugement en plénière.</dd>
+    </dl>
+    <p class="panel-intro">Tour de table sans jugement&nbsp;: on nomme ce qui se passe déjà, côté élèves comme côté personnels, et les doutes que cela soulève.</p>
+    <div class="card">
+      <h3>Ma contribution au tour de table</h3>
+      <div class="field" style="margin-top:12px">
+        <label for="p1-eleves">Un usage observé côté élèves</label>
+        <textarea id="p1-eleves" data-key="p1.eleves"></textarea>
+      </div>
+      <div class="field">
+        <label for="p1-doute-eleves">Le doute que cet usage (élèves) soulève</label>
+        <textarea id="p1-doute-eleves" data-key="p1.douteEleves"></textarea>
+      </div>
+      <div class="field">
+        <label for="p1-perso">Un usage observé côté personnels</label>
+        <textarea id="p1-perso" data-key="p1.perso"></textarea>
+      </div>
+      <div class="field">
+        <label for="p1-doute-perso">Le doute que cet usage (personnels) soulève</label>
+        <textarea id="p1-doute-perso" data-key="p1.doutePerso"></textarea>
+      </div>
+      <div class="field">
+        <label for="p1-doute">Le doute principal que ces usages soulèvent (vue d'ensemble)</label>
+        <textarea id="p1-doute" data-key="p1.doute"></textarea>
+      </div>
+      <p class="save-note">Enregistré sur cet appareil.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p1">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="p1">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="p1">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section role="tabpanel" id="panel-p2" aria-labelledby="tab-p2" tabindex="0" hidden>
+    <div class="panel-head"><h2>Socle national, droit et marge locale</h2><span class="panel-time">0:30–0:50</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.</dd>
+      <dt>Modalités</dt><dd>Tri individuel sur l'app, puis travail en sous-groupes et restitution en plénière.</dd>
+    </dl>
+    <p class="panel-intro">Pour chaque élément, distinguez ce qui est <strong>imposé</strong> par le cadre national et le droit de ce qui se <strong>décide localement</strong>. Vos choix sont enregistrés.</p>
+    <div id="p2items" class="grid"></div>
+
+    <div class="callout" style="margin-top:8px">
+      <h3>Repère — calendrier du RIA (juin 2026)</h3>
+      <ul>
+        <li><strong>Interdictions</strong> (risque inacceptable)&nbsp;: en vigueur depuis février 2025.</li>
+        <li><strong>Marquage</strong> des contenus générés par IA (art. 50.2)&nbsp;: 2 décembre 2026.</li>
+        <li><strong>Obligations « haut risque » éducation</strong> (Annexe III)&nbsp;: reportées au 2 décembre 2027.</li>
+      </ul>
+      <span class="warn">Report sous réserve d'adoption formelle du <em>Digital Omnibus</em>&nbsp;; à défaut, le calendrier initial (2 août 2026) s'applique. À retenir aussi&nbsp;: une sanction ne doit jamais reposer sur le seul résultat d'un détecteur d'IA.</span>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p2">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="p2">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="p2">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section role="tabpanel" id="panel-p3" aria-labelledby="tab-p3" tabindex="0" hidden>
+    <div class="panel-head"><h2>Tri des cas d'usage</h2><span class="panel-time">0:50–1:30</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Classer des situations d'usage en autorisé / encadré / interdit / à arbitrer et les rattacher à un repère et à un destinataire.</dd>
+      <dt>Modalités</dt><dd>Tri par groupes, puis confrontation en plénière (les désaccords deviennent des « à arbitrer »).</dd>
+    </dl>
+    <p class="panel-intro">Pour chaque situation, choisissez&nbsp;: <strong>autorisé</strong>, <strong>encadré</strong>, <strong>interdit</strong> ou <strong>à arbitrer</strong>. Les désaccords (« à arbitrer ») sont la matière la plus précieuse.</p>
+    <div id="cases" class="grid"></div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p3">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="p3">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="p3">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- PHASE 4 -->
+  <section role="tabpanel" id="panel-p4" aria-labelledby="tab-p4" tabindex="0" hidden>
+    <div class="panel-head"><h2>Rédaction du noyau et des paliers</h2><span class="panel-time">1:40–2:30</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Rédiger le noyau de principes et des paliers d'autorisation, en séparant usages élèves et usages professionnels.</dd>
+      <dt>Modalités</dt><dd>Rédaction en deux sous-groupes (élèves / professionnels), puis échange croisé.</dd>
+    </dl>
+    <p class="panel-intro">Rédiger le noyau de principes et des paliers d'autorisation, en séparant clairement usages élèves et usages professionnels.</p>
+
+    <div class="card">
+      <h3>Usages élèves — trois paliers</h3>
+      <div class="field" style="margin-top:12px">
+        <label for="p4-libre">Libre <span class="hint">— ce que les élèves peuvent faire sans condition</span></label>
+        <textarea id="p4-libre" data-key="p4.libre"></textarea>
+      </div>
+      <div class="field">
+        <label for="p4-declare">Autorisé avec déclaration <span class="hint">— usage permis s'il est signalé / cité</span></label>
+        <textarea id="p4-declare" data-key="p4.declare"></textarea>
+      </div>
+      <div class="field">
+        <label for="p4-interdit">Interdit <span class="hint">— ce qui relève de la fraude ou du risque</span></label>
+        <textarea id="p4-interdit" data-key="p4.interdit"></textarea>
+      </div>
+      <div class="field">
+        <label for="p4-principes">Principes courts (un par repère) <span class="hint">— éthique · pédagogique · juridique · environnemental</span></label>
+        <textarea id="p4-principes" data-key="p4.principes"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Usages professionnels</h3>
+      <p class="reminder" style="margin-top:10px"><strong>Obligations RGPD à rappeler&nbsp;:</strong> jamais de données personnelles dans un outil non référencé ; vérifier l'inscription du traitement au registre ; solliciter le DPD académique si nécessaire.</p>
+      <div class="field">
+        <label for="p4-outils">Outils autorisés et conditions</label>
+        <textarea id="p4-outils" data-key="p4.outils"></textarea>
+      </div>
+      <div class="field">
+        <label for="p4-transparence">Règle de transparence</label>
+        <textarea id="p4-transparence" data-key="p4.transparence"></textarea>
+      </div>
+      <p class="save-note">Enregistré sur cet appareil.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p4">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="p4">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="p4">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- PHASE 5 -->
+  <section role="tabpanel" id="panel-p5" aria-labelledby="tab-p5" tabindex="0" hidden>
+    <div class="panel-head"><h2>Architecture documentaire et gouvernance</h2><span class="panel-time">2:30–2:50</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Décider l'architecture documentaire, le circuit de validation et la révision annuelle.</dd>
+      <dt>Modalités</dt><dd>Décisions en plénière (options par défaut à amender), puis engagement individuel.</dd>
+    </dl>
+    <p class="panel-intro">Quatre décisions à prendre pour que le texte vive et soit adopté.</p>
+
+    <div class="card">
+      <h3>1 · Architecture documentaire en 3 couches</h3>
+      <p class="reminder" style="margin-top:10px">RI (sanctions) · charte numérique (services et comptes) · charte ou annexe IA (usages, transparence, données, évaluation).</p>
+      <div class="field">
+        <label for="p5-archi" class="sr-only" style="position:absolute;left:-999px">Architecture documentaire retenue</label>
+        <textarea id="p5-archi" data-key="p5.archi" placeholder="Où vivra la charte IA dans vos documents ?"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2 · Circuit de validation</h3>
+      <p class="reminder" style="margin-top:10px">Conseil pédagogique + CVL → vote en CA → adossement au RI.</p>
+      <div class="field">
+        <label for="p5-circuit" class="sr-only" style="position:absolute;left:-999px">Circuit de validation retenu</label>
+        <textarea id="p5-circuit" data-key="p5.circuit" placeholder="Adaptations / dates pour votre établissement…"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3 · Parties prenantes à associer ensuite</h3>
+      <div id="p5pp" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h3>4 · Révision annuelle</h3>
+      <div class="field" style="margin-top:8px">
+        <label for="p5-revision" class="sr-only" style="position:absolute;left:-999px">Révision annuelle</label>
+        <textarea id="p5-revision" data-key="p5.revision" placeholder="Fréquence et instance responsable de la révision…"></textarea>
+      </div>
+      <p class="save-note">Enregistré sur cet appareil.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p5">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="p5">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="p5">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
+  <!-- CLÔTURE -->
+  <section role="tabpanel" id="panel-cloture" aria-labelledby="tab-cloture" tabindex="0" hidden>
+    <div class="panel-head"><h2>Clôture — auto-positionnement</h2><span class="panel-time">2:50–3:00</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Auto-évaluer sa maîtrise des quatre objectifs et formaliser un engagement de pilotage suivi.</dd>
+      <dt>Modalités</dt><dd>Réflexion individuelle (checklist + engagement), puis partage en binôme.</dd>
+    </dl>
+    <p class="panel-intro">Où en êtes-vous sur les quatre objectifs&nbsp;? Placez chaque curseur selon où vous en êtes, repérez l'objectif le moins assuré, puis formalisez un engagement suivi.</p>
+
+    <div class="card" id="recall-objectifs">
+      <h3 style="margin:0 0 8px">Rappel — les quatre objectifs de l'atelier</h3>
+      <ol style="margin:0;padding-left:1.2em">
+        <li><strong>Distinguer</strong> ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.</li>
+        <li><strong>Trier</strong> des situations d'usage en autorisé / encadré / interdit / à arbitrer.</li>
+        <li><strong>Rédiger</strong> le noyau de principes et la matrice d'usages de la charte v1.</li>
+        <li><strong>Décider</strong> l'architecture documentaire, le circuit de validation et la révision annuelle.</li>
+      </ol>
+    </div>
+
+
+    <div class="card" id="checklist"></div>
+
+    <h3 style="margin:24px 0 6px">Mon engagement de pilotage</h3>
+    <p class="hint" style="margin:0 0 14px;color:var(--on-surface-variant)">Sous la forme <strong>Essayer / Observer / Rapporter</strong>.</p>
+    <div class="card">
+      <div class="field">
+        <label for="eng-try">Essayer <span class="hint">— l'action concrète portée dans les 4 semaines</span></label>
+        <textarea id="eng-try" data-key="eng.try"></textarea>
+      </div>
+      <div class="field">
+        <label for="eng-notice">Observer <span class="hint">— l'indice concret qui dira si elle avance</span></label>
+        <textarea id="eng-notice" data-key="eng.notice"></textarea>
+      </div>
+      <div class="field">
+        <label for="eng-report">Rapporter <span class="hint">— le rendez-vous à 30 jours pour en rendre compte</span></label>
+        <textarea id="eng-report" data-key="eng.report"></textarea>
+      </div>
+      <p class="save-note">Enregistré automatiquement sur cet appareil.</p>
+      <div class="actions-row">
+        <button class="btn start-timer" type="button" data-md="cloture">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="cloture">Copier mes réponses (Markdown)</button>
+      <button class="btn copy-prompt" type="button" data-md="cloture">Voir le prompt d'analyse (formateur)</button>
+        <button class="btn btn--filled" id="printBtn" type="button">Imprimer mes notes</button>
+        <button class="btn" id="clearBtn" type="button">Effacer mes saisies</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p class="src">Support de l'atelier « Co-construire la charte IA de l'établissement ». Material Design 3 (gris profond) · WCAG 2.1 AA · données conservées localement sur votre appareil, jamais transmises.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var store={
+    get:function(k){try{return localStorage.getItem("charteIA."+k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem("charteIA."+k,v)}catch(e){}}
+  };
+  function el(t,a,h){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;}
+
+  var AGENDA=[
+    ["0:00–0:15","Accueil, cadrage et acquisition","On part de votre réalité, puis on pose un cadre commun.",false],
+    ["0:15–0:30","Phase 1 — Usages réels et tensions","Tour de table sans jugement.",false],
+    ["0:30–0:50","Phase 2 — Socle national, droit et marge locale","Ce qui est imposé vs ce qui se décide localement.",false],
+    ["0:50–1:30","Phase 3 — Tri des cas d'usage","Classer une douzaine de situations concrètes.",false],
+    ["1:30–1:40","Pause","Coupure de 10 minutes.",true],
+    ["1:40–2:30","Phase 4 — Rédaction du noyau et des paliers","Écrire principes et paliers, élèves et personnels.",false],
+    ["2:30–2:50","Phase 5 — Architecture documentaire et gouvernance","Où vit la charte, qui la valide, comment la réviser.",false],
+    ["2:50–3:00","Clôture — Auto-positionnement","Bilan personnel et engagement de suivi.",false]
+  ];
+  var SOCLES=[
+    ["Une modalité, pas une obligation","La charte est l'une des manières de s'approprier le cadre national de juin 2025 ; elle traduit ses principes en règles locales. Le document lui-même n'est pas imposé, mais il met en œuvre des obligations qui, elles, s'imposent (cadre national, RGPD, loi SREN, règlement européen sur l'IA)."],
+    ["Réguler sans uniformiser","Un outil de régulation partagé qui rend les pratiques lisibles et cohérentes, sans uniformité rigide."],
+    ["Le processus prime sur le document","Sa valeur tient au processus qui y conduit et à ce qui se passe après, non à sa qualité rédactionnelle."],
+    ["La coconstruction comme condition","Elle ne peut être écrite par la seule direction : elle se construit avec toute la communauté et s'adopte en instances."],
+    ["Partir de l'existant","Une mise à jour du cadre existant (cadre national, RI, charte informatique) plutôt qu'un document supplémentaire."],
+    ["Deux publics, deux logiques","Usages élèves et usages professionnels relèvent de logiques distinctes : la charte les traite séparément."],
+    ["Un document vivant, à réviser","Les usages, les outils et les questions évoluent vite : prévoir dès le départ une révision collective annuelle."]
+  ];
+  var PHASES=[
+    ["Diagnostic et cartographie des usages","Enquête interne : outils déjà utilisés, acculturation, craintes.",false],
+    ["Audit de la charte informatique existante","Analyse du RI et des chartes numériques pour repérer les clauses à mettre à jour.",false],
+    ["Co-rédaction pluricatégorielle","Groupe de travail réunissant les instances : usages autorisés et fiches de vigilance.",true],
+    ["Validation réglementaire et vote formel","Conseil pédagogique et CVL, puis vote en CA et adossement au RI.",false],
+    ["Information et diffusion","Communication aux familles, intégration aux actions de rentrée, supports accessibles.",false]
+  ];
+  var P2=[
+    "Informer les familles d'un traitement de données élèves",
+    "Choisir les outils d'IA autorisés dans l'établissement",
+    "Respecter la majorité numérique (15 ans) pour le consentement",
+    "Définir les paliers d'usage des élèves (libre / déclaré / interdit)",
+    "Solliciter le DPD académique pour un traitement de données élèves",
+    "Fixer les règles d'évaluation des travaux réalisés avec l'IA"
+  ];
+  var CASES=[
+    ["Rédiger un devoir maison entièrement avec un chatbot","élève"],
+    ["Vérifier une information avec l'IA avant de la citer","élève"],
+    ["Générer une image par IA pour illustrer un exposé","élève"],
+    ["Réviser avec un assistant IA qui interroge sur le cours","élève"],
+    ["Faire reformuler par l'IA un texte qu'on a écrit soi-même","élève"],
+    ["Utiliser un outil d'IA non référencé par l'établissement","élève"],
+    ["Traduire avec l'IA une consigne non comprise","élève"],
+    ["Saisir des données nominatives d'élèves dans un outil grand public","personnel"],
+    ["Corriger des copies à l'aide d'un outil IA","personnel"],
+    ["Générer des exercices différenciés avec l'IA","personnel"],
+    ["Rédiger un courrier type avec un assistant IA (sans données personnelles)","personnel"],
+    ["Fonder une sanction sur le seul résultat d'un détecteur d'IA","personnel"]
+  ];
+  var CHECKS=[
+    "Je peux distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.",
+    "Je peux trier une situation d'usage en autorisé / encadré / interdit / à arbitrer.",
+    "Je peux rédiger un palier d'autorisation et un principe applicable rattaché à un repère.",
+    "Je peux décider l'architecture documentaire, le circuit de validation et la révision annuelle."
+  ];
+  var LEVELS=["Pas encore","J'ai des bases","Plutôt à l'aise","Tout à fait à l'aise"];
+  var CAT=[["autorise","Autorisé"],["encadre","Encadré"],["interdit","Interdit"],["arbitrer","À arbitrer"],["nsp","Ne se prononce pas"]];
+  var PP=["Enseignants","AESH","Vie scolaire","Personnels administratifs","Familles","Élèves"];
+
+  /* Déroulé */
+  var ag=document.getElementById("agenda");
+  AGENDA.forEach(function(a){
+    var li=el("li",a[3]?{class:"pause"}:null);
+    li.appendChild(el("span",{class:"time"},a[0]));
+    var b=el("div");b.appendChild(el("h3",null,a[1]));b.appendChild(el("p",null,a[2]));
+    li.appendChild(b);ag.appendChild(li);
+  });
+
+  /* Socles */
+  var sc=document.getElementById("socles");
+  SOCLES.forEach(function(s,i){
+    var d=el("details");var sum=el("summary");
+    sum.appendChild(el("span",{class:"badge-num"},String(i+1)));
+    sum.appendChild(el("span",null,s[0]));d.appendChild(sum);
+    d.appendChild(el("div",{class:"details__body"},s[1]));sc.appendChild(d);
+  });
+  /* Phases DRANE */
+  var ph=document.getElementById("phases");
+  PHASES.forEach(function(p,i){
+    var d=el("details",p[2]?{class:"phase-current",open:""}:null);var sum=el("summary");
+    sum.appendChild(el("span",{class:"badge-num"},String(i+1)));
+    sum.appendChild(el("span",null,p[0]));
+    if(p[2])sum.appendChild(el("span",{class:"tag-current"},"Cet atelier"));
+    d.appendChild(sum);d.appendChild(el("div",{class:"details__body"},p[1]));ph.appendChild(d);
+  });
+
+  /* Phase 2 — imposé / local */
+  var P2OPT=[["impose","Imposé"],["local","À décider localement"],["nsp","Ne se prononce pas"]];
+  var p2w=document.getElementById("p2items");
+  P2.forEach(function(txt,i){
+    var card=el("article",{class:"card"});
+    card.appendChild(el("p",{class:"case__q",id:"p2q"+i},txt));
+    var fs=el("fieldset",{"aria-labelledby":"p2q"+i});
+    fs.appendChild(el("legend",null,"Statut"));
+    var ch=el("div",{class:"choices"});
+    var saved=store.get("p2."+i);
+    P2OPT.forEach(function(o){
+      var w=el("div",{class:"choice","data-cat":o[0]});var id="p2_"+i+"_"+o[0];
+      var inp=el("input",{type:"radio",name:"p2_"+i,id:id,value:o[0]});
+      if(saved===o[0])inp.setAttribute("checked","");
+      inp.addEventListener("change",function(){store.set("p2."+i,o[0]);});
+      w.appendChild(inp);w.appendChild(el("label",{"for":id},o[1]));ch.appendChild(w);
+    });
+    fs.appendChild(ch);card.appendChild(fs);var rwrap=el("div",{class:"case-remark"});var rid="p2rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"p2rem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);p2w.appendChild(card);
+  });
+
+  /* Phase 3 — cases */
+  var cw=document.getElementById("cases");
+  CASES.forEach(function(c,i){
+    var card=el("article",{class:"card"});
+    card.appendChild(el("span",{class:"case__dest"},c[1]));
+    card.appendChild(el("p",{class:"case__q",id:"caseq"+i},c[0]));
+    var fs=el("fieldset",{"aria-labelledby":"caseq"+i});
+    fs.appendChild(el("legend",null,"Catégorie retenue"));
+    var ch=el("div",{class:"choices"});
+    var saved=store.get("case."+i);
+    CAT.forEach(function(cat){
+      var w=el("div",{class:"choice","data-cat":cat[0]});var id="c"+i+"_"+cat[0];
+      var inp=el("input",{type:"radio",name:"case"+i,id:id,value:cat[0]});
+      if(saved===cat[0])inp.setAttribute("checked","");
+      inp.addEventListener("change",function(){store.set("case."+i,cat[0]);});
+      w.appendChild(inp);w.appendChild(el("label",{"for":id},cat[1]));ch.appendChild(w);
+    });
+    fs.appendChild(ch);card.appendChild(fs);var rwrap=el("div",{class:"case-remark"});var rid="rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"caserem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);cw.appendChild(card);
+  });
+
+  /* Phase 5 — parties prenantes */
+  var ppw=document.getElementById("p5pp");
+  PP.forEach(function(name,i){
+    var item=el("div",{class:"check-item"});var id="pp"+i;
+    var inp=el("input",{type:"checkbox",id:id,"data-key":"p5.pp."+i});
+    var lab=el("label",{"for":id},name);
+    item.appendChild(inp);item.appendChild(lab);ppw.appendChild(item);
+  });
+
+  /* Checklist */
+  var cl=document.getElementById("checklist");
+  CHECKS.forEach(function(txt,i){
+    var item=el("div",{class:"check-item slider-item"});var id="chk"+i;
+    var lab=el("label",{"for":id,class:"slider-label"},txt);
+    var row=el("div",{class:"slider-row"});
+    var inp=el("input",{type:"range",id:id,"data-key":"chk."+i,"data-slider":"1",min:"0",max:"3",step:"1",value:"0","aria-describedby":id+"lvl"});
+    var out=el("output",{class:"slider-level",id:id+"lvl","for":id},LEVELS[0]);
+    row.appendChild(inp);row.appendChild(out);
+    item.appendChild(lab);item.appendChild(row);cl.appendChild(item);
+  });
+
+  /* Generic persistence — textareas + checkboxes with data-key */
+  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-key]"),function(ta){
+    var k=ta.getAttribute("data-key");var v=store.get(k);if(v!=null)ta.value=v;
+    ta.addEventListener("input",function(){store.set(k,ta.value);});
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=range][data-slider]"),function(sl){
+    var k=sl.getAttribute("data-key");var v=store.get(k);if(v!=null)sl.value=v;
+    var out=document.getElementById(sl.id+"lvl");
+    function upd(){if(out)out.textContent=LEVELS[+sl.value]||LEVELS[0];}
+    upd();
+    sl.addEventListener("input",function(){store.set(k,sl.value);upd();});
+  });
+
+  /* Clear all */
+  document.getElementById("clearBtn").addEventListener("click",function(){
+    if(!window.confirm("Effacer toutes vos saisies sur cet appareil ?"))return;
+    try{
+      var rm=[];
+      for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key.indexOf("charteIA.")===0)rm.push(key);}
+      rm.forEach(function(k){localStorage.removeItem(k);});
+    }catch(e){}
+    document.querySelectorAll("input:checked").forEach(function(x){x.checked=false;});
+    document.querySelectorAll("input[type=range][data-slider]").forEach(function(sl){sl.value="0";var o=document.getElementById(sl.id+"lvl");if(o)o.textContent=LEVELS[0];});
+    document.querySelectorAll("textarea[data-key]").forEach(function(x){x.value="";});
+  });
+
+  /* Print */
+  document.getElementById("printBtn").addEventListener("click",function(){window.print();});
+
+  /* Tabs */
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('[role=tab]'));
+  function selectTab(tab){
+    tabs.forEach(function(t){
+      var sel=t===tab;
+      t.setAttribute("aria-selected",sel?"true":"false");t.tabIndex=sel?0:-1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden=!sel;
+    });
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(tab,idx){
+    tab.addEventListener("click",function(){selectTab(tab);});
+    tab.addEventListener("keydown",function(e){
+      var n=null;
+      if(e.key==="ArrowRight")n=tabs[(idx+1)%tabs.length];
+      else if(e.key==="ArrowLeft")n=tabs[(idx-1+tabs.length)%tabs.length];
+      else if(e.key==="Home")n=tabs[0];
+      else if(e.key==="End")n=tabs[tabs.length-1];
+      if(n){e.preventDefault();selectTab(n);n.focus();}
+    });
+  });
+
+  /* Copy answers as Markdown */
+  function mdField(k){return (store.get(k)||"").trim();}
+  function mdLbl(map,v){for(var i=0;i<map.length;i++){if(map[i][0]===v)return map[i][1];}return "—";}
+  var MDBUILD={
+    amorce:function(){return "## Amorce — votre expérience\n\n- Usage croisé et doute : "+(mdField("acc.amorce")||"—");},
+    p1:function(){return "## Phase 1 — Usages réels et tensions\n\n- Usage observé côté élèves : "+(mdField("p1.eleves")||"—")+"\n  - Doute : "+(mdField("p1.douteEleves")||"—")+"\n- Usage observé côté personnels : "+(mdField("p1.perso")||"—")+"\n  - Doute : "+(mdField("p1.doutePerso")||"—")+"\n- Doute principal (vue d'ensemble) : "+(mdField("p1.doute")||"—");},
+    p2:function(){var o="## Phase 2 — Socle national, droit et marge locale\n\n";P2.forEach(function(t,i){var r=(store.get("p2rem."+i)||"").replace(/\s*\n\s*/g," ").trim();o+="- "+t+" : **"+mdLbl(P2OPT,store.get("p2."+i))+"**"+(r?(" — "+r):"")+"\n";});return o.replace(/\n$/,"");},
+    p3:function(){var o="## Phase 3 — Tri des cas d'usage\n\n| Destinataire | Situation | Catégorie | Remarque |\n| --- | --- | --- | --- |\n";CASES.forEach(function(c,i){var r=(store.get("caserem."+i)||"").replace(/\|/g,"/").replace(/\s*\n\s*/g," ").trim();o+="| "+c[1]+" | "+c[0]+" | "+mdLbl(CAT,store.get("case."+i))+" | "+(r||"—")+" |\n";});return o.replace(/\n$/,"");},
+    p4:function(){return "## Phase 4 — Rédaction du noyau et des paliers\n\n### Usages élèves\n- Libre : "+(mdField("p4.libre")||"—")+"\n- Autorisé avec déclaration : "+(mdField("p4.declare")||"—")+"\n- Interdit : "+(mdField("p4.interdit")||"—")+"\n- Principes (par repère) : "+(mdField("p4.principes")||"—")+"\n\n### Usages professionnels\n- Outils autorisés et conditions : "+(mdField("p4.outils")||"—")+"\n- Règle de transparence : "+(mdField("p4.transparence")||"—");},
+    p5:function(){var pp=[];PP.forEach(function(n,i){if(store.get("p5.pp."+i)==="1")pp.push(n);});return "## Phase 5 — Architecture documentaire et gouvernance\n\n- Architecture documentaire (3 couches) : "+(mdField("p5.archi")||"—")+"\n- Circuit de validation : "+(mdField("p5.circuit")||"—")+"\n- Parties prenantes à associer : "+(pp.length?pp.join(", "):"—")+"\n- Révision annuelle : "+(mdField("p5.revision")||"—");},
+    cloture:function(){var o="## Clôture — auto-positionnement\n\n### Où en êtes-vous sur les quatre objectifs ?\n";CHECKS.forEach(function(t,i){var v=+(store.get("chk."+i)||0);o+="- "+t+" — **"+LEVELS[v]+"** ("+v+"/3)\n";});o+="\n### Mon engagement (Essayer / Observer / Rapporter)\n- Essayer : "+(mdField("eng.try")||"—")+"\n- Observer : "+(mdField("eng.notice")||"—")+"\n- Rapporter : "+(mdField("eng.report")||"—");return o;}
+  };
+  function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
+  function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
+  Array.prototype.forEach.call(document.querySelectorAll(".copy-md"),function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
+
+
+  /* Copy trainer analysis prompt */
+  var MDPROMPT={"amorce":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Amorce — usages et doutes ».\n\nChaque participant fournit un bloc Markdown décrivant un usage de l'IA déjà croisé dans l'établissement et le doute qu'il soulève.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse des usages cités et des doutes ;\n- un regroupement en thèmes avec la fréquence de chaque thème ;\n- les trois doutes dominants ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p1":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 1 — usages réels et tensions ».\n\nChaque participant fournit un bloc Markdown listant un usage observé côté élèves et le doute associé, un usage côté personnels et le doute associé, puis le doute principal d'ensemble.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse séparant usages côté élèves et usages côté personnels ;\n- un regroupement en thèmes avec fréquences pour chaque catégorie ;\n- les doutes récurrents, par catégorie (élèves / personnels) et d'ensemble ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p2":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 2 — socle national et marge locale ».\n\nChaque participant fournit un bloc Markdown classant 6 énoncés en « Imposé » ou « À décider localement », avec une remarque libre facultative par énoncé.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des 6 énoncés, la répartition Imposé / À décider localement / Ne se prononce pas / non renseigné (distinguer « ne se prononce pas », choix explicite, de l'absence de réponse) ;\n- un repérage des écarts avec le droit : sont objectivement imposés l'information des familles, le respect de la majorité numérique (15 ans), la saisine du DPD pour un traitement de données élèves, et l'interdiction de fonder une sanction sur le seul résultat d'un détecteur ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances exprimées, regroupées par énoncé et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p3":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 3 — tri des cas d'usage ».\n\nChaque participant fournit un bloc Markdown classant une douzaine de cas en Autorisé / Encadré / Interdit / À arbitrer, avec le destinataire (élève ou personnel) et une remarque libre facultative par cas.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chaque cas, la répartition des catégories, y compris « Ne se prononce pas » (à distinguer de l'absence de réponse) ;\n- les cas les plus consensuels et les plus contestés (forte dispersion ou nombreux « à arbitrer ») ;\n- une agrégation par destinataire (élève / personnel) ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances exprimées, regroupés par cas et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p4":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 4 — rédaction du noyau et des paliers ».\n\nChaque participant fournit un bloc Markdown comportant les paliers d'usage élèves (libre / autorisé avec déclaration / interdit), des principes par repère, les outils professionnels autorisés et une règle de transparence.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse qualitative des convergences et divergences pour les paliers, les principes par repère, les outils autorisés et la transparence ;\n- une proposition de formulation consolidée par rubrique ;\n- la fréquence des principes ou règles récurrents ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p5":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 5 — architecture et gouvernance ».\n\nChaque participant fournit un bloc Markdown indiquant l'architecture documentaire, le circuit de validation, les parties prenantes à associer (cases cochées) et la révision annuelle.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- la fréquence de sélection de chaque partie prenante à associer ;\n- une synthèse des options dominantes pour l'architecture documentaire, le circuit de validation et la révision annuelle ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","cloture":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Clôture — auto-positionnement et engagement ».\n\nChaque participant fournit un bloc Markdown comportant un auto-positionnement au curseur (échelle de 4 paliers, de 0 « Pas encore » à 3 « Tout à fait à l'aise ») sur chacun des quatre objectifs et un engagement Essayer / Observer / Rapporter.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des quatre objectifs, la répartition des niveaux déclarés et le niveau moyen ;\n- l'objectif le moins maîtrisé ;\n- une thématisation des engagements (Essayer) et trois axes de suivi proposés ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n"};
+  function promptCopy(key,btn){var text=MDPROMPT[key];if(!text)return;function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié \u2713";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
+  Array.prototype.forEach.call(document.querySelectorAll(".copy-prompt"),function(b){b.addEventListener("click",function(){promptView(b.getAttribute("data-md"));});});
+
+  /* Per-page step timer (sub-steps) */
+  var TIMERS={
+    amorce:["Amorce, cadrage et acquisition",[["Installation et cadrage",5],["Amorce — réflexion personnelle",2],["Apport (onglet Repères)",8]]],
+    p1:["Phase 1 — Usages réels et tensions",[["Notes individuelles",3],["Tour de table (plénière)",12]]],
+    p2:["Phase 2 — Socle, droit et marge locale",[["Tri individuel (app) : imposé / à décider",6],["Travail en sous-groupes",9],["Restitution en plénière",5]]],
+    p3:["Phase 3 — Tri des cas d'usage",[["Tri des cas en groupes",30],["Confrontation en plénière",10]]],
+    p4:["Phase 4 — Rédaction du noyau et des paliers",[["Rédaction en sous-groupes",30],["Échange croisé",15],["Marge / mise en commun",5]]],
+    p5:["Phase 5 — Architecture et gouvernance",[["Décisions en plénière",15],["Engagement individuel",5]]],
+    cloture:["Clôture — auto-positionnement",[["Auto-positionnement au curseur (individuel)",4],["Engagement Essayer/Observer/Rapporter",4],["Partage en binôme",2]]]
+  };
+  var rc=document.createElement("div");rc.id="runclock";rc.hidden=true;rc.setAttribute("role","region");rc.setAttribute("aria-label","Minuteur de phase");
+  rc.innerHTML='<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div><div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span><div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div><div class="rc-progress"><div id="rc-bar"></div></div>';
+  document.body.appendChild(rc);
+  var rcPhase=rc.querySelector("#rc-phase"),rcStepEl=rc.querySelector("#rc-step"),rcTimeEl=rc.querySelector("#rc-time"),rcToggle=rc.querySelector("#rc-toggle"),rcNext=rc.querySelector("#rc-next"),rcClose=rc.querySelector("#rc-close"),rcBar=rc.querySelector("#rc-bar");
+  var rcSteps=[],rcIdx=0,rcRem=0,rcTot=0,rcGo=false,rcIv=null,rcDone=false;
+  function rcPad(n){return (n<10?"0":"")+n;}
+  function rcFmt(s){if(s<0)s=0;return rcPad(Math.floor(s/60))+":"+rcPad(s%60);}
+  function rcRender(){rcTimeEl.textContent=rcFmt(rcRem);rcBar.style.width=(rcTot?Math.max(0,rcRem/rcTot*100):0)+"%";rcToggle.textContent=rcGo?"Pause":"Reprendre";}
+  function rcEnsure(){if(!rcIv)rcIv=setInterval(rcTick,1000);}
+  function rcStop(){if(rcIv){clearInterval(rcIv);rcIv=null;}}
+  function rcStart(i){rcIdx=i;rcDone=false;var st=rcSteps[i];rcRem=st[1]*60;rcTot=rcRem;rcStepEl.textContent="Étape "+(i+1)+"/"+rcSteps.length+" · "+st[0]+" ("+st[1]+" min)";rcGo=true;rcRender();rcEnsure();}
+  function rcTick(){if(!rcGo)return;if(rcRem>0){rcRem--;rcRender();}else if(rcIdx+1<rcSteps.length){rcStart(rcIdx+1);}else{rcFinish();}}
+  function rcFinish(){rcGo=false;rcDone=true;rcStop();rcStepEl.textContent="Terminé ✓";rcTimeEl.textContent="00:00";rcBar.style.width="0%";rcToggle.textContent="Reprendre";}
+  function rcOpen(key){var t=TIMERS[key];if(!t)return;rcSteps=t[1];rcPhase.textContent=t[0];rc.hidden=false;rcStart(0);}
+  rcToggle.addEventListener("click",function(){if(rcDone)return;rcGo=!rcGo;rcRender();if(rcGo)rcEnsure();});
+  rcNext.addEventListener("click",function(){if(rcDone)return;if(rcIdx+1<rcSteps.length)rcStart(rcIdx+1);else rcFinish();});
+  rcClose.addEventListener("click",function(){rcGo=false;rcStop();rc.hidden=true;});
+  Array.prototype.forEach.call(document.querySelectorAll(".start-timer"),function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
+
+  /* Trainer prompt viewer (read before copying) */
+  var pdlg=document.createElement("dialog");pdlg.id="promptdlg";pdlg.setAttribute("aria-label","Prompt d'analyse pour le formateur");
+  pdlg.innerHTML='<div class="dlg-head"><strong>Prompt d\'analyse (formateur)</strong><button id="dlg-x" type="button" aria-label="Fermer">✕</button></div><div class="dlg-body"><p class="dlg-hint">Relisez le prompt, puis copiez-le pour le coller dans une IA générative avec les réponses des participants.</p><textarea id="dlg-text" readonly aria-label="Texte du prompt"></textarea><div class="actions-row"><button id="dlg-copy" class="btn btn--filled" type="button">Copier le prompt</button><button id="dlg-close" class="btn" type="button">Fermer</button></div></div>';
+  document.body.appendChild(pdlg);
+  var dlgText=pdlg.querySelector("#dlg-text"),dlgCopy=pdlg.querySelector("#dlg-copy");
+  function promptView(key){var t=MDPROMPT[key];if(!t)return;dlgText.value=t;if(typeof pdlg.showModal==="function"){pdlg.showModal();}else{pdlg.setAttribute("open","");}}
+  function closeDlg(){if(typeof pdlg.close==="function"){pdlg.close();}else{pdlg.removeAttribute("open");}}
+  pdlg.querySelector("#dlg-x").addEventListener("click",closeDlg);
+  pdlg.querySelector("#dlg-close").addEventListener("click",closeDlg);
+  dlgCopy.addEventListener("click",function(){var text=dlgText.value;function ok(){if(!dlgCopy.getAttribute("data-label"))dlgCopy.setAttribute("data-label",dlgCopy.textContent);dlgCopy.textContent="Copié ✓";setTimeout(function(){dlgCopy.textContent=dlgCopy.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}});
+
+  /* Per-tab step durations, rendered from TIMERS (single source of truth) */
+  var PANELOF={amorce:"panel-accueil",p1:"panel-p1",p2:"panel-p2",p3:"panel-p3",p4:"panel-p4",p5:"panel-p5",cloture:"panel-cloture"};
+  Object.keys(TIMERS).forEach(function(key){
+    var panel=document.getElementById(PANELOF[key]);if(!panel)return;
+    var steps=TIMERS[key][1];
+    var total=0;steps.forEach(function(st){total+=st[1];});
+    var box=document.createElement("div");box.className="steps-list";
+    var h='<p class="steps-title">Étapes — '+total+' min au total</p><ol>';
+    steps.forEach(function(st){h+='<li><span class="step-row"><span class="step-lbl">'+st[0]+'</span><span class="steps-dur">'+st[1]+' min</span></span></li>';});
+    h+='</ol>';
+    box.innerHTML=h;
+    var mb=panel.querySelector(".meta-block");
+    if(mb&&mb.parentNode){mb.parentNode.insertBefore(box,mb.nextSibling);}else{var pi=panel.querySelector(".panel-intro");if(pi&&pi.parentNode){pi.parentNode.insertBefore(box,pi.nextSibling);}else{panel.appendChild(box);}}
+  });
+})();
+</script>
+</body>
+</html>
