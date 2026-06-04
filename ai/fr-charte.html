@@ -126,6 +126,16 @@
   .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
   .case-remark textarea{min-height:52px}
 
+  /* Phase 2 — tri « anticiper puis vérifier » */
+  .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
+  .tri-reveal.show{display:block}
+  .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
+  .tri-reveal.ko{background:#fdeaea;color:#5f1411;border-left:4px solid var(--cat-interdit)}
+  .tri-reveal.info{background:var(--surface-2);color:var(--on-surface);border-left:4px solid var(--primary)}
+  .reveal-btn{margin:8px 0 2px}
+  .tag-rl{background:#fdeaea;color:#b3261e;margin-left:8px}
+  .case-rl{border-left:4px solid var(--cat-interdit)}
+
   .field{margin:0 0 18px}
   .field:last-child{margin-bottom:0}
   .field label{display:block;font-weight:500;margin-bottom:6px}
@@ -352,7 +362,7 @@
       <dt>Objectif</dt><dd>Distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.</dd>
       <dt>Modalités</dt><dd>Tri individuel sur l'app, puis travail en sous-groupes et restitution en plénière.</dd>
     </dl>
-    <p class="panel-intro">Pour chaque élément, distinguez ce qui est <strong>imposé</strong> par le cadre national et le droit de ce qui se <strong>décide localement</strong>. Vos choix sont enregistrés.</p>
+    <p class="panel-intro">Pour chaque élément, distinguez ce qui est <strong>imposé</strong> par le cadre national et le droit de ce qui se <strong>décide localement</strong>. <strong>Choisissez d'abord</strong>&nbsp;: la réponse attendue et la règle s'affichent ensuite. Vos choix sont enregistrés.</p>
     <div id="p2items" class="grid"></div>
 
     <div class="callout" style="margin-top:8px">
@@ -376,7 +386,7 @@
       <dt>Objectif</dt><dd>Classer des situations d'usage en autorisé / encadré / interdit / à arbitrer et les rattacher à un repère et à un destinataire.</dd>
       <dt>Modalités</dt><dd>Tri par groupes, puis confrontation en plénière (les désaccords deviennent des « à arbitrer »).</dd>
     </dl>
-    <p class="panel-intro">Pour chaque situation, choisissez&nbsp;: <strong>autorisé</strong>, <strong>encadré</strong>, <strong>interdit</strong> ou <strong>à arbitrer</strong>. Les désaccords (« à arbitrer ») sont la matière la plus précieuse.</p>
+    <p class="panel-intro">Pour chaque situation, choisissez&nbsp;: <strong>autorisé</strong>, <strong>encadré</strong>, <strong>interdit</strong> ou <strong>à arbitrer</strong>. Les désaccords (« à arbitrer ») sont la matière la plus précieuse. Choisissez et débattez d'abord&nbsp;: sur les cas ouverts, <strong>« Voir la proposition »</strong> affiche un avis indicatif à discuter&nbsp;; sur les lignes rouges 🔴, la réponse se vérifie directement.</p>
     <div id="cases" class="grid"></div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p3">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p3">Copier mes réponses (Markdown)</button>
@@ -571,6 +581,14 @@
     "Solliciter le DPD académique pour un traitement de données élèves",
     "Fixer les règles d'évaluation des travaux réalisés avec l'IA"
   ];
+  var P2KEY=[
+    ["impose","Obligation d'information des familles (RGPD)."],
+    ["local","Choix de l'établissement, dans les limites du RGPD (outils référencés)."],
+    ["impose","Sous 15 ans (majorité numérique), l'autorisation parentale est requise."],
+    ["local","Relève de l'autonomie pédagogique de l'établissement."],
+    ["impose","Le DPD doit être associé à tout traitement de données personnelles."],
+    ["local","Autonomie pédagogique — mais aucune sanction ne peut reposer sur le seul résultat d'un détecteur (ligne rouge)."]
+  ];
   var CASES=[
     ["Rédiger un devoir maison entièrement avec un chatbot","élève"],
     ["Vérifier une information avec l'IA avant de la citer","élève"],
@@ -584,6 +602,21 @@
     ["Générer des exercices différenciés avec l'IA","personnel"],
     ["Rédiger un courrier type avec un assistant IA (sans données personnelles)","personnel"],
     ["Fonder une sanction sur le seul résultat d'un détecteur d'IA","personnel"]
+  ];
+  /* Corrigé phase 3 — [ligne rouge ?, catégorie, repère, note]. Ferme si ligne rouge, sinon proposition à débattre. */
+  var CASEKEY=[
+    [false,"interdit","pédagogique / éthique","Substitution au travail personnel = fraude."],
+    [false,"encadre","pédagogique","L'IA hallucine : vérifier la source."],
+    [false,"encadre","éthique / juridique","Mention de l'usage, droits, marquage."],
+    [false,"autorise","pédagogique","Usage vertueux."],
+    [false,"encadre","pédagogique","Selon l'objectif d'apprentissage ; à déclarer (encadré ou à arbitrer)."],
+    [false,"encadre","juridique","Encadré, mais interdit si données personnelles dans un outil non référencé (🔴 sur ce point)."],
+    [false,"autorise","pédagogique","Accessibilité ; encadré en cours de langue."],
+    [true,"interdit","juridique","Ligne rouge RGPD : jamais de données nominatives dans un outil grand public."],
+    [false,"encadre","juridique / pédagogique","L'enseignant reste responsable ; aucune donnée nominative ; transparence (encadré ou à arbitrer)."],
+    [false,"autorise","pédagogique","Gain réel ; vérifier le contenu produit."],
+    [false,"autorise","—","Sans donnée personnelle."],
+    [true,"interdit","juridique / éthique","Ligne rouge : détecteurs non fiables, aucune sanction sur leur seul résultat."]
   ];
   var CHECKS=[
     "Je peux distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.",
@@ -622,7 +655,7 @@
     d.appendChild(sum);d.appendChild(el("div",{class:"details__body"},p[1]));ph.appendChild(d);
   });
 
-  /* Phase 2 — imposé / local */
+  /* Phase 2 — imposé / local, en « anticiper puis vérifier » */
   var P2OPT=[["impose","Imposé"],["local","À décider localement"],["nsp","Ne se prononce pas"]];
   var p2w=document.getElementById("p2items");
   P2.forEach(function(txt,i){
@@ -631,35 +664,65 @@
     var fs=el("fieldset",{"aria-labelledby":"p2q"+i});
     fs.appendChild(el("legend",null,"Statut"));
     var ch=el("div",{class:"choices"});
+    var reveal=el("div",{class:"tri-reveal","aria-live":"polite",id:"p2r"+i});
+    var key=P2KEY[i];
+    function applyReveal(val){
+      var expected=mdLbl(P2OPT,key[0]);
+      if(val===key[0]){reveal.className="tri-reveal show ok";reveal.textContent="Exact — "+expected+". "+key[1];}
+      else if(val==="nsp"){reveal.className="tri-reveal show info";reveal.textContent="Réponse attendue : "+expected+". "+key[1];}
+      else{reveal.className="tri-reveal show ko";reveal.textContent="À revoir — réponse attendue : "+expected+". "+key[1];}
+    }
     var saved=store.get("p2."+i);
     P2OPT.forEach(function(o){
       var w=el("div",{class:"choice","data-cat":o[0]});var id="p2_"+i+"_"+o[0];
       var inp=el("input",{type:"radio",name:"p2_"+i,id:id,value:o[0]});
       if(saved===o[0])inp.setAttribute("checked","");
-      inp.addEventListener("change",function(){store.set("p2."+i,o[0]);});
+      inp.addEventListener("change",function(){store.set("p2."+i,o[0]);applyReveal(o[0]);});
       w.appendChild(inp);w.appendChild(el("label",{"for":id},o[1]));ch.appendChild(w);
     });
-    fs.appendChild(ch);card.appendChild(fs);var rwrap=el("div",{class:"case-remark"});var rid="p2rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"p2rem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);p2w.appendChild(card);
+    fs.appendChild(ch);card.appendChild(fs);card.appendChild(reveal);
+    var rwrap=el("div",{class:"case-remark"});var rid="p2rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"p2rem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);
+    if(saved)applyReveal(saved);
+    p2w.appendChild(card);
   });
 
-  /* Phase 3 — cases */
+  /* Phase 3 — cases, en « anticiper puis vérifier » (ferme sur 🔴, proposition à débattre sinon) */
   var cw=document.getElementById("cases");
   CASES.forEach(function(c,i){
     var card=el("article",{class:"card"});
     card.appendChild(el("span",{class:"case__dest"},c[1]));
+    if(CASEKEY[i][0]){card.classList.add("case-rl");card.appendChild(el("span",{class:"tag tag-rl"},"🔴 Ligne rouge"));}
     card.appendChild(el("p",{class:"case__q",id:"caseq"+i},c[0]));
     var fs=el("fieldset",{"aria-labelledby":"caseq"+i});
     fs.appendChild(el("legend",null,"Catégorie retenue"));
     var ch=el("div",{class:"choices"});
+    var key=CASEKEY[i];
+    var reveal=el("div",{class:"tri-reveal","aria-live":"polite",id:"caser"+i});
+    var expected=mdLbl(CAT,key[1]);
+    var rep=(key[2]&&key[2]!=="—")?(" · repère "+key[2]):"";
+    function applyReveal(val){
+      if(val===key[1]){reveal.className="tri-reveal show ok";reveal.textContent="Exact — "+expected+" (ligne rouge). "+key[3];}
+      else if(val==="nsp"){reveal.className="tri-reveal show info";reveal.textContent="Ligne rouge — réponse attendue : "+expected+". "+key[3];}
+      else{reveal.className="tri-reveal show ko";reveal.textContent="À revoir — ligne rouge : "+expected+". "+key[3];}
+    }
     var saved=store.get("case."+i);
     CAT.forEach(function(cat){
       var w=el("div",{class:"choice","data-cat":cat[0]});var id="c"+i+"_"+cat[0];
       var inp=el("input",{type:"radio",name:"case"+i,id:id,value:cat[0]});
       if(saved===cat[0])inp.setAttribute("checked","");
-      inp.addEventListener("change",function(){store.set("case."+i,cat[0]);});
+      inp.addEventListener("change",function(){store.set("case."+i,cat[0]);if(key[0])applyReveal(cat[0]);});
       w.appendChild(inp);w.appendChild(el("label",{"for":id},cat[1]));ch.appendChild(w);
     });
-    fs.appendChild(ch);card.appendChild(fs);var rwrap=el("div",{class:"case-remark"});var rid="rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"caserem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);cw.appendChild(card);
+    fs.appendChild(ch);card.appendChild(fs);
+    if(key[0]){
+      card.appendChild(reveal);
+      if(saved)applyReveal(saved);
+    }else{
+      var btn=el("button",{type:"button",class:"btn reveal-btn"},"Voir la proposition");
+      btn.addEventListener("click",function(){reveal.className="tri-reveal show info";reveal.textContent="Proposition à débattre : "+expected+rep+". "+key[3];btn.style.display="none";});
+      card.appendChild(btn);card.appendChild(reveal);
+    }
+    var rwrap=el("div",{class:"case-remark"});var rid="rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"caserem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);cw.appendChild(card);
   });
 
   /* Phase 5 — parties prenantes */
@@ -707,6 +770,8 @@
     document.querySelectorAll("input:checked").forEach(function(x){x.checked=false;});
     document.querySelectorAll("input[type=range][data-slider]").forEach(function(sl){sl.value="0";var o=document.getElementById(sl.id+"lvl");if(o)o.textContent=LEVELS[0];});
     document.querySelectorAll("textarea[data-key]").forEach(function(x){x.value="";});
+    document.querySelectorAll(".tri-reveal").forEach(function(r){r.className="tri-reveal";r.textContent="";});
+    document.querySelectorAll(".reveal-btn").forEach(function(b){b.style.display="";});
   });
 
   /* Print */
@@ -760,7 +825,7 @@
   var TIMERS={
     amorce:["Amorce, cadrage et acquisition",[["Installation et cadrage",5],["Amorce — réflexion personnelle",2],["Apport (onglet Repères)",8]]],
     p1:["Phase 1 — Usages réels et tensions",[["Notes individuelles",5],["Tour de table (plénière)",10]]],
-    p2:["Phase 2 — Socle, droit et marge locale",[["Tri individuel (app) : imposé / à décider",6],["Travail en sous-groupes",9],["Restitution en plénière",5]]],
+    p2:["Phase 2 — Socle, droit et marge locale",[["Tri individuel (app) : anticiper puis vérifier",6],["Travail en sous-groupes",9],["Restitution en plénière",5]]],
     p3:["Phase 3 — Tri des cas d'usage",[["Tri des cas en groupes",30],["Confrontation en plénière",10]]],
     p4:["Phase 4 — Rédaction du noyau et des paliers",[["Rédaction en sous-groupes",30],["Échange croisé",15],["Marge / mise en commun",5]]],
     p5:["Phase 5 — Architecture et gouvernance",[["Décisions en plénière",15],["Engagement individuel",5]]],
