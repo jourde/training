@@ -15,7 +15,7 @@
     --on-primary:#ffffff;
     --primary-container:#cfd8dc;
     --on-primary-container:#102027;
-    --surface:#fafafa;
+    --surface:#f0f2f4;
     --surface-1:#ffffff;
     --surface-2:#f1f3f4;
     --surface-3:#e7eaec;
@@ -56,7 +56,7 @@
   button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
   textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
 
-  main{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+  main{max-width:1100px;margin:0 auto;padding:24px 20px 120px}
   [role=tabpanel][hidden]{display:none}
   .panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin:0 0 6px}
   .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
@@ -177,6 +177,8 @@
   .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
   .btn--filled:hover{background:var(--primary-hover)}
   .copy-prompt{border-style:dashed}
+  .panel-nav{display:flex;justify-content:space-between;align-items:center;
+    margin-top:28px;padding-top:16px;border-top:1px solid var(--outline-variant)}
   #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
     width:min(580px,calc(100% - 24px));background:var(--primary);color:var(--on-primary);
     border-radius:var(--radius);box-shadow:var(--elev-2);overflow:hidden}
@@ -228,6 +230,10 @@
     .print-title{display:block!important}
   }
   .print-title{display:none}
+  .sr-only{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer)}
+  .btn--trainer:hover{background:#e8f0fe}
+  .btn--trainer::before{content:"⚙\00a0";font-size:.85em}
 </style>
 </head>
 <body>
@@ -237,7 +243,7 @@
   <header class="app-bar">
     <div class="app-bar-inner">
       <h1>Co-construire la charte IA de l'établissement
-        <span class="subtitle">Support participant · atelier 3 h · co-rédaction (phase 3 DRANE)</span>
+        <span class="subtitle">Support participant · atelier 3 h</span>
       </h1>
     </div>
   </header>
@@ -262,7 +268,7 @@
   <!-- DÉROULÉ : rappel simple -->
   <section role="tabpanel" id="panel-deroule" aria-labelledby="tab-deroule" tabindex="0">
     <div class="panel-head"><h2>Déroulé de l'atelier</h2></div>
-    <p class="panel-intro" style="max-width:none;white-space:nowrap">Trois heures, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
+    <p class="panel-intro" style="max-width:none">Trois heures, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
     <ol class="agenda" id="agenda"></ol>
   </section>
 
@@ -286,7 +292,7 @@
     </div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="amorce">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="amorce">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="amorce">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="amorce">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- REPÈRES -->
@@ -352,7 +358,7 @@
     </div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p1">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p1">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="p1">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p1">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- PHASE 2 -->
@@ -376,7 +382,7 @@
     </div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p2">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p2">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="p2">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p2">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- PHASE 3 -->
@@ -390,7 +396,7 @@
     <div id="cases" class="grid"></div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p3">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p3">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="p3">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p3">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- PHASE 4 -->
@@ -437,7 +443,7 @@
     </div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p4">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p4">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="p4">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p4">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- PHASE 5 -->
@@ -482,7 +488,7 @@
     </div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p5">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p5">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="p5">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p5">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
   <!-- CLÔTURE -->
@@ -526,7 +532,7 @@
       <div class="actions-row">
         <button class="btn start-timer" type="button" data-md="cloture">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="cloture">Copier mes réponses (Markdown)</button>
-      <button class="btn copy-prompt" type="button" data-md="cloture">Voir le prompt d'analyse (formateur)</button>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="cloture">Voir le prompt d'analyse (formateur)</button>
         <button class="btn btn--filled" id="printBtn" type="button">Imprimer mes notes</button>
         <button class="btn" id="clearBtn" type="button">Effacer mes saisies</button>
       </div>
@@ -535,7 +541,7 @@
 </main>
 
 <footer>
-  <p class="src">Toutes les données sont traitées localement dans le navigateur de l'utilisateur. — François Jourde (2026) — CC BY-SA</p>
+  <p class="src">Toutes les données sont traitées localement dans le navigateur de l'utilisateur. — <a href="https://www.jourde.dev" target="_blank" rel="noopener">François Jourde</a> (2026) — CC BY-SA</p>
 </footer>
 
 <script>
@@ -797,6 +803,24 @@
       else if(e.key==="End")n=tabs[tabs.length-1];
       if(n){e.preventDefault();selectTab(n);n.focus();}
     });
+  });
+
+  /* Panel prev/next navigation */
+  tabs.forEach(function(tab,idx){
+    var panel=document.getElementById(tab.getAttribute("aria-controls"));
+    if(!panel)return;
+    var nav=el("div",{class:"panel-nav"});
+    if(idx>0){
+      var prev=el("button",{type:"button",class:"btn"},"← "+tabs[idx-1].textContent.trim());
+      prev.addEventListener("click",function(){selectTab(tabs[idx-1]);});
+      nav.appendChild(prev);
+    }else{nav.appendChild(el("span",null,""));}
+    if(idx<tabs.length-1){
+      var next=el("button",{type:"button",class:"btn"},tabs[idx+1].textContent.trim()+" →");
+      next.addEventListener("click",function(){selectTab(tabs[idx+1]);});
+      nav.appendChild(next);
+    }
+    panel.appendChild(nav);
   });
 
   /* Copy answers as Markdown */
