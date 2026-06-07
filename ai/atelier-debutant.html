@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L'IA générative en pratique · Espace de travail du participant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+ /* ── DESIGN TOKENS — Material Design 3 "Deep Grey" ── */
+ :root{
+ --primary:#37474f;
+ --primary-hover:#263238;
+ --on-primary:#ffffff;
+ --primary-container:#cfd8dc;
+ --on-primary-container:#102027;
+ --surface:#f0f2f4;
+ --surface-1:#ffffff;
+ --surface-2:#f1f3f4;
+ --surface-3:#e7eaec;
+ --outline:#5f6b71;
+ --outline-variant:#c4ccd0;
+ --on-surface:#1b1f22;
+ --on-surface-variant:#3c474d;
+ --cat-autorise:#1b5e20;
+ --cat-encadre:#8a4b00;
+ --cat-interdit:#b3261e;
+ --cat-arbitrer:#0d47a1;
+ --radius:16px;
+ --radius-s:10px;
+ --elev-1:0 1px 2px rgba(0,0,0,.30),0 1px 3px 1px rgba(0,0,0,.15);
+ --elev-2:0 1px 2px rgba(0,0,0,.30),0 2px 6px 2px rgba(0,0,0,.15);
+ }
+ *{box-sizing:border-box}
+ html{scroll-behavior:smooth}
+ body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+ background:var(--surface);color:var(--on-surface);line-height:1.55;font-size:16px}
+
+ /* ── ACCESSIBILITY ── */
+ .skip-link{position:absolute;left:-999px;top:0;background:var(--primary);color:#fff;
+ padding:12px 16px;z-index:100;border-radius:0 0 var(--radius-s) 0}
+ .skip-link:focus{left:0}
+ .sr-only{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
+ textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+
+ /* ── TOP BAR ── */
+ .topbar{position:sticky;top:0;z-index:30;box-shadow:var(--elev-2)}
+ header.app-bar{background:var(--primary);color:var(--on-primary)}
+ .app-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px}
+ .app-bar h1{font-size:1.15rem;font-weight:500;margin:0}
+ .app-bar .subtitle{display:block;font-size:.8rem;font-weight:400;opacity:.85;margin-top:2px}
+
+ /* ── TAB NAVIGATION ── */
+ nav.tabs{background:var(--surface-1);border-bottom:1px solid var(--outline-variant)}
+ .tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto}
+ [role=tab]{flex:0 0 auto;border:none;background:transparent;color:var(--on-surface-variant);
+ font-family:inherit;font-size:.95rem;font-weight:500;padding:14px 18px;cursor:pointer;
+ border-bottom:3px solid transparent;white-space:nowrap}
+ [role=tab][aria-selected=true]{color:var(--primary);border-bottom-color:var(--primary)}
+ [role=tab]:hover{background:var(--surface-2)}
+
+ /* ── LAYOUT ── */
+ main{max-width:1100px;margin:0 auto;padding:24px 20px 120px}
+ [role=tabpanel][hidden]{display:none}
+ .panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin:0 0 6px}
+ .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
+ .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
+ background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
+ .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;max-width:72ch;text-align:justify}
+ h3{font-size:1.05rem;font-weight:500;margin:0}
+ .grid{display:grid;gap:16px}
+
+ /* ── CARD ── */
+ .card{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+ padding:18px 20px;margin:0 0 16px}
+ .card h3{margin-bottom:6px}
+ .card ul{margin:.4em 0;padding-left:20px}
+ .card li{margin:5px 0}
+
+ /* ── AGENDA / TIMELINE ── */
+ ol.agenda{list-style:none;margin:0;padding:0}
+ ol.agenda li{display:flex;gap:16px;align-items:flex-start;background:var(--surface-1);
+ border-radius:var(--radius-s);box-shadow:var(--elev-1);padding:14px 16px;margin-bottom:10px}
+ ol.agenda .time{flex:0 0 auto;min-width:92px;font-weight:700;font-variant-numeric:tabular-nums;
+ color:var(--on-primary-container);background:var(--primary-container);border-radius:8px;
+ padding:6px 8px;text-align:center;font-size:.85rem}
+ ol.agenda .pause .time{background:var(--surface-3);color:var(--on-surface-variant)}
+ ol.agenda h3{margin-bottom:2px}
+ ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:.95rem}
+
+ /* ── ACCORDION (details/summary) ── */
+ details{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+ margin:0 0 12px;overflow:hidden}
+ details>summary{cursor:pointer;padding:16px 20px;font-weight:500;font-size:1.02rem;
+ list-style:none;display:flex;align-items:center;gap:12px}
+ details>summary::-webkit-details-marker{display:none}
+ details>summary::before{content:"+";font-size:1.3rem;font-weight:700;color:var(--primary);
+ width:24px;text-align:center;flex:0 0 auto}
+ details[open]>summary::before{content:"\2212"}
+ details>summary:hover{background:var(--surface-2)}
+ .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant)}
+ .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+ border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
+ .phase-current{border:2px solid var(--primary)}
+ .phase-current summary{background:var(--primary-container)}
+ .tag-current{margin-left:auto;font-size:.72rem;font-weight:700;background:var(--primary);
+ color:#fff;border-radius:999px;padding:3px 10px}
+
+ /* ── CHOICE CHIPS (radio buttons) ── */
+ fieldset{border:none;margin:0;padding:0}
+ legend{font-size:.82rem;color:var(--on-surface-variant);padding:0;margin-bottom:8px;font-weight:500}
+ .choices{display:flex;flex-wrap:wrap;gap:8px}
+ .choice{position:relative}
+ .choice input{position:absolute;opacity:0;width:1px;height:1px}
+ .choice label{display:inline-block;border:1.5px solid var(--outline);border-radius:999px;
+ padding:8px 16px;font-size:.88rem;font-weight:500;cursor:pointer;color:var(--on-surface);
+ background:var(--surface-1)}
+ .choice label:hover{background:var(--surface-2)}
+ .choice input:focus-visible+label{outline:3px solid #ffd54f;outline-offset:2px}
+ .choice input:checked+label{color:#fff;border-color:transparent}
+ .choice[data-cat=autorise] input:checked+label{background:var(--cat-autorise)}
+ .choice[data-cat=encadre] input:checked+label{background:var(--cat-encadre)}
+ .choice[data-cat=interdit] input:checked+label{background:var(--cat-interdit)}
+ .choice[data-cat=arbitrer] input:checked+label{background:var(--cat-arbitrer)}
+ .choice[data-cat=impose] input:checked+label{background:var(--primary)}
+ .choice[data-cat=local] input:checked+label{background:var(--cat-arbitrer)}
+ .choice[data-cat=nsp] input:checked+label{background:var(--on-surface-variant)}
+
+ /* ── TAGS & LABELS ── */
+ .case__dest,.tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+ background:var(--surface-3);color:var(--on-surface-variant);border-radius:999px;padding:2px 10px;
+ display:inline-block}
+ .case__q{margin:6px 0 14px;font-weight:500}
+ .tag-rl{background:#fdeaea;color:#b3261e;margin-left:8px}
+ .case-rl{border-left:4px solid var(--cat-interdit)}
+
+ /* ── REVEAL BOX ── */
+ .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
+ .tri-reveal.show{display:block}
+ .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
+ .tri-reveal.ko{background:#fdeaea;color:#5f1411;border-left:4px solid var(--cat-interdit)}
+ .tri-reveal.info{background:var(--surface-2);color:var(--on-surface);border-left:4px solid var(--primary)}
+ .reveal-btn{margin:8px 0 2px}
+ .case-remark{margin-top:12px}
+ .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
+
+ /* ── FORM FIELDS ── */
+ .field{margin:0 0 18px}
+ .field:last-child{margin-bottom:0}
+ .field label{display:block;font-weight:500;margin-bottom:6px}
+ .field .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+ .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+ textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
+ border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
+ color:var(--on-surface)}
+
+ /* ── CHECKBOX LIST ── */
+ .check-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;
+ border-bottom:1px solid var(--outline-variant)}
+ .check-item:last-child{border-bottom:none}
+ .check-item input{width:24px;height:24px;margin-top:2px;flex:0 0 auto;accent-color:var(--primary)}
+ .check-item label{cursor:pointer}
+
+ /* ── SLIDER / SELF-ASSESSMENT ── */
+ .slider-item{flex-direction:column;align-items:stretch;gap:10px}
+ .slider-item .slider-label{cursor:default}
+ .slider-row{display:flex;align-items:center;gap:14px}
+ .slider-row input[type=range]{flex:1 1 auto;width:auto;height:auto;margin:0;accent-color:var(--primary);cursor:pointer}
+ .slider-level{flex:0 0 auto;min-width:15ch;text-align:right;font-weight:600;color:var(--primary)}
+
+ /* ── CALLOUT & REMINDER ── */
+ .callout{background:var(--surface-2);border-left:6px solid var(--primary);border-radius:0 var(--radius-s) var(--radius-s) 0;
+ padding:14px 18px;margin:0 0 16px}
+ .callout h3{margin-bottom:8px}
+ .callout ul{margin:0;padding-left:20px}
+ .callout li{margin:6px 0;color:var(--on-surface-variant)}
+ .callout .warn{display:block;margin-top:10px;font-size:.9rem;color:var(--on-surface)}
+ .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
+ border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
+
+ /* ── META BLOCK (dl/dt/dd grid) ── */
+ .meta-block{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--surface-2);
+ border-radius:var(--radius-s);padding:12px 16px;margin:8px 0 18px}
+ .meta-block dt{font-weight:700;color:var(--primary);font-size:.74rem;text-transform:uppercase;
+ letter-spacing:.04em;align-self:start;padding-top:2px}
+ .meta-block dd{margin:0;color:var(--on-surface)}
+
+ /* ── ACTIONS ROW & BUTTONS ── */
+ .save-note{font-size:.82rem;color:var(--on-surface-variant);margin:4px 0 0}
+ .actions-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;align-items:center}
+ .flow-arrow{align-self:center;color:var(--outline);font-weight:700;font-size:1.3rem;line-height:1;margin:0 -4px}
+ .btn{font-family:inherit;font-weight:500;font-size:.9rem;border-radius:999px;cursor:pointer;
+ border:1px solid var(--outline);background:var(--surface-1);color:var(--primary);padding:10px 20px}
+ .btn:hover{background:var(--surface-2)}
+ .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+ .btn--filled:hover{background:var(--primary-hover)}
+ .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer)}
+ .btn--trainer:hover{background:#e8f0fe}
+ .btn--trainer::before{content:"\2699\00a0";font-size:.85em}
+
+ /* ── PANEL NAVIGATION ── */
+ .panel-nav{display:flex;justify-content:space-between;align-items:center;
+ margin-top:28px;padding-top:16px;border-top:1px solid var(--outline-variant)}
+
+ /* ── STEPS DURATION BOX ── */
+ .steps-list{background:var(--surface-1);border:1px solid var(--outline-variant);
+ border-radius:var(--radius-s);padding:10px 16px 12px;margin:0 0 18px}
+ .steps-title{margin:0 0 6px;font-size:.74rem;font-weight:700;text-transform:uppercase;
+ letter-spacing:.04em;color:var(--primary)}
+ .steps-list ol{margin:0;padding-left:22px}
+ .steps-list li{padding:3px 0}
+ .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+ .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
+
+ /* ── FLOATING TIMER WIDGET ── */
+ #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
+ width:min(580px,calc(100% - 24px));background:var(--primary);color:var(--on-primary);
+ border-radius:var(--radius);box-shadow:var(--elev-2);overflow:hidden}
+ #runclock[hidden]{display:none}
+ .rc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:8px 14px;font-weight:500;font-size:.9rem;background:rgba(0,0,0,.18)}
+ .rc-body{display:flex;align-items:center;gap:14px;padding:12px 14px;flex-wrap:wrap}
+ #rc-step{flex:1 1 170px;font-weight:500}
+ #rc-time{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.7rem;min-width:90px;text-align:center}
+ .rc-ctrl{display:flex;gap:8px}
+ #runclock button{font-family:inherit;cursor:pointer;border-radius:999px;border:2px solid rgba(255,255,255,.55);
+ background:transparent;color:#fff;padding:8px 14px;font-weight:500;font-size:.85rem}
+ #runclock button:hover{background:rgba(255,255,255,.16)}
+ #runclock button:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+ #rc-close{border:none;font-size:1.1rem;padding:2px 9px;line-height:1}
+ .rc-progress{height:6px;background:rgba(255,255,255,.22)}
+ #rc-bar{height:100%;background:#ffd54f;width:100%;transition:width .9s linear}
+
+ /* ── FOOTER ── */
+ footer{max-width:1100px;margin:0 auto;padding:24px 20px;color:var(--on-surface-variant);font-size:.82rem}
+ footer a{color:var(--primary)}
+
+ /* ── PRINT ── */
+ @media print{
+ .topbar,.skip-link,.btn,#runclock,footer .src{display:none!important}
+ [role=tabpanel][hidden]{display:block!important}
+ [role=tabpanel]{margin-bottom:24px}
+ .card,details,ol.agenda li{box-shadow:none;border:1px solid #999}
+ .details__body{display:block!important}
+ body{background:#fff}
+ main{padding-top:8px}
+ .print-title{display:block!important}
+ }
+ .print-title{display:none}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<div class="topbar">
+ <header class="app-bar">
+ <div class="app-bar-inner">
+ <h1>L'IA générative en pratique — choisir, dialoguer, évaluer
+ <span class="subtitle">Espace de travail du participant · Niveau débutant · enseignants de lycée et de post-bac · Académie de La Réunion · atelier 3 h</span>
+ </h1>
+ </div>
+ </header>
+ <nav class="tabs" aria-label="Étapes de l'atelier">
+ <div class="tabs-inner" role="tablist">
+ <!-- Onglets générés par JS -->
+ </div>
+ </nav>
+</div>
+
+<main id="main">
+ <p class="print-title"><strong>L'IA générative en pratique — espace de travail et notes du participant</strong></p>
+ <!-- Panneaux générés par JS -->
+</main>
+
+<footer>
+ <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; réflexes « IA générative &amp; vie privée » d'après la CNIL (2026).</p>
+</footer>
+
+<script>
+(function(){
+ "use strict";
+
+ /* ── UTILITIES ─────────────────────────────────────── */
+ var store={
+ get:function(k){try{return localStorage.getItem("iaDebProfs."+k)}catch(e){return null}},
+ set:function(k,v){try{localStorage.setItem("iaDebProfs."+k,v)}catch(e){}}
+ };
+ function el(t,a,h){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;}
+
+ /* ── CONTENT DATA ─────────────────────────────────── */
+ var TABS=[
+ ["accueil","Accueil",""],
+ ["outil","1 · IA & vie privée","0:20–0:30"],
+ ["repertoire","2 · Choisir un outil","0:30–0:40"],
+ ["prompt","3 · Parler à l'IA","0:40–1:25"],
+ ["multi","4 · Multimodal","1:25–1:50"],
+ ["eval","5 · Évaluation","2:05–2:40"],
+ ["pas","Mon premier pas","2:40–3:00"]
+ ];
+
+ var TIMERS={
+ "accueil":["Ouverture",[
+ ["Accueil & cadrage",3],
+ ["Tour de table : intrigue / inquiète",12],
+ ["Comment ça marche ? (l'essentiel)",5]
+ ]],
+ "outil":["1 · IA & vie privée",[
+ ["Commenter les 5 questions de la CNIL",7],
+ ["Auto-positionnement (pour soi)",3]
+ ]],
+ "repertoire":["2 · Choisir un outil",[
+ ["Explorer le répertoire (navigation libre)",6],
+ ["Repérer 1 à 3 outils à essayer",4]
+ ]],
+ "prompt":["3 · Parler à l'IA",[
+ ["Rédiger un prompt (requête, invite, instruction) novice + tester",6],
+ ["Reconstruire avec Prompt Builder",10],
+ ["Comparer les deux réponses",6]
+ ]],
+ "multi":["4 · La puissance multimodale",[
+ ["Choisir et réaliser 2 manipulations",14]
+ ]],
+ "eval":["5 · Repenser l'évaluation",[
+ ["Coller la consigne + le prompt guidé",4],
+ ["Phase 1 (audit) → Phase 2 (3 options)",12],
+ ["Confrontation en binôme",4]
+ ]],
+ "pas":["Clôture — Mon premier pas",[
+ ["Auto-positionnement « je sais… »",2],
+ ["Mon premier pas (engagement écrit)",10],
+ ["Partage en binôme + 3-4 voix",6],
+ ["Relais & pour continuer",2]
+ ]]
+ };
+
+ /* Self-assessment level labels */
+ var LEVELS=["Pas encore","En chemin","Plutôt à l'aise","Tout à fait à l'aise"];
+
+ function mdField(k){return (store.get(k)||"").trim();}
+ function mdLvl(k){var v=store.get(k);return (v==null||v==="")?"—":(LEVELS[+v]||LEVELS[0]);}
+
+ var MDBUILD={
+ "accueil":function(){
+ return "## Avant de commencer\n\n"+
+ "- **Ce qui m'intrigue** : "+(mdField("acc.intrigue")||"—")+"\n"+
+ "- **Ce qui m'inquiète** : "+(mdField("acc.inquiete")||"—");
+ },
+ "accueilAnim":function(){
+ return "# Analyse des attentes et craintes — ouverture d'atelier IA générative\n\n"+
+ "Tu es un formateur expert en acculturation à l'intelligence artificielle générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : en ouverture d'un atelier de 3 h, chaque participant a noté de façon anonyme deux choses — ce qui l'« intrigue » et ce qui l'« inquiète » à propos de l'IA générative. Je te transmets ci-dessous l'ensemble des réponses recueillies auprès du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les réponses en grands thèmes (curiosités d'un côté, inquiétudes de l'autre).\n"+
+ "2. Pour chaque thème, indique sa fréquence approximative (dominante / secondaire / isolée) et cite 1 à 2 formulations représentatives.\n"+
+ "3. Repère les inquiétudes prioritaires à adresser ou à rassurer dès l'ouverture.\n"+
+ "4. Signale d'éventuelles idées fausses ou malentendus à corriger.\n"+
+ "5. Propose-moi 3 accroches courtes pour démarrer l'atelier en tenant compte de ce que le groupe a exprimé.\n\n"+
+ "CONTRAINTES :\n"+
+ "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"+
+ "- Sois concis et directement actionnable (formateur pressé, juste avant la séance).\n"+
+ "- Réponds en français.\n\n"+
+ "RÉPONSES DU GROUPE (colle-les ci-dessous) :\n"+
+ "[Colle ici toutes les réponses « intrigue / inquiète » recueillies]";
+ },
+ "outil":function(){
+ var Q=[["ck.q1","Quelle IA choisir ?"],["ck.q2","Dois-je créer un compte ?"],["ck.q3","Comment protéger mes données ?"],["ck.q4","Quelles informations partager ?"],["ck.q5","Que faire quand j'ai terminé ?"]];
+ var LAB={clair:"Clair",pasur:"Pas sûr",revoir:"À revoir"};
+ var lines=Q.map(function(q){return "- "+q[1]+" : "+(LAB[store.get(q[0])]||"—");});
+ var todo=Q.filter(function(q){var v=store.get(q[0]);return v==="revoir"||v==="pasur";}).map(function(q){return "- "+q[1];});
+ return "## 1 · IA & vie privée\n\n"+
+ "**Où j'en suis :**\n"+lines.join("\n")+"\n\n"+
+ "**À revoir / approfondir :**\n"+(todo.length?todo.join("\n"):"- (rien pour l'instant)")+"\n\n"+
+ "**Mes remarques :** "+(mdField("out.remarques")||"—");
+ },
+ "outilAnim":function(){
+ return "# Analyse des auto-positionnements — étape 1 « IA & vie privée »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à l'étape 1 d'un atelier, chaque participant s'est auto-positionné (Clair / Pas sûr / À revoir) sur les 5 questions de la CNIL relatives à la vie privée, et a pu laisser des remarques. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"+
+ "Les 5 questions :\n"+
+ "1. Quelle IA choisir ?\n2. Dois-je créer un compte ?\n3. Comment protéger mes données ?\n4. Quelles informations partager ?\n5. Que faire quand j'ai terminé ?\n\n"+
+ "TA MISSION :\n"+
+ "1. Pour chaque question, donne la répartition approximative (Clair / Pas sûr / À revoir) et repère les moins maîtrisées.\n"+
+ "2. Classe les 5 questions, de la plus sûre à la moins sûre pour le groupe.\n"+
+ "3. Synthétise les remarques en grands thèmes ; signale les questions récurrentes et les idées fausses à corriger.\n"+
+ "4. Propose 3 points à re-clarifier en priorité, avec pour chacun une façon concrète de le reprendre en 1 à 2 min.\n"+
+ "5. Suggère un point d'attention pour la suite de l'atelier (étapes 2 à 5) au vu de ces résultats.\n\n"+
+ "CONTRAINTES :\n"+
+ "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"+
+ "- Sois concis et directement actionnable (formateur pressé, en cours de séance).\n"+
+ "- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n"+
+ "[Colle ici tous les relevés « Copier mon relevé » récupérés]";
+ },
+ "repertoire":function(){
+ return "## 2 · Choisir un outil\n\n"+
+ "Outils que j'aimerais essayer :\n"+
+ "- **Outil 1** : "+(mdField("out.t1")||"—")+"\n"+
+ "- **Outil 2** : "+(mdField("out.t2")||"—")+"\n"+
+ "- **Outil 3** : "+(mdField("out.t3")||"—");
+ },
+ "prompt":function(){
+ return "## 3 · Parler à l'IA\n\n"+
+ "- **Tâche choisie** : "+(mdField("pr.tache")||"—")+"\n\n"+
+ "**Prompt novice :**\n"+(mdField("pr.novice")||"—")+"\n\n"+
+ "**Prompt reconstruit (Prompt Builder) :**\n"+(mdField("pr.recons")||"—")+"\n\n"+
+ "- **Ce que j'ai dû savoir moi-même pour l'améliorer** : "+(mdField("pr.savoir")||"—");
+ },
+ "multi":function(){
+ return "## 4 · La puissance multimodale\n\n"+
+ "**Manipulation A : "+(mdField("mu.a.nom")||"—")+"**\n"+
+ "- Apport : "+(mdField("mu.a.apport")||"—")+"\n"+
+ "- Limite / erreur : "+(mdField("mu.a.limite")||"—")+"\n\n"+
+ "**Manipulation B : "+(mdField("mu.b.nom")||"—")+"**\n"+
+ "- Apport : "+(mdField("mu.b.apport")||"—")+"\n"+
+ "- Limite / erreur : "+(mdField("mu.b.limite")||"—");
+ },
+ "eval":function(){
+ return "## 5 · Repenser l'évaluation\n\n"+
+ "- **Tâche d'évaluation choisie** : "+(mdField("ev.tache")||"—")+"\n"+
+ "- **Option retenue (Phase 2)** : "+(mdField("ev.option")||"—")+"\n"+
+ "- **Transposable dès demain** : "+(mdField("ev.demain")||"—")+"\n"+
+ "- **Suppose un changement plus profond** : "+(mdField("ev.profond")||"—");
+ },
+ "pas":function(){
+ return "## Mon premier pas\n\n"+
+ "**Auto-positionnement :**\n"+
+ "- Adopter les réflexes vie privée (CNIL) : "+mdLvl("pas.s0")+"\n"+
+ "- Choisir un outil adapté à un besoin : "+mdLvl("pas.s4")+"\n"+
+ "- Formuler et améliorer un prompt : "+mdLvl("pas.s1")+"\n"+
+ "- Distinguer apport et limite du multimodal : "+mdLvl("pas.s2")+"\n"+
+ "- Rendre une évaluation plus robuste : "+mdLvl("pas.s3")+"\n\n"+
+ "**Mon action (sous 2 semaines) :** "+(mdField("pas.action")||"—")+"\n"+
+ "**Ce dont j'aurai besoin / à qui en parler :** "+(mdField("pas.besoin")||"—");
+ }
+ };
+
+ /* ── PANEL CONTENT ─────────────────────────────────── */
+ var PANELS={};
+
+ PANELS.accueil=
+ '<div class="panel-head"><h2>Bienvenue — vos premiers pas</h2></div>'+
+ '<dl class="meta-block">'+
+ '<dt>Durée</dt><dd>3 h (pause de 15 min comprise)</dd>'+
+ '<dt>Public</dt><dd>Enseignants de lycée et de post-bac — grands débutants, toutes disciplines</dd>'+
+ "<dt>Esprit</dt><dd>On ne devient pas expert aujourd'hui : on fait ses premiers pas et on repart avec des repères.</dd>"+
+ '</dl>'+
+ '<div class="callout">'+
+ "<h3>La règle d'or — pour tout l'atelier et après</h3>"+
+ "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles (élèves, familles, collègues) dans un outil d'IA non référencé par votre établissement.</li></ul>"+
+ "<span class=\"warn\">Tout est faisable sans créer de compte : démonstration de l'animateur + Prompt Builder local.</span>"+
+ '</div>'+
+ '<div class="card">'+
+ "<h3>Comment ça marche ? (l'essentiel)</h3>"+
+ "<p>Une IA générative <strong>prédit la suite la plus probable</strong> à partir de masses de textes et d'images. <strong>Sans contexte, elle comble avec le plus probable</strong> — souvent anglophone, généraliste, sans ancrage disciplinaire.</p>"+
+ "<p class=\"reminder\">D'où l'importance de <strong>ce qu'on lui donne</strong>. C'est tout ce qu'il faut comprendre aujourd'hui.</p>"+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Avant de commencer</h3>'+
+ '<p class="hint" style="margin:.3em 0 12px">Notez, pour le tour de table express :</p>'+
+ "<div class=\"field\"><label for=\"a-intrigue\">Une chose qui m'<strong>intrigue</strong> à propos de l'IA générative</label><textarea id=\"a-intrigue\" data-key=\"acc.intrigue\" placeholder=\"…\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"a-inquiete\">Une chose qui m'<strong>inquiète</strong></label><textarea id=\"a-inquiete\" data-key=\"acc.inquiete\" placeholder=\"…\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="accueil">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="accueil">Copier mes réponses (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="accueilAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>'+
+ '</div>'+
+ '<h3 style="margin:24px 0 10px">Au programme</h3>'+
+ '<ol class="agenda">'+
+ '<li><span class="time">0:00–0:20</span><div><h3>Ouverture</h3><p>Craintes &amp; démystification.</p></div></li>'+
+ "<li><span class=\"time\">0:20–0:30</span><div><h3>1 · IA &amp; vie privée</h3><p>5 questions à se poser pour protéger sa vie privée (CNIL).</p></div></li>"+
+ "<li><span class=\"time\">0:30–0:40</span><div><h3>2 · Choisir un outil</h3><p>Explorer le répertoire d'outils IA (DRANE).</p></div></li>"+
+ "<li><span class=\"time\">0:40–1:25</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction.</p></div></li>"+
+ '<li><span class="time">1:25–1:50</span><div><h3>4 · La puissance multimodale</h3><p>Manipuler images et textes — et ses limites.</p></div></li>'+
+ '<li class="pause"><span class="time">1:50–2:05</span><div><h3>Pause</h3><p>15 minutes — les écrans restent ouverts.</p></div></li>'+
+ "<li><span class=\"time\">2:05–2:40</span><div><h3>5 · Repenser l'évaluation</h3><p>Le processus, pas seulement le produit.</p></div></li>"+
+ '<li><span class="time">2:40–3:00</span><div><h3>Clôture</h3><p>Engagement &amp; relais.</p></div></li>'+
+ '</ol>';
+
+ PANELS.outil=
+ '<div class="panel-head"><h2>1 · IA &amp; vie privée</h2><span class="panel-time">0:20–0:30</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Adopter des réflexes simples pour protéger sa vie privée — et celle des élèves — avant, pendant et après l'usage d'une IA générative.</dd>"+
+ '<dt>Modalité</dt><dd>En groupe — les 5 questions vie privée de la CNIL, commentées ensemble.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">La CNIL propose 6 questions pour utiliser une IA ; on retient ici les <strong>5 qui concernent la vie privée</strong>, en trois temps. Principe directeur : <strong>une IA peut réutiliser ce qu'on lui confie</strong> — on partage le moins de données possible et on garde la main sur les réglages.</p>"+
+ "<p class=\"hint\" style=\"margin:-4px 0 8px\">Pour chaque question, positionnez-vous — <strong>Clair / Pas sûr / À revoir</strong>. C'est pour vous seul (non transmis) ; vos « à revoir » formeront votre liste à reprendre.</p>"+
+ "<h3 style=\"margin:18px 0 8px\">Avant de l'utiliser</h3>"+
+ '<details open><summary><span class="badge-num">1</span><span>Quelle IA choisir ?</span></summary>'+
+ "<div class=\"details__body\">Je <strong>compare</strong> différents services et je choisis celui qui correspond le mieux à mon besoin.<br>Je consulte la <strong>politique de confidentialité</strong> : quelles données sont collectées, comment elles sont utilisées, comment je peux contrôler ou limiter cet usage.<br>En établissement : les outils de l'<strong>ENT</strong> ont déjà été vérifiés ; pour les autres, l'interlocuteur est le <strong>DPO</strong>.<fieldset style=\"margin:14px 0 0;padding-top:10px;border-top:1px solid var(--outline-variant)\"><legend>Pour moi</legend><div class=\"choices\"><span class=\"choice\" data-cat=\"autorise\"><input type=\"radio\" id=\"ck1-clair\" name=\"ck.q1\" data-key=\"ck.q1\" value=\"clair\"><label for=\"ck1-clair\">Clair</label></span><span class=\"choice\" data-cat=\"encadre\"><input type=\"radio\" id=\"ck1-pasur\" name=\"ck.q1\" data-key=\"ck.q1\" value=\"pasur\"><label for=\"ck1-pasur\">Pas sûr</label></span><span class=\"choice\" data-cat=\"arbitrer\"><input type=\"radio\" id=\"ck1-revoir\" name=\"ck.q1\" data-key=\"ck.q1\" value=\"revoir\"><label for=\"ck1-revoir\">À revoir</label></span></div></fieldset></div></details>"+
+ '<details><summary><span class="badge-num">2</span><span>Dois-je créer un compte ?</span></summary>'+
+ "<div class=\"details__body\">Si c'est possible, j'utilise l'IA <strong>sans créer de compte</strong>.<br>Si je crée un compte : <strong>mot de passe robuste</strong> et <strong>authentification à deux facteurs</strong> (par e-mail par exemple) quand c'est disponible.<fieldset style=\"margin:14px 0 0;padding-top:10px;border-top:1px solid var(--outline-variant)\"><legend>Pour moi</legend><div class=\"choices\"><span class=\"choice\" data-cat=\"autorise\"><input type=\"radio\" id=\"ck2-clair\" name=\"ck.q2\" data-key=\"ck.q2\" value=\"clair\"><label for=\"ck2-clair\">Clair</label></span><span class=\"choice\" data-cat=\"encadre\"><input type=\"radio\" id=\"ck2-pasur\" name=\"ck.q2\" data-key=\"ck.q2\" value=\"pasur\"><label for=\"ck2-pasur\">Pas sûr</label></span><span class=\"choice\" data-cat=\"arbitrer\"><input type=\"radio\" id=\"ck2-revoir\" name=\"ck.q2\" data-key=\"ck.q2\" value=\"revoir\"><label for=\"ck2-revoir\">À revoir</label></span></div></fieldset></div></details>"+
+ "<h3 style=\"margin:18px 0 8px\">Quand je l'utilise</h3>"+
+ '<details><summary><span class="badge-num">3</span><span>Comment protéger mes données ?</span></summary>'+
+ "<div class=\"details__body\">Je vérifie les <strong>paramètres</strong> pour limiter l'utilisation de mes données afin d'<strong>entraîner l'IA</strong>.<br>Quand je peux, j'active le <strong>mode temporaire</strong> et je <strong>désactive l'historique</strong> des discussions.<fieldset style=\"margin:14px 0 0;padding-top:10px;border-top:1px solid var(--outline-variant)\"><legend>Pour moi</legend><div class=\"choices\"><span class=\"choice\" data-cat=\"autorise\"><input type=\"radio\" id=\"ck3-clair\" name=\"ck.q3\" data-key=\"ck.q3\" value=\"clair\"><label for=\"ck3-clair\">Clair</label></span><span class=\"choice\" data-cat=\"encadre\"><input type=\"radio\" id=\"ck3-pasur\" name=\"ck.q3\" data-key=\"ck.q3\" value=\"pasur\"><label for=\"ck3-pasur\">Pas sûr</label></span><span class=\"choice\" data-cat=\"arbitrer\"><input type=\"radio\" id=\"ck3-revoir\" name=\"ck.q3\" data-key=\"ck.q3\" value=\"revoir\"><label for=\"ck3-revoir\">À revoir</label></span></div></fieldset></div></details>"+
+ '<details><summary><span class="badge-num">4</span><span>Quelles informations partager ?</span></summary>'+
+ "<div class=\"details__body\">J'<strong>évite</strong> de partager des informations privées ou sensibles : l'IA pourrait en faire un mauvais usage.<br>Je ne divulgue pas mon <strong>nom</strong>, mon <strong>adresse</strong>, mon <strong>établissement</strong>, mes <strong>mots de passe</strong>, mes informations <strong>bancaires</strong> ou des <strong>problèmes personnels</strong>.<br><span class=\"hint\">Et jamais de données d'<strong>élèves, de familles ou de collègues</strong>.</span><fieldset style=\"margin:14px 0 0;padding-top:10px;border-top:1px solid var(--outline-variant)\"><legend>Pour moi</legend><div class=\"choices\"><span class=\"choice\" data-cat=\"autorise\"><input type=\"radio\" id=\"ck4-clair\" name=\"ck.q4\" data-key=\"ck.q4\" value=\"clair\"><label for=\"ck4-clair\">Clair</label></span><span class=\"choice\" data-cat=\"encadre\"><input type=\"radio\" id=\"ck4-pasur\" name=\"ck.q4\" data-key=\"ck.q4\" value=\"pasur\"><label for=\"ck4-pasur\">Pas sûr</label></span><span class=\"choice\" data-cat=\"arbitrer\"><input type=\"radio\" id=\"ck4-revoir\" name=\"ck.q4\" data-key=\"ck.q4\" value=\"revoir\"><label for=\"ck4-revoir\">À revoir</label></span></div></fieldset></div></details>"+
+ "<h3 style=\"margin:18px 0 8px\">Après l'avoir utilisée</h3>"+
+ "<details><summary><span class=\"badge-num\">5</span><span>Que faire quand j'ai terminé ?</span></summary>"+
+ "<div class=\"details__body\">Je relis et <strong>supprime</strong> mes anciennes conversations si c'est possible.<br>Si je n'utilise plus le service, je <strong>supprime mon compte</strong>.<br>Je me <strong>déconnecte</strong> toujours, surtout sur un appareil partagé.<fieldset style=\"margin:14px 0 0;padding-top:10px;border-top:1px solid var(--outline-variant)\"><legend>Pour moi</legend><div class=\"choices\"><span class=\"choice\" data-cat=\"autorise\"><input type=\"radio\" id=\"ck5-clair\" name=\"ck.q5\" data-key=\"ck.q5\" value=\"clair\"><label for=\"ck5-clair\">Clair</label></span><span class=\"choice\" data-cat=\"encadre\"><input type=\"radio\" id=\"ck5-pasur\" name=\"ck.q5\" data-key=\"ck.q5\" value=\"pasur\"><label for=\"ck5-pasur\">Pas sûr</label></span><span class=\"choice\" data-cat=\"arbitrer\"><input type=\"radio\" id=\"ck5-revoir\" name=\"ck.q5\" data-key=\"ck.q5\" value=\"revoir\"><label for=\"ck5-revoir\">À revoir</label></span></div></fieldset></div></details>"+
+ "<p class=\"reminder\">Source : <strong>CNIL &amp; PIPC</strong> (2026), « IA générative &amp; vie privée — 6 questions à se poser pour utiliser une IA ». <a href=\"https://www.cnil.fr/fr/ia-generative-et-vie-privee-affiche-coproduite-pipc-cnil\" target=\"_blank\" rel=\"noopener\">Voir l'affiche sur cnil.fr</a></p>"+
+ "<div class=\"field\" style=\"margin-top:10px\"><label for=\"o-remarques\">Mes remarques</label><textarea id=\"o-remarques\" data-key=\"out.remarques\" placeholder=\"questions, points à creuser, idées d'usage, situations concrètes…\"></textarea></div>"+
+ '<p class="save-note" style="margin:6px 0 0">Vos positionnements et remarques sont enregistrés sur cet appareil. Récupérez votre relevé ci-dessous.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="outil">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="outil">Copier mon relevé (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="outilAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>'+
+ "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous savez désormais <strong>protéger vos données</strong>. Reste une question : <strong>quel outil</strong> choisir, sans se perdre dans un marché qui change chaque semaine ? C'est l'objet de l'<strong>étape 2</strong> : explorer un répertoire de référence et repérer un ou deux outils que vous aimeriez essayer.</p></div>";
+
+ PANELS.repertoire=
+ '<div class="panel-head"><h2>2 · Choisir un outil</h2><span class="panel-time">0:30–0:40</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Explorer un répertoire de référence et repérer 1 à 3 outils qu'on aimerait essayer.</dd>"+
+ '<dt>Modalité</dt><dd>Navigation libre dans le répertoire de la DRANE (seul ou en binôme).</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Le marché des outils change chaque semaine : partez d'un <strong>besoin</strong>, pas d'un outil. Un répertoire de référence évite de choisir au hasard — un outil « qui impressionne » n'est pas un outil « qui répond à un besoin ».</p>"+
+ "<p class=\"reminder\">Repères : les outils de l'<strong>ENT</strong> ont déjà passé l'étape conformité ; pour les autres, votre interlocuteur est le <strong>DPO</strong>. Privilégiez les <strong>solutions libres et sobres</strong> (cadre national).</p>"+
+ '<div class="card">'+
+ '<h3>Explorer le répertoire d\'outils IA</h3>'+
+ "<p class=\"hint\" style=\"margin:.3em 0 12px\">Naviguez quelques minutes dans le <strong>répertoire interactif de la DRANE</strong> et repérez <strong>1 à 3 outils</strong> que vous aimeriez essayer — pas besoin de tester maintenant, juste repérer.</p>"+
+ "<p class=\"hint\" style=\"margin:0 0 10px\">Pour identifier les outils : répertoire interactif d'outils IA pour un usage pédagogique (DRANE PACA).</p>"+
+ '<p style="margin:0 0 14px"><a class="btn btn--filled" href="https://repertoire-outils-ia-f0df4b.forge.apps.education.fr/" target="_blank" rel="noopener" style="text-decoration:none">Ouvrir le répertoire ↗</a> <span class="hint">— <a href="https://www.pedagogie.ac-nice.fr/drane/2026/02/27/rioiag/" target="_blank" rel="noopener">source (DRANE)</a></span></p>'+
+ "<div class=\"field\"><label for=\"o-t1\">Outil 1 <span class=\"hint\">— nom + ce que j'aimerais en faire</span></label><textarea id=\"o-t1\" data-key=\"out.t1\" placeholder=\"ex. un générateur d'images — illustrer un cours\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"o-t2\">Outil 2 <span class=\"hint\">— optionnel</span></label><textarea id=\"o-t2\" data-key=\"out.t2\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"o-t3\">Outil 3 <span class=\"hint\">— optionnel</span></label><textarea id=\"o-t3\" data-key=\"out.t3\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="repertoire">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="repertoire">Copier mes notes (Markdown)</button>'+
+ '</div>';
+
+ PANELS.prompt=
+ "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:40–1:25</span></div>"+
+ '<dl class="meta-block">'+
+ '<dt>Objectif</dt><dd>Formuler puis améliorer une instruction en mobilisant cinq leviers, du novice au contextualisé.</dd>'+
+ '<dt>Modalité</dt><dd>Binôme — une tâche réelle, avec Prompt Builder.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Une instruction vague produit une réponse générique. Ce n'est pas un défaut de l'outil : <strong>sans contexte, l'IA comble avec le plus probable</strong>. Une bonne instruction réduit cette zone d'incertitude.</p>"+
+ '<div class="card">'+
+ '<h3>Même tâche, deux instructions</h3>'+
+ '<p><strong>Vague</strong> — « Explique la photosynthèse. »</p>'+
+ '<p><strong>Contextualisée</strong> — « Tu es professeur de SVT. Explique la photosynthèse en <strong>3 étapes simples</strong> à un <strong>élève de 4e</strong>, avec une <strong>analogie du quotidien</strong>, en <strong>120 mots</strong>. »</p>'+
+ "<p class=\"reminder\">Un prompt n'est pas une commande, c'est <strong>le début d'un dialogue</strong>. Si la réponse ne convient pas : on reformule.</p>"+
+ '</div>'+
+ '<div class="callout">'+
+ "<h3>Les 5 leviers d'une bonne instruction</h3>"+
+ '<ul>'+
+ '<li><strong>Rôle</strong> — « tu es professeur de… »</li>'+
+ '<li><strong>Contexte</strong> — niveau, classe, programme, public</li>'+
+ '<li><strong>Étapes</strong> — « pose tes questions une à une avant de générer »</li>'+
+ "<li><strong>Format</strong> — tableau, liste, nombre de mots</li>"+
+ '<li><strong>Contraintes</strong> — sources à citer, cadre, textes officiels</li>'+
+ '</ul>'+
+ '<span class="warn">Et toujours : <strong>aucune donnée personnelle</strong>. Les méthodes-acronymes (ACTIF, CARE…) inspirent mais ne dispensent pas de penser.</span>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>L\'outil <em>Prompt Builder</em> (PCOAB)</h3>'+
+ '<p><a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
+ '<p class="hint" style="margin:.3em 0 8px">Cinq champs → un prompt structuré, prêt à copier :</p>'+
+ '<ul>'+
+ '<li><strong>P</strong>ersona = Rôle — qui l\'IA doit être</li>'+
+ '<li><strong>C</strong>ontext = Contexte — situation, niveau, contraintes de classe</li>'+
+ '<li><strong>O</strong>bjective = Objectif — ce que vous voulez obtenir</li>'+
+ '<li><strong>A</strong>udience = Public — pour qui c\'est destiné</li>'+
+ '<li><strong>B</strong>oundaries = Limites — ce qu\'il faut éviter, le cadre, le format</li>'+
+ '</ul>'+
+ "<p class=\"reminder\">Guides de rédaction des prompts : autres outils. <a href=\"https://codimd.apps.education.fr/s/r1H5nglAY\" target=\"_blank\" rel=\"noopener\">Ouvrir la ressource</a></p>"+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Atelier — du prompt novice au prompt contextualisé</h3>'+
+ '<p class="hint" style="margin:.3em 0 12px">Choisissez une tâche réelle (consigne, mail aux familles, exercice…), rédigez un prompt novice, testez, puis reconstruisez-le avec Prompt Builder et comparez.</p>'+
+ '<div class="field"><label for="pr-tache">Ma tâche réelle</label><textarea id="pr-tache" data-key="pr.tache" placeholder="rédiger une consigne, un mail aux familles, un exercice…"></textarea></div>'+
+ '<div class="field"><label for="pr-novice">Mon prompt <strong>novice</strong></label><textarea id="pr-novice" data-key="pr.novice"></textarea></div>'+
+ '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (Prompt Builder)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
+ "<div class=\"field\"><label for=\"pr-savoir\">Pour améliorer mon instruction, qu'ai-je dû <strong>savoir moi-même</strong> ? <span class=\"hint\">(sur mes élèves, le programme, le résultat attendu… ce que l'IA ne peut pas deviner)</span></label><textarea id=\"pr-savoir\" data-key=\"pr.savoir\" placeholder=\"le cœur de l'atelier : l'IA ne compense pas ce qu'on ne lui fournit pas\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="prompt">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="prompt">Copier mes notes (Markdown)</button>'+
+ '</div>';
+
+ PANELS.multi=
+ '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:25–1:50</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Comparer des modalités (texte / image / voix / document) pour caractériser l'apport multimodal <strong>et</strong> ses limites.</dd>"+
+ '<dt>Modalité</dt><dd>Binôme — atelier « à la carte », 2 manipulations.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Les outils récents ne traitent pas que le texte saisi au clavier : ils lisent une image, transforment un texte en visuel, génèrent des illustrations, et même de l'audio. Le mieux est d'<strong>essayer</strong> : choisissez deux manipulations parmi les quatre premières. La cinquième (audio) est à <strong>découvrir</strong> plutôt qu'à manipuler aujourd'hui.</p>"+
+ '<details open><summary><span class="badge-num">1</span><span>OCR / lecture d\'image</span></summary><div class="details__body">Photographier une page de manuel, un document, un texte manuscrit → obtenir un <strong>texte éditable</strong>.<br><em>Usage</em> : numériser, réécrire une consigne, rendre un document accessible.</div></details>'+
+ '<details><summary><span class="badge-num">2</span><span>Illustration</span></summary><div class="details__body">Demander une <strong>image</strong> pour un support, un exposé, une couverture.<br><em>Usage</em> : illustrer un cours — en vérifiant les droits.</div></details>'+
+ '<details><summary><span class="badge-num">3</span><span>Infographie / schéma</span></summary><div class="details__body">Transformer un <strong>texte ou des données</strong> en schéma, frise, carte mentale.<br><em>Usage</em> : synthétiser, visualiser une notion.</div></details>'+
+ '<details><summary><span class="badge-num">4</span><span>Description / analyse</span></summary><div class="details__body">Faire <strong>décrire</strong> une image, une œuvre, un graphique.<br><em>Usage</em> : préparer une analyse d\'image, différencier.</div></details>'+
+    '<details><summary><span class="badge-num">5</span><span>Audio : voix, podcast, musique <span class="hint">— à connaître / en démonstration</span></span></summary><div class="details__body"><strong>Voix de synthèse</strong> : faire lire un texte (accessibilité, baladodiffusion).<br><strong>Podcast</strong> : générer un échange audio à partir d\'un document.<br><strong>Musique</strong> : générer un habillage sonore ou une courte mélodie.<br><em>Prudence</em> : ces outils sont le plus souvent <strong>non référencés</strong> (compte requis, hébergement hors UE) — à réserver à la démonstration ou à un outil conforme. Droits incertains sur la voix et la musique générées ; une <strong>voix</strong> peut être une <strong>donnée biométrique</strong> : ne jamais confier ni cloner la voix d\'un élève.</div></details>'+
+ '<div class="card">'+
+ '<h3>Manipulation A</h3>'+
+ '<div class="field"><label for="ma-nom">Laquelle ?</label><textarea id="ma-nom" data-key="mu.a.nom" placeholder="OCR / illustration / infographie / description…"></textarea></div>'+
+ '<div class="field"><label for="ma-apport">Apport observé</label><textarea id="ma-apport" data-key="mu.a.apport"></textarea></div>'+
+ '<div class="field"><label for="ma-limite">Limite / erreur observée</label><textarea id="ma-limite" data-key="mu.a.limite" placeholder="OCR imparfait, droits d\'image, erreur dans un beau rendu…"></textarea></div>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Manipulation B</h3>'+
+ '<div class="field"><label for="mb-nom">Laquelle ?</label><textarea id="mb-nom" data-key="mu.b.nom"></textarea></div>'+
+ '<div class="field"><label for="mb-apport">Apport observé</label><textarea id="mb-apport" data-key="mu.b.apport"></textarea></div>'+
+ '<div class="field"><label for="mb-limite">Limite / erreur observée</label><textarea id="mb-limite" data-key="mu.b.limite"></textarea></div>'+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="callout">'+
+ '<h3>Deux garde-fous du cadre national</h3>'+
+ '<ul>'+
+ "<li><strong>Renoncez à l'IA</strong> si vous ne pouvez pas <strong>évaluer</strong> le résultat (exactitude, sources, impartialité).</li>"+
+ "<li><strong>Renoncez à l'IA</strong> si une solution plus <strong>sobre</strong> suffit (un scan classique, un schéma fait main).</li>"+
+ '</ul>'+
+ '<span class="warn">La réponse est vraisemblable, fluide… donc difficile à évaluer : une erreur dans un texte bien écrit passe inaperçue. Et toujours : pas de donnée personnelle sur les images confiées.</span>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="multi">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="multi">Copier mes notes (Markdown)</button>'+
+ '</div>';
+
+ PANELS.eval=
+ "<div class=\"panel-head\"><h2>5 · Repenser l'évaluation</h2><span class=\"panel-time\">2:05–2:40</span></div>"+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Reformuler une de vos évaluations pour rendre visible le <strong>raisonnement</strong> de l'élève, pas seulement sa production finale.</dd>"+
+ '<dt>Modalité</dt><dd>Binôme — une consigne réelle passée au prompt guidé.</dd>'+
+ '</dl>'+
+ '<p class="panel-intro">Les IA génératives ravivent une tension : évalue-t-on le <strong>produit</strong> (la copie) ou le <strong>processus</strong> (le raisonnement) ?</p>'+
+ '<div class="card">'+
+ '<h3>La compétence se déduit, elle ne se voit pas</h3>'+
+ "<p>On n'évalue jamais une compétence « en direct » : on la <strong>déduit de ce que l'élève produit</strong>.</p>"+
+ '<ul>'+
+ "<li>Une <strong>production finale</strong> qu'une IA peut générer <strong>renseigne peu</strong> sur ce que l'élève sait faire.</li>"+
+ "<li>Des <strong>traces de processus</strong> (brouillon, oral, étapes) <strong>renseignent beaucoup</strong> — et se délèguent mal.</li>"+
+ '</ul>'+
+ "<p class=\"reminder\">Recentrer sur le processus <strong>ne veut pas dire renoncer à évaluer</strong> : c'est recueillir de <strong>meilleures preuves</strong> de ce que l'élève sait faire seul.</p>"+
+ '</div>'+
+ '<div class="callout">'+
+ "<h3>Une tâche « résistante à l'IA » réunit 6 principes</h3>"+
+ '<ul>'+
+ '<li>centrée <strong>processus</strong> (brouillons, itérations)</li>'+
+ '<li><strong>contextualisée</strong> (réalités locales, personnelles)</li>'+
+ '<li><strong>métacognitive</strong> (réflexion sur l\'apprentissage)</li>'+
+ '<li><strong>multimodale</strong> (texte, audio, visuel, oral…)</li>'+
+ '<li><strong>inclusive</strong></li>'+
+ '<li><strong>validation supervisée</strong> (ex. soutenance orale)</li>'+
+ '</ul>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Le prompt guidé « Analyser et adapter des tâches d\'évaluation »</h3>'+
+ '<p><a href="https://docs.google.com/document/d/e/2PACX-1vTMsSSBSaJ9FCPG_he25VSwmZ_5a6OjdvhNoBN4X4cNO-vej3hQO5xaAIG8pNEEdmzFEfVIS8_ekf2q/pub" target="_blank" rel="noopener">Ouvrir le prompt guidé</a></p>'+
+ '<p class="hint" style="margin:.3em 0 8px"><strong>Mode d\'emploi :</strong> copiez tout le prompt → collez-le dans un chatbot → collez votre consigne d\'évaluation → laissez-vous guider. Le prompt attend votre confirmation à chaque phase : vous <strong>pilotez</strong>.</p>'+
+ '<ul>'+
+ '<li><strong>Phase 1 · Audit</strong> — repère les vulnérabilités de la tâche face à l\'IA</li>'+
+ '<li><strong>Phase 2 · Options</strong> — propose 3 redesigns (charge faible / moyenne / forte)</li>'+
+ '<li><strong>Phase 3 · Blueprint</strong> — détaille l\'option choisie</li>'+
+ '</ul>'+
+ '<p class="reminder">Une consigne ne contient pas de données personnelles. <strong>Atteindre la Phase 2 est déjà une réussite</strong> ; la Phase 3 se poursuit après l\'atelier. L\'IA propose, vous restez le décideur.</p>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Mes notes</h3>'+
+ '<div class="field"><label for="ev-tache">Ma tâche d\'évaluation</label><textarea id="ev-tache" data-key="ev.tache"></textarea></div>'+
+ '<div class="field"><label for="ev-option">L\'option que je retiens (Phase 2)</label><textarea id="ev-option" data-key="ev.option"></textarea></div>'+
+ '<div class="field"><label for="ev-demain">Ce qui est transposable <strong>dès demain</strong></label><textarea id="ev-demain" data-key="ev.demain"></textarea></div>'+
+ '<div class="field"><label for="ev-profond">Ce qui suppose un <strong>changement plus profond</strong></label><textarea id="ev-profond" data-key="ev.profond"></textarea></div>'+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="eval">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="eval">Copier mes notes (Markdown)</button>'+
+ '</div>';
+
+ PANELS.pas=
+ '<div class="panel-head"><h2>Mon premier pas</h2><span class="panel-time">2:40–3:00</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Esprit</dt><dd>La clôture <strong>produit</strong> quelque chose : un engagement écrit, pas une synthèse.</dd>"+
+ '</dl>'+
+ '<div class="card">'+
+ '<h3>Je sais désormais…</h3>'+
+ '<p class="hint" style="margin:.3em 0 14px">Auto-positionnement silencieux — pour vous, sans note publique.</p>'+
+ '<div class="check-item slider-item"><label for="s0" class="slider-label">Adopter les <strong>réflexes vie privée</strong> (CNIL)</label><div class="slider-row"><input type="range" id="s0" data-key="pas.s0" min="0" max="3" step="1" value="0" aria-describedby="s0lvl"><output class="slider-level" id="s0lvl" for="s0">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s4" class="slider-label">Choisir un <strong>outil</strong> adapté à un besoin</label><div class="slider-row"><input type="range" id="s4" data-key="pas.s4" min="0" max="3" step="1" value="0" aria-describedby="s4lvl"><output class="slider-level" id="s4lvl" for="s4">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s1" class="slider-label">Formuler et améliorer un <strong>prompt</strong></label><div class="slider-row"><input type="range" id="s1" data-key="pas.s1" min="0" max="3" step="1" value="0" aria-describedby="s1lvl"><output class="slider-level" id="s1lvl" for="s1">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s2" class="slider-label">Distinguer <strong>apport</strong> et <strong>limite</strong> du multimodal</label><div class="slider-row"><input type="range" id="s2" data-key="pas.s2" min="0" max="3" step="1" value="0" aria-describedby="s2lvl"><output class="slider-level" id="s2lvl" for="s2">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s3" class="slider-label">Rendre une <strong>évaluation</strong> plus robuste</label><div class="slider-row"><input type="range" id="s3" data-key="pas.s3" min="0" max="3" step="1" value="0" aria-describedby="s3lvl"><output class="slider-level" id="s3lvl" for="s3">Pas encore</output></div></div>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Mon premier pas</h3>'+
+ '<p class="hint" style="margin:.3em 0 12px"><strong>UNE</strong> action que je teste dans les <strong>2 prochaines semaines</strong> : un réflexe vie privée adopté · un outil choisi dans le répertoire · un prompt reconstruit · une manipulation image/texte · une tâche d\'évaluation passée au prompt d\'adaptation.</p>'+
+ '<div class="field"><label for="p-action">Mon action</label><textarea id="p-action" data-key="pas.action"></textarea></div>'+
+ "<div class=\"field\"><label for=\"p-besoin\">Ce dont j'aurai besoin / la personne à qui je peux en parler</label><textarea id=\"p-besoin\" data-key=\"pas.besoin\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="callout">'+
+ '<h3>Pour continuer</h3>'+
+ '<ul>'+
+ '<li><a href="https://www.reseau-canope.fr/ia-et-education/dossier-ia-generatives-en-education" target="_blank" rel="noopener"><strong>Dossiers IA de Canopé</strong></a> — « Les IA génératives en éducation »</li>'+
+ '<li>Parcours <a href="https://pix.fr/intelligence-artificielle/" target="_blank" rel="noopener"><strong>Pix IA</strong></a> : « Mon premier prompt ! » → « J\'améliore mes prompts ! »</li>'+
+ "<li><a href=\"https://www.education.gouv.fr/cadre-d-usage-de-l-ia-en-education-450647\" target=\"_blank\" rel=\"noopener\"><strong>Cadre d'usage national de l'IA en éducation</strong></a> (juin 2025) + charte d'établissement</li>"+
+ '</ul>'+
+ "<span class=\"warn\">Vous n'avez pas tout vu, mais vous avez l'essentiel pour commencer <strong>sans vous mettre en risque</strong>.</span>"+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="pas">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="pas">Copier mon engagement (Markdown)</button>'+
+ '<button type="button" class="btn btn--filled" id="printBtn">Imprimer mes notes</button>'+
+ '<button type="button" class="btn" id="clearBtn">Effacer mes saisies</button>'+
+ '</div>';
+
+ /* ── BUILD PANELS ──────────────────────────────────── */
+ var MAIN=document.getElementById("main");
+ TABS.forEach(function(t,i){
+ var p=el("section",{role:"tabpanel",id:"panel-"+t[0],"aria-labelledby":"tab-"+t[0],tabindex:"0"});
+ if(i!==0)p.hidden=true;
+ p.innerHTML=PANELS[t[0]];
+ MAIN.appendChild(p);
+ });
+
+ /* ── TAB BAR ───────────────────────────────────────── */
+ var tablist=document.querySelector("[role=tablist]");
+ var tabs=[];
+ TABS.forEach(function(t,i){
+ var btn=el("button",{
+ role:"tab",id:"tab-"+t[0],
+ "aria-selected":i===0?"true":"false",
+ "aria-controls":"panel-"+t[0],
+ tabindex:i===0?"0":"-1"
+ },t[1]);
+ tablist.appendChild(btn);
+ tabs.push(btn);
+ });
+
+ function selectTab(tab){
+ tabs.forEach(function(t){
+ var sel=t===tab;
+ t.setAttribute("aria-selected",sel?"true":"false");t.tabIndex=sel?0:-1;
+ var p=document.getElementById(t.getAttribute("aria-controls"));
+ if(p)p.hidden=!sel;
+ });
+ window.scrollTo(0,0);
+ }
+ tabs.forEach(function(tab,idx){
+ tab.addEventListener("click",function(){selectTab(tab);});
+ tab.addEventListener("keydown",function(e){
+ var n=null;
+ if(e.key==="ArrowRight")n=tabs[(idx+1)%tabs.length];
+ else if(e.key==="ArrowLeft")n=tabs[(idx-1+tabs.length)%tabs.length];
+ else if(e.key==="Home")n=tabs[0];
+ else if(e.key==="End")n=tabs[tabs.length-1];
+ if(n){e.preventDefault();selectTab(n);n.focus();}
+ });
+ });
+
+ /* Panel prev / next navigation */
+ tabs.forEach(function(tab,idx){
+ var panel=document.getElementById(tab.getAttribute("aria-controls"));
+ if(!panel)return;
+ var nav=el("div",{class:"panel-nav"});
+ if(idx>0){
+ var prev=el("button",{type:"button",class:"btn"},"← "+tabs[idx-1].textContent.trim());
+ prev.addEventListener("click",function(){selectTab(tabs[idx-1]);});
+ nav.appendChild(prev);
+ }else{nav.appendChild(el("span",null,""));}
+ if(idx<tabs.length-1){
+ var next=el("button",{type:"button",class:"btn"},tabs[idx+1].textContent.trim()+" →");
+ next.addEventListener("click",function(){selectTab(tabs[idx+1]);});
+ nav.appendChild(next);
+ }
+ panel.appendChild(nav);
+ });
+
+ /* ── GENERIC PERSISTENCE ───────────────────────────── */
+ Array.prototype.forEach.call(document.querySelectorAll("textarea[data-key]"),function(ta){
+ var k=ta.getAttribute("data-key");var v=store.get(k);if(v!=null)ta.value=v;
+ ta.addEventListener("input",function(){store.set(k,ta.value);});
+ });
+ Array.prototype.forEach.call(document.querySelectorAll("input[type=range][data-key]"),function(sl){
+ var k=sl.getAttribute("data-key");var v=store.get(k);if(v!=null)sl.value=v;
+ var out=document.getElementById(sl.id+"lvl");
+ function upd(){if(out)out.textContent=LEVELS[+sl.value]||LEVELS[0];}
+ upd();sl.addEventListener("input",function(){store.set(k,sl.value);upd();});
+ });
+ Array.prototype.forEach.call(document.querySelectorAll("input[type=radio][data-key]"),function(r){
+ var k=r.getAttribute("data-key");if(store.get(k)===r.value)r.checked=true;
+ r.addEventListener("change",function(){if(r.checked)store.set(k,r.value);});
+ });
+
+ /* ── CLEAR ALL ─────────────────────────────────────── */
+ var clearBtnEl=document.getElementById("clearBtn");
+ if(clearBtnEl)clearBtnEl.addEventListener("click",function(){
+ if(!window.confirm("Effacer toutes vos saisies sur cet appareil ?"))return;
+ try{
+ var rm=[];
+ for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key.indexOf("iaDebProfs.")===0)rm.push(key);}
+ rm.forEach(function(k){localStorage.removeItem(k);});
+ }catch(e){}
+ document.querySelectorAll("input:checked").forEach(function(x){x.checked=false;});
+ document.querySelectorAll("input[type=range][data-key]").forEach(function(sl){sl.value="0";var o=document.getElementById(sl.id+"lvl");if(o)o.textContent=LEVELS[0];});
+ document.querySelectorAll("textarea[data-key]").forEach(function(x){x.value="";});
+ });
+
+ /* ── PRINT ─────────────────────────────────────────── */
+ var printBtnEl=document.getElementById("printBtn");
+ if(printBtnEl)printBtnEl.addEventListener("click",function(){window.print();});
+
+ /* ── COPY AS MARKDOWN ──────────────────────────────── */
+ function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
+ function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
+ Array.prototype.forEach.call(document.querySelectorAll(".copy-md"),function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
+ /* Lien vers le formulaire à côté de chaque bouton de copie participant */
+ var FORM_URL="https://forms.gle/qATBGeGi8qiUcKro7";
+ Array.prototype.forEach.call(document.querySelectorAll(".copy-md:not(.btn--trainer)"),function(b){
+ var arrow=el("span",{"class":"flow-arrow","aria-hidden":"true"},"→");
+ var a=el("a",{"class":"btn",href:FORM_URL,target:"_blank",rel:"noopener",style:"text-decoration:none"},"Coller dans le formulaire ↗");
+ if(b.parentNode){b.parentNode.insertBefore(arrow,b.nextSibling);b.parentNode.insertBefore(a,arrow.nextSibling);}
+ });
+
+ /* ── PHASE TIMER ───────────────────────────────────── */
+ var rc=document.createElement("div");rc.id="runclock";rc.hidden=true;rc.setAttribute("role","region");rc.setAttribute("aria-label","Minuteur de phase");
+ rc.innerHTML='<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div><div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span><div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div><div class="rc-progress"><div id="rc-bar"></div></div>';
+ document.body.appendChild(rc);
+ var rcPhase=rc.querySelector("#rc-phase"),rcStepEl=rc.querySelector("#rc-step"),rcTimeEl=rc.querySelector("#rc-time"),rcToggle=rc.querySelector("#rc-toggle"),rcNext=rc.querySelector("#rc-next"),rcClose=rc.querySelector("#rc-close"),rcBar=rc.querySelector("#rc-bar");
+ var rcSteps=[],rcIdx=0,rcRem=0,rcTot=0,rcGo=false,rcIv=null,rcDone=false;
+ function rcPad(n){return (n<10?"0":"")+n;}
+ function rcFmt(s){if(s<0)s=0;return rcPad(Math.floor(s/60))+":"+rcPad(s%60);}
+ function rcRender(){rcTimeEl.textContent=rcFmt(rcRem);rcBar.style.width=(rcTot?Math.max(0,rcRem/rcTot*100):0)+"%";rcToggle.textContent=rcGo?"Pause":"Reprendre";}
+ function rcEnsure(){if(!rcIv)rcIv=setInterval(rcTick,1000);}
+ function rcStop(){if(rcIv){clearInterval(rcIv);rcIv=null;}}
+ function rcStart(i){rcIdx=i;rcDone=false;var st=rcSteps[i];rcRem=st[1]*60;rcTot=rcRem;rcStepEl.textContent="Étape "+(i+1)+"/"+rcSteps.length+" · "+st[0]+" ("+st[1]+" min)";rcGo=true;rcRender();rcEnsure();}
+ function rcTick(){if(!rcGo)return;if(rcRem>0){rcRem--;rcRender();}else if(rcIdx+1<rcSteps.length){rcStart(rcIdx+1);}else{rcFinish();}}
+ function rcFinish(){rcGo=false;rcDone=true;rcStop();rcStepEl.textContent="Terminé ✓";rcTimeEl.textContent="00:00";rcBar.style.width="0%";rcToggle.textContent="Reprendre";}
+ function rcOpen(key){var t=TIMERS[key];if(!t)return;rcSteps=t[1];rcPhase.textContent=t[0];rc.hidden=false;rcStart(0);}
+ rcToggle.addEventListener("click",function(){if(rcDone)return;rcGo=!rcGo;rcRender();if(rcGo)rcEnsure();});
+ rcNext.addEventListener("click",function(){if(rcDone)return;if(rcIdx+1<rcSteps.length)rcStart(rcIdx+1);else rcFinish();});
+ rcClose.addEventListener("click",function(){rcGo=false;rcStop();rc.hidden=true;});
+ Array.prototype.forEach.call(document.querySelectorAll(".start-timer"),function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
+
+ /* ── STEPS DURATION BOXES ──────────────────────────── */
+ var PANELOF={};TABS.forEach(function(t){PANELOF[t[0]]="panel-"+t[0];});
+ Object.keys(TIMERS).forEach(function(key){
+ var panel=document.getElementById(PANELOF[key]);if(!panel)return;
+ var steps=TIMERS[key][1];var total=0;steps.forEach(function(st){total+=st[1];});
+ var box=document.createElement("div");box.className="steps-list";
+ var h='<p class="steps-title">Étapes — '+total+' min au total</p><ol>';
+ steps.forEach(function(st){h+='<li><span class="step-row"><span class="step-lbl">'+st[0]+'</span><span class="steps-dur">'+st[1]+' min</span></span></li>';});
+ h+='</ol>';box.innerHTML=h;
+ var mb=panel.querySelector(".meta-block");
+ if(mb&&mb.parentNode){mb.parentNode.insertBefore(box,mb.nextSibling);}
+ else{var pi=panel.querySelector(".panel-intro");if(pi&&pi.parentNode){pi.parentNode.insertBefore(box,pi.nextSibling);}else{panel.appendChild(box);}}
+ });
+
+})();
+</script>
+</body>
+</html>
