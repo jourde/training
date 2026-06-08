@@ -2,3 +2,4 @@
 
 - [atelier - charte](https://jourde.github.io/training/ai/fr-atelier-charte.html)
 - [atelier - débutant](https://jourde.github.io/training/ai/fr-atelier-debutant.html)
+- [atelier - intermédiaire](https://jourde.github.io/training/ai/fr-atelier-intermediaire.html)
