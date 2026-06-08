@@ -148,8 +148,7 @@
   .field{margin:0 0 18px}
   .field:last-child{margin-bottom:0}
   .field label{display:block;font-weight:500;margin-bottom:6px}
-  .field .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
-  .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+  .field .hint,.hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
   textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
     border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
     color:var(--on-surface)}
@@ -185,6 +184,12 @@
   .callout--danger h3{color:var(--cat-interdit)}
   .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
     border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
+
+  /* ── TRANSITION BRIDGE ── */
+  .bridge{position:relative;background:var(--primary-container);
+    color:var(--on-primary-container);border-radius:var(--radius-s);padding:14px 18px 14px 46px;margin:22px 0 0;font-size:.95rem;line-height:1.5}
+  .bridge::before{content:"\2192";position:absolute;left:18px;top:13px;font-weight:700;font-size:1.25rem;line-height:1.5}
+  .bridge strong{color:inherit}
 
   /* ── PRINCIPLE PILLS ── */
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}
@@ -309,13 +314,22 @@
     set:function(k,v){try{localStorage.setItem("evalIAinterm."+k,v)}catch(e){}}
   };
   function el(t,a,h){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;}
+  function btnCopyFeedback(btn){
+    if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);
+    btn.textContent="Copié ✓";
+    setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);
+  }
+  function copyToClipboard(text,onSuccess,promptMsg){
+    function fallback(){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");onSuccess();}catch(e){window.prompt(promptMsg||"Copiez :",text);}document.body.removeChild(ta);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(onSuccess,fallback);}else{fallback();}
+  }
 
   /* ── CONTENT DATA ─────────────────────────────────── */
   var TABS=[
     ["accueil",  "Accueil",                ""],
-    ["eval",     "1 · Évaluation",         "0:00–0:55 (55 min.)"],
-    ["markdown", "2 · Markdown",           "0:55–1:30 (35 min.)"],
-    ["vibe",     "3 · Vibe coding",        "1:45–2:40 (55 min.)"],
+    ["eval",     "1 · Évaluation",         "0:10–1:05 (55 min.)"],
+    ["markdown", "2 · Markdown",           "1:05–1:40 (35 min.)"],
+    ["vibe",     "3 · Vibe coding",        "1:55–2:40 (45 min.)"],
     ["livrables","Mes livrables",          "2:40–3:00 (20 min.)"]
   ];
 
@@ -332,7 +346,7 @@
     ]],
     "vibe": ["3 · Vibe coding", [
       ["Cadre : démo, amorces, vigilance + Ressourcerie", 10],
-      ["Atelier : fabrique ton outil + itère", 38],
+      ["Atelier : fabrique ton outil + itère", 28],
       ["Grille critique + partage", 7]
     ]]
   };
@@ -355,6 +369,11 @@
         + "- **Outil / méthode de conversion** : "+dash(mdField("md.tool"))+"\n"
         + "- **Observations sur le résultat** : "+dash(mdField("md.garde"))+"\n";
     },
+    "vibe": function(){
+      return "## 3 · Vibe coding — mon outil\n\n"
+        + "- **Ce que j'ai construit** : "+dash(mdField("vibe.besoin"))+"\n"
+        + "- **Un point à vérifier avant de le donner aux élèves** : "+dash(mdField("vibe.verif"))+"\n";
+    },
     "livrables": function(){
       var lines="## Mes livrables\n\n";
       lines+="### Livrables (à réutiliser sous 3 semaines)\n\n";
@@ -362,7 +381,13 @@
       lines+="  - option retenue : "+dash(mdField("eval.option"))+"\n";
       lines+="  - changement plus profond : "+dash(mdField("eval.profond"))+"\n";
       lines+="- **Source convertie en Markdown** : "+dash(mdField("md.doc"))+"\n";
+      lines+="- **Outil .html fabriqué** : "+dash(mdField("vibe.besoin"))+"\n";
+      lines+="  - point à vérifier avant diffusion : "+dash(mdField("vibe.verif"))+"\n";
       lines+="- **Ce dont j'aurai besoin** : "+dash(mdField("liv.relais"))+"\n";
+      lines+="\n### Mon engagement\n\n";
+      lines+="- 🎯 **Le changement que je teste** : "+dash(mdField("liv.engage"))+"\n";
+      lines+="- 🗓️ **Quand / dans quel contexte** : "+dash(mdField("liv.quand"))+"\n";
+      lines+="- 👣 **Mon premier pas cette semaine** : "+dash(mdField("liv.pas"))+"\n";
       return lines;
     },
 
@@ -405,7 +430,7 @@
     "vibeAnim": function(){
       return "# Analyse des outils fabriqués — étape 3 « Vibe coding »\n\n"
         + "Tu es un formateur expert en numérique éducatif, frugalité et IA générative, qui accompagne des enseignants de lycée et de post-bac.\n\n"
-        + "CONTEXTE : à l'étape 3 d'un atelier, chaque binôme a fabriqué une mini-application HTML monopage pour la classe par « vibe coding », puis l'a présentée brièvement (besoin couvert, présence éventuelle d'un outil existant, défaut repéré, donnée à NE PAS coder en dur, point à vérifier avant la classe). Je te transmets ci-dessous les descriptions partagées par le groupe, à l'oral ou par écrit.\n\n"
+        + "CONTEXTE : à l'étape 3 d'un atelier, chaque binôme a fabriqué une mini-application HTML monopage pour la classe par « vibe coding », et a noté ce qu'il a construit ainsi qu'un point à vérifier avant de donner l'outil aux élèves. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
         + "TA MISSION :\n"
         + "1. Dresse une typologie des besoins couverts par les outils fabriqués.\n"
         + "2. Évalue le réflexe de frugalité : dans combien de cas un outil existait-il déjà ? Que faut-il en retenir ?\n"
@@ -416,17 +441,17 @@
         + "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"
         + "- Sois concis et directement actionnable (formateur pressé, en cours de séance).\n"
         + "- Réponds en français.\n\n"
-        + "DESCRIPTIONS DU GROUPE (colle-les ci-dessous) :\n"
-        + "[Colle ici les descriptions des outils partagées par les binômes, à l'oral ou par écrit]";
+        + "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n"
+        + "[Colle ici tous les exports « Copier mes notes » de l'étape 3]";
     },
 
     "livrablesAnim": function(){
       return "# Analyse des livrables — clôture\n\n"
         + "Tu es un formateur expert en développement professionnel des enseignants et en IA générative, qui prépare la séance 2 d'un parcours.\n\n"
-        + "CONTEXTE : en clôture d'un atelier, chaque participant a consolidé ses livrables (une évaluation revisitée, une source convertie en Markdown) et noté ce dont il aura besoin pour les réutiliser en classe dans les semaines à venir. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
+        + "CONTEXTE : en clôture d'un atelier d'une seule séance, chaque participant a consolidé ses livrables (une évaluation revisitée, une source convertie en Markdown), noté ce dont il aura besoin, et formulé un engagement concret : un changement à tester, quand et dans quel contexte, et un premier pas dès cette semaine. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
         + "TA MISSION :\n"
         + "1. Synthétise les livrables produits : disciplines, types d'évaluations revisitées, sources converties.\n"
-        + "2. Dégage les grands thèmes communs et les intentions de réutilisation en classe.\n"
+        + "2. Dégage les grands thèmes communs ; repère la faisabilité des engagements pris (sont-ils concrets, datés, réalistes ?).\n"
         + "3. Anticipe les obstacles probables à la mise en œuvre et les besoins de soutien exprimés (« ce dont j'aurai besoin »).\n"
         + "4. Prépare la séance 2 : propose une trame de retour d'expérience et 3 à 5 questions de relance.\n"
         + "5. Suggère des relais ou ressources à proposer pour soutenir le passage à l'action.\n\n"
@@ -461,7 +486,9 @@
     if(withTimer)row.appendChild(el("button",{type:"button",class:"btn start-timer","data-md":key},"⏱ Lancer le minuteur"));
     if(withCopy)row.appendChild(el("button",{type:"button",class:"btn copy-md","data-md":key},"Copier mes notes (Markdown)"));
     if(MDBUILD[key+"Anim"])row.appendChild(el("button",{type:"button",class:"btn btn--trainer copy-md","data-md":key+"Anim"},"Animateur — copier le prompt d'analyse"));
-    row.appendChild(el("button",{type:"button",class:"btn btn--filled",id:key==="livrables"?"printBtn":null},"Imprimer mes notes"));
+    var fillAttrs={type:"button",class:"btn btn--filled"};
+    if(key==="livrables")fillAttrs.id="printBtn";
+    row.appendChild(el("button",fillAttrs,"Imprimer mes notes"));
     if(key==="livrables")row.appendChild(el("button",{type:"button",class:"btn",id:"clearBtn"},"Effacer mes saisies"));
     return row;
   }
@@ -485,13 +512,26 @@
 
     var ag=el("ol",{class:"agenda"});
     ag.innerHTML=
-      "<li><span class=\"time\">0:00–0:55 (55 min.)</span><div><h3>1 · Repenser l'évaluation</h3><p>Le prompt guidé : audit → 3 options → plan.</p></div></li>"
-     +"<li><span class=\"time\">0:55–1:30 (35 min.)</span><div><h3>2 · Préparer la donnée</h3><p>Convertir une source (PDF…) en Markdown propre, réutilisable dans vos prompts et un RAG.</p></div></li>"
-     +"<li class=\"pause\"><span class=\"time\">1:30–1:45 (15 min.)</span><div><h3>⏸️ Pause</h3><p>15 minutes. Laissez les écrans ouverts.</p></div></li>"
-     +"<li><span class=\"time\">1:45–2:40 (55 min.)</span><div><h3>3 · Vibe coding</h3><p>Fabriquer une mini-app HTML pour la classe.</p></div></li>"
+      "<li><span class=\"time\">0:00–0:10 (10 min.)</span><div><h3>Ouverture</h3><p>Vos usages réels de l'IA + le déclic <em>produit vs compétence</em>.</p></div></li>"
+     +"<li><span class=\"time\">0:10–1:05 (55 min.)</span><div><h3>1 · Repenser l'évaluation</h3><p>Le prompt guidé : audit → 3 options → plan.</p></div></li>"
+     +"<li><span class=\"time\">1:05–1:40 (35 min.)</span><div><h3>2 · Préparer la donnée</h3><p>Convertir une source (PDF…) en Markdown propre, réutilisable dans vos prompts et un RAG.</p></div></li>"
+     +"<li class=\"pause\"><span class=\"time\">1:40–1:55 (15 min.)</span><div><h3>⏸️ Pause</h3><p>15 minutes. Laissez les écrans ouverts.</p></div></li>"
+     +"<li><span class=\"time\">1:55–2:40 (45 min.)</span><div><h3>3 · Vibe coding</h3><p>Fabriquer une mini-app HTML pour la classe.</p></div></li>"
      +"<li><span class=\"time\">2:40–3:00 (20 min.)</span><div><h3>Clôture</h3><p>Vos livrables prêts à réutiliser.</p></div></li>";
     p.appendChild(ag);
 
+    var open=el("div",{class:"card"});
+    open.innerHTML="<h3>🔌 Ouverture — d'où l'on part</h3>"
+      +"<p class=\"hint\" style=\"margin:.2em 0 12px\">0:00–0:10 · 10 min · pour vous, puis en binôme</p>"
+      +"<p>Avant d'outiller quoi que ce soit, partons de votre pratique réelle.</p>"
+      +"<ol style=\"margin:6px 0 10px;padding-left:20px\">"
+      +"<li><strong>Seul·e (2 min)</strong> — Où l'IA touche-t-elle <strong>déjà</strong>, ou pourrait toucher, votre façon d'<strong>évaluer</strong> ou de <strong>préparer</strong> vos cours ?</li>"
+      +"<li><strong>En binôme (3 min)</strong> — Échangez : un usage qui vous <strong>intrigue</strong>, un autre qui vous <strong>inquiète</strong>.</li>"
+      +"</ol>"
+      +"<p class=\"reminder\">💡 <strong>Le déclic — produit ou compétence ?</strong> Une IA peut produire le <strong>résultat</strong> d'une tâche ; elle ne produit pas la <strong>compétence</strong> de l'élève. Tout l'atelier tient dans cet écart : concevoir des tâches qui rendent visible le <strong>raisonnement</strong>, pas seulement le livrable.</p>";
+    open.appendChild(field("open-usage","open.usage","Un usage réel (ou une question) que je veux garder en tête",null,"…"));
+    open.appendChild(el("p",{class:"save-note"},"Pour vous — enregistré sur cet appareil."));
+    p.appendChild(el("div",{class:"bridge"},"Comment concevoir une tâche qui <strong>résiste au copier-coller</strong> ? C'est l'objet de l'étape 1."));
     MAIN.appendChild(p);
   })();
 
@@ -499,7 +539,7 @@
   (function(){
     var p=el("section",{role:"tabpanel",id:"panel-eval","aria-labelledby":"tab-eval",tabindex:"0"});
     p.hidden=true;
-    panelHead(p,"1 · Repenser l'évaluation","0:00–0:55 (55 min.)");
+    panelHead(p,"1 · Repenser l'évaluation","0:10–1:05 (55 min.)");
 
     var meta=el("dl",{class:"meta-block"});
     meta.innerHTML="<dt>Objectif</dt><dd>Reformuler une de vos évaluations pour rendre visible le <strong>raisonnement</strong> de l'élève, pas seulement sa production finale.</dd>"
@@ -547,7 +587,7 @@
     notes.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
     p.appendChild(notes);
 
-    p.appendChild(actionsRow("eval",true,true));
+    p.appendChild(el("div",{class:"bridge"},"Vous venez de revisiter une évaluation en faisant travailler l'IA sur votre <strong>consigne</strong>. Mais pour qu'elle traite bien un <strong>document entier</strong>, encore faut-il le lui donner dans un format propre : place à la préparation de la donnée."));
     MAIN.appendChild(p);
   })();
 
@@ -555,7 +595,7 @@
   (function(){
     var p=el("section",{role:"tabpanel",id:"panel-markdown","aria-labelledby":"tab-markdown",tabindex:"0"});
     p.hidden=true;
-    panelHead(p,"2 · Préparer la donnée — le Markdown","0:55–1:30 (35 min.)");
+    panelHead(p,"2 · Préparer la donnée — le Markdown","1:05–1:40 (35 min.)");
     var meta=el("dl",{class:"meta-block"});
     meta.innerHTML="<dt>Objectif</dt><dd>Convertir une source (ex. un PDF) en <strong>Markdown propre</strong>, réutilisable dans vos prompts et dans un <strong>RAG</strong>.</dd>"
       +"<dt>Modalité</dt><dd>En binôme, sur un de vos documents (cours, sujet, corpus — sans données personnelles).</dd>";
@@ -620,7 +660,7 @@
     ex.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
     p.appendChild(ex);
 
-    p.appendChild(actionsRow("markdown",true,true));
+    p.appendChild(el("div",{class:"bridge"},"Vous savez maintenant préparer une <strong>source propre</strong> pour l'IA. Jusqu'ici elle vous <strong>assiste</strong> sur du texte — et si elle vous <strong>fabriquait</strong> un véritable outil pour la classe ? C'est le vibe coding."));
     MAIN.appendChild(p);
   })();
 
@@ -628,7 +668,7 @@
   (function(){
     var p=el("section",{role:"tabpanel",id:"panel-vibe","aria-labelledby":"tab-vibe",tabindex:"0"});
     p.hidden=true;
-    panelHead(p,"3 · Vibe coding — fabriquer une mini-app HTML","1:45–2:40 (55 min.)");
+    panelHead(p,"3 · Vibe coding — fabriquer une mini-app HTML","1:55–2:40 (45 min.)");
     var meta=el("dl",{class:"meta-block"});
     meta.innerHTML="<dt>Objectif</dt><dd>Produire et itérer une <strong>mini-application HTML monopage</strong> (sans coder), et <strong>juger</strong> son utilité.</dd>"
       +"<dt>Modalité</dt><dd>En binôme, à partir d'un besoin réel.</dd>";
@@ -744,9 +784,7 @@
       ]]
     ];
     function copySeed(text,btn){
-      function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}
-      function fb(){var t=document.createElement("textarea");t.value=text;t.setAttribute("readonly","");t.style.position="absolute";t.style.left="-9999px";document.body.appendChild(t);t.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le prompt :",text);}document.body.removeChild(t);}
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fb);}else{fb();}
+      copyToClipboard(text,function(){btnCopyFeedback(btn);},"Copiez le prompt :");
     }
     SEED_GROUPS.forEach(function(g,gi){
       seeds.appendChild(el("h4",{style:"margin:"+(gi?"18px":"6px")+" 0 8px;font-size:.95rem;color:var(--primary)"},g[0]));
@@ -761,7 +799,14 @@
     });
     p.appendChild(seeds);
 
-    p.appendChild(actionsRow("vibe",true,false));
+    var notes=el("div",{class:"card"});
+    notes.innerHTML="<h3>📝 Mes notes — mon outil</h3>";
+    notes.appendChild(field("vibe-besoin","vibe.besoin","Ce que j'ai construit",null,"l'outil et le besoin qu'il couvre…"));
+    notes.appendChild(field("vibe-verif","vibe.verif","Un point à vérifier avant de le donner aux élèves",null,"bug, accessibilité, donnée à ne pas coder en dur…"));
+    notes.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    p.appendChild(notes);
+
+    p.appendChild(el("div",{class:"bridge"},"Vous avez <strong>fabriqué</strong> et <strong>jugé</strong> un outil. Vous repartez avec trois gestes outillés — mais rien ne change tant qu'ils ne franchissent pas la porte de votre classe. La clôture sert à ça : consolider vos livrables et un <strong>engagement concret</strong>."));
     MAIN.appendChild(p);
   })();
 
@@ -791,9 +836,27 @@
 
     var liv=el("div",{class:"card"});
     liv.innerHTML="<h3>Mes livrables — à réutiliser dans les 3 prochaines semaines</h3>"
-      +"<p class=\"reminder\">Vos notes des onglets 1 et 2 (évaluation revisitée, source en Markdown) sont reprises automatiquement dans l'export Markdown ci-dessous. Complétez ici ce qui manque.</p>";
-    liv.appendChild(field("liv-relais","liv.relais","Ce dont j'aurai besoin",null,"…"));
+      +"<p class=\"reminder\">Vos notes des onglets 1, 2 et 3 (évaluation revisitée, source en Markdown, outil <code>.html</code>) sont reprises automatiquement dans l'export Markdown ci-dessous. Complétez ci-dessous ce qui manque.</p>";
     p.appendChild(liv);
+
+    var engage=el("div",{class:"card"});
+    engage.innerHTML="<h3>🎯 Mon engagement — un pas concret</h3>"
+      +"<p class=\"hint\" style=\"margin:.2em 0 12px\">Atelier d'une seule séance : le vrai changement se joue ensuite, dans votre classe. Choisissez <strong>une</strong> chose réaliste, et dites <strong>quand</strong> — c'est ce qui fait tenir une intention.</p>";
+    engage.appendChild(field("liv-engage","liv.engage","Le changement concret que je teste",null,"une seule chose, réaliste…"));
+    engage.appendChild(field("liv-quand","liv.quand","Quand et dans quel cours / contexte",null,"ex. la semaine prochaine, en 1re…"));
+    engage.appendChild(field("liv-pas","liv.pas","Mon tout premier pas, dès cette semaine",null,"…"));
+    engage.appendChild(field("liv-relais","liv.relais","Ce dont j'aurai besoin (personne, ressource, temps…)",null,"…"));
+    engage.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    p.appendChild(engage);
+
+    var cont=el("div",{class:"callout"});
+    cont.innerHTML="<h3>Pour continuer</h3>"
+      +"<ul>"
+      +"<li><a href=\"https://www.reseau-canope.fr/ia-et-education/dossier-ia-generatives-en-education\" target=\"_blank\" rel=\"noopener\"><strong>Dossiers IA de Canopé</strong></a> — « Les IA génératives en éducation »</li>"
+      +"<li>Parcours <a href=\"https://pix.fr/intelligence-artificielle/\" target=\"_blank\" rel=\"noopener\"><strong>Pix IA</strong></a> : « Mon premier prompt ! » → « J'améliore mes prompts ! »</li>"
+      +"<li><a href=\"https://www.education.gouv.fr/cadre-d-usage-de-l-ia-en-education-450647\" target=\"_blank\" rel=\"noopener\"><strong>Cadre d'usage national de l'IA en éducation</strong></a> (juin 2025) + charte d'établissement</li>"
+      +"</ul>";
+    p.appendChild(cont);
 
     p.appendChild(actionsRow("livrables",false,true));
     MAIN.appendChild(p);
@@ -852,11 +915,11 @@
   });
 
   /* ── GENERIC PERSISTENCE ───────────────────────────── */
-  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-key]"),function(ta){
+  document.querySelectorAll("textarea[data-key]").forEach(function(ta){
     var k=ta.getAttribute("data-key");var v=store.get(k);if(v!=null)ta.value=v;
     ta.addEventListener("input",function(){store.set(k,ta.value);});
   });
-  Array.prototype.forEach.call(document.querySelectorAll("input[type=range][data-key]"),function(sl){
+  document.querySelectorAll("input[type=range][data-key]").forEach(function(sl){
     var k=sl.getAttribute("data-key");var v=store.get(k);if(v!=null)sl.value=v;
     var out=document.getElementById(sl.id+"lvl");
     function upd(){if(out)out.textContent=LEVELS[+sl.value]||LEVELS[0];}
@@ -884,9 +947,8 @@
   if(printBtnEl)printBtnEl.addEventListener("click",function(){window.print();});
 
   /* ── COPY ANSWERS AS MARKDOWN ──────────────────────── */
-  function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
-  function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
-  Array.prototype.forEach.call(document.querySelectorAll(".copy-md"),function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
+  function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;copyToClipboard(b(),function(){btnCopyFeedback(btn);},"Copiez le Markdown ");}
+  document.querySelectorAll(".copy-md").forEach(function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
 
   /* ── PHASE TIMER ────────────────────────────────────── */
   var rc=document.createElement("div");rc.id="runclock";rc.hidden=true;rc.setAttribute("role","region");rc.setAttribute("aria-label","Minuteur de phase");
@@ -906,12 +968,11 @@
   rcToggle.addEventListener("click",function(){if(rcDone)return;rcGo=!rcGo;rcRender();if(rcGo)rcEnsure();});
   rcNext.addEventListener("click",function(){if(rcDone)return;if(rcIdx+1<rcSteps.length)rcStart(rcIdx+1);else rcFinish();});
   rcClose.addEventListener("click",function(){rcGo=false;rcStop();rc.hidden=true;});
-  Array.prototype.forEach.call(document.querySelectorAll(".start-timer"),function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
+  document.querySelectorAll(".start-timer").forEach(function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
 
   /* ── STEPS DURATION BOXES (sourced from TIMERS) ──────── */
-  var PANELOF={};TABS.forEach(function(t){PANELOF[t[0]]="panel-"+t[0];});
   Object.keys(TIMERS).forEach(function(key){
-    var panel=document.getElementById(PANELOF[key]);if(!panel)return;
+    var panel=document.getElementById("panel-"+key);if(!panel)return;
     var steps=TIMERS[key][1];var total=0;steps.forEach(function(st){total+=st[1];});
     var box=document.createElement("div");box.className="steps-list";
     var h='<p class="steps-title">Déroulé — '+total+' min au total</p><ol>';
