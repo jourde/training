@@ -68,7 +68,7 @@
  .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
  .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
  background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
- .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;max-width:72ch;text-align:justify}
+ .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;text-align:justify}
  h3{font-size:1.05rem;font-weight:500;margin:0}
  .grid{display:grid;gap:16px}
 
@@ -275,7 +275,7 @@
 </main>
 
 <footer>
- <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; réflexes « IA générative &amp; vie privée » d'après la CNIL (2026).</p>
+ <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources d'inspiration : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; réflexes « IA générative &amp; vie privée » d'après la CNIL (2026).</p>
 </footer>
 
 <script>
@@ -292,6 +292,7 @@
  /* ── CONTENT DATA ─────────────────────────────────── */
  var TABS=[
  ["accueil","Accueil",""],
+ ["avant","Avant de commencer","0:08–0:20"],
  ["outil","1 · IA & vie privée","0:20–0:30"],
  ["repertoire","2 · Choisir un outil","0:30–0:40"],
  ["prompt","3 · Parler à l'IA","0:40–1:25"],
@@ -301,10 +302,8 @@
  ];
 
  var TIMERS={
- "accueil":["Ouverture",[
- ["Accueil & cadrage",3],
- ["Tour de table : intrigue / inquiète",12],
- ["Comment ça marche ? (l'essentiel)",5]
+ "avant":["Avant de commencer",[
+ ["Tour de table : intrigue / inquiète",12]
  ]],
  "outil":["1 · IA & vie privée",[
  ["Commenter les 5 questions de la CNIL",7],
@@ -315,17 +314,17 @@
  ["Repérer 1 à 3 outils à essayer",4]
  ]],
  "prompt":["3 · Parler à l'IA",[
- ["Rédiger un prompt (requête, invite, instruction) novice + tester",6],
- ["Reconstruire avec Prompt Builder",10],
- ["Comparer les deux réponses",6]
+ ["Rédiger un prompt (requête, invite, instruction) novice + tester",12],
+ ["Reconstruire avec l'outil de construction d'instructions",20],
+ ["Comparer les deux réponses",13]
  ]],
  "multi":["4 · La puissance multimodale",[
- ["Choisir et réaliser 2 manipulations",14]
+ ["Choisir et réaliser 2 manipulations",25]
  ]],
  "eval":["5 · Repenser l'évaluation",[
- ["Coller la consigne + le prompt guidé",4],
- ["Phase 1 (audit) → Phase 2 (3 options)",12],
- ["Confrontation en binôme",4]
+ ["Coller le prompt dans une interface d'IA générative",6],
+ ["Phase 1 (audit) → Phase 2 (3 options)",23],
+ ["Confrontation en binôme",6]
  ]],
  "pas":["Clôture — Mon premier pas",[
  ["Auto-positionnement « je sais… »",2],
@@ -404,7 +403,7 @@
  return "## 3 · Parler à l'IA\n\n"+
  "- **Tâche choisie** : "+(mdField("pr.tache")||"—")+"\n\n"+
  "**Prompt novice :**\n"+(mdField("pr.novice")||"—")+"\n\n"+
- "**Prompt reconstruit (Prompt Builder) :**\n"+(mdField("pr.recons")||"—")+"\n\n"+
+ "**Prompt reconstruit (outil de construction d'instructions) :**\n"+(mdField("pr.recons")||"—")+"\n\n"+
  "- **Ce que j'ai dû savoir moi-même pour l'améliorer** : "+(mdField("pr.savoir")||"—");
  },
  "multi":function(){
@@ -432,7 +431,7 @@
  "- Distinguer apport et limite du multimodal : "+mdLvl("pas.s2")+"\n"+
  "- Rendre une évaluation plus robuste : "+mdLvl("pas.s3")+"\n\n"+
  "**Mon action (sous 2 semaines) :** "+(mdField("pas.action")||"—")+"\n"+
- "**Ce dont j'aurai besoin / à qui en parler :** "+(mdField("pas.besoin")||"—");
+ "**Ce dont j'aurai besoin :** "+(mdField("pas.besoin")||"—");
  }
  };
 
@@ -449,28 +448,12 @@
  '<div class="callout">'+
  "<h3>La règle d'or — pour tout l'atelier et après</h3>"+
  "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles (élèves, familles, collègues) dans un outil d'IA non référencé par votre établissement.</li></ul>"+
- "<span class=\"warn\">Tout est faisable sans créer de compte : démonstration de l'animateur + Prompt Builder local.</span>"+
- '</div>'+
- '<div class="card">'+
- "<h3>Comment ça marche ? (l'essentiel)</h3>"+
- "<p>Une IA générative <strong>prédit la suite la plus probable</strong> à partir de masses de textes et d'images. <strong>Sans contexte, elle comble avec le plus probable</strong> — souvent anglophone, généraliste, sans ancrage disciplinaire.</p>"+
- "<p class=\"reminder\">D'où l'importance de <strong>ce qu'on lui donne</strong>. C'est tout ce qu'il faut comprendre aujourd'hui.</p>"+
- '</div>'+
- '<div class="card">'+
- '<h3>Avant de commencer</h3>'+
- '<p class="hint" style="margin:.3em 0 12px">Notez, pour le tour de table express :</p>'+
- "<div class=\"field\"><label for=\"a-intrigue\">Une chose qui m'<strong>intrigue</strong> à propos de l'IA générative</label><textarea id=\"a-intrigue\" data-key=\"acc.intrigue\" placeholder=\"…\"></textarea></div>"+
- "<div class=\"field\"><label for=\"a-inquiete\">Une chose qui m'<strong>inquiète</strong></label><textarea id=\"a-inquiete\" data-key=\"acc.inquiete\" placeholder=\"…\"></textarea></div>"+
- '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
- '<div class="actions-row">'+
- '<button type="button" class="btn start-timer" data-md="accueil">Lancer le minuteur</button>'+
- '<button type="button" class="btn copy-md" data-md="accueil">Copier mes réponses (Markdown)</button>'+
- '<button type="button" class="btn btn--trainer copy-md" data-md="accueilAnim">Animateur — copier le prompt d\'analyse</button>'+
- '</div>'+
+ "<span class=\"warn\">Tout est faisable sans créer de compte : démonstration de l'animateur + l'outil de construction d'instructions, en local.</span>"+
  '</div>'+
  '<h3 style="margin:24px 0 10px">Au programme</h3>'+
  '<ol class="agenda">'+
- '<li><span class="time">0:00–0:20</span><div><h3>Ouverture</h3><p>Craintes &amp; démystification.</p></div></li>'+
+ '<li><span class="time">0:00–0:08</span><div><h3>Ouverture</h3><p>Accueil, règle d\'or, programme.</p></div></li>'+
+ '<li><span class="time">0:08–0:20</span><div><h3>Avant de commencer</h3><p>Tour de table : ce qui intrigue, ce qui inquiète.</p></div></li>'+
  "<li><span class=\"time\">0:20–0:30</span><div><h3>1 · IA &amp; vie privée</h3><p>5 questions à se poser pour protéger sa vie privée (CNIL).</p></div></li>"+
  "<li><span class=\"time\">0:30–0:40</span><div><h3>2 · Choisir un outil</h3><p>Explorer le répertoire d'outils IA (DRANE).</p></div></li>"+
  "<li><span class=\"time\">0:40–1:25</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction.</p></div></li>"+
@@ -480,13 +463,33 @@
  '<li><span class="time">2:40–3:00</span><div><h3>Clôture</h3><p>Engagement &amp; relais.</p></div></li>'+
  '</ol>';
 
+ PANELS.avant=
+ '<div class="panel-head"><h2>Avant de commencer</h2><span class="panel-time">0:08–0:20 (12 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Faire émerger, en confiance, ce qui intrigue et ce qui inquiète le groupe — pour démarrer à partir du réel.</dd>"+
+ '<dt>Modalité</dt><dd>Note individuelle (pour soi) puis tour de table express — anonyme, sans jugement.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Avant d'entrer dans la pratique, prenez un instant pour poser ce que l'IA générative éveille en vous — curiosité comme appréhension. Il n'y a pas de mauvaise réponse : ces premiers mots servent à orienter l'atelier vers ce qui compte pour vous.</p>"+
+ '<div class="card">'+
+ "<h3>Ce qui m'intrigue, ce qui m'inquiète</h3>"+
+ '<p class="hint" style="margin:.3em 0 12px">Notez, pour le tour de table express :</p>'+
+ "<div class=\"field\"><label for=\"a-intrigue\">Une chose qui m'<strong>intrigue</strong> à propos de l'IA générative</label><textarea id=\"a-intrigue\" data-key=\"acc.intrigue\" placeholder=\"…\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"a-inquiete\">Une chose qui m'<strong>inquiète</strong></label><textarea id=\"a-inquiete\" data-key=\"acc.inquiete\" placeholder=\"…\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="avant">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="accueil">Copier mes réponses (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="accueilAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>'+
+ '</div>';
+
  PANELS.outil=
- '<div class="panel-head"><h2>1 · IA &amp; vie privée</h2><span class="panel-time">0:20–0:30</span></div>'+
+ '<div class="panel-head"><h2>1 · IA &amp; vie privée</h2><span class="panel-time">0:20–0:30 (10 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Adopter des réflexes simples pour protéger sa vie privée — et celle des élèves — avant, pendant et après l'usage d'une IA générative.</dd>"+
  '<dt>Modalité</dt><dd>En groupe — les 5 questions vie privée de la CNIL, commentées ensemble.</dd>'+
  '</dl>'+
- "<p class=\"panel-intro\">La CNIL propose 6 questions pour utiliser une IA ; on retient ici les <strong>5 qui concernent la vie privée</strong>, en trois temps. Principe directeur : <strong>une IA peut réutiliser ce qu'on lui confie</strong> — on partage le moins de données possible et on garde la main sur les réglages.</p>"+
+ "<p class=\"panel-intro\"><a href=\"https://www.cnil.fr/fr/ia-generative-et-vie-privee-affiche-coproduite-pipc-cnil\" target=\"_blank\" rel=\"noopener\">La CNIL propose 6 questions pour utiliser une IA</a> ; on retient ici les <strong>5 qui concernent la vie privée</strong>, en trois temps. Principe directeur : <strong>une IA peut réutiliser ce qu'on lui confie</strong> — on partage le moins de données possible et on garde la main sur les réglages.</p>"+
  "<p class=\"hint\" style=\"margin:-4px 0 8px\">Pour chaque question, positionnez-vous — <strong>Clair / Pas sûr / À revoir</strong>. C'est pour vous seul (non transmis) ; vos « à revoir » formeront votre liste à reprendre.</p>"+
  "<h3 style=\"margin:18px 0 8px\">Avant de l'utiliser</h3>"+
  '<details open><summary><span class="badge-num">1</span><span>Quelle IA choisir ?</span></summary>'+
@@ -509,10 +512,10 @@
  '<button type="button" class="btn copy-md" data-md="outil">Copier mon relevé (Markdown)</button>'+
  '<button type="button" class="btn btn--trainer copy-md" data-md="outilAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>'+
- "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous savez désormais <strong>protéger vos données</strong>. Reste une question : <strong>quel outil</strong> choisir, sans se perdre dans un marché qui change chaque semaine ? C'est l'objet de l'<strong>étape 2</strong> : explorer un répertoire de référence et repérer un ou deux outils que vous aimeriez essayer.</p></div>";
+ "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous avez désormais une certaine compréhension de la <strong>protection des données</strong>. Reste une question : <strong>quel outil</strong> choisir, sans se perdre dans un marché qui change chaque semaine ? C'est l'objet de l'<strong>étape 2</strong> : explorer un répertoire de référence et repérer un ou deux outils que vous aimeriez essayer.</p></div>";
 
  PANELS.repertoire=
- '<div class="panel-head"><h2>2 · Choisir un outil</h2><span class="panel-time">0:30–0:40</span></div>'+
+ '<div class="panel-head"><h2>2 · Choisir un outil</h2><span class="panel-time">0:30–0:40 (10 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Explorer un répertoire de référence et repérer 1 à 3 outils qu'on aimerait essayer.</dd>"+
  '<dt>Modalité</dt><dd>Navigation libre dans le répertoire de la DRANE (seul ou en binôme).</dd>'+
@@ -535,10 +538,10 @@
  '</div>';
 
  PANELS.prompt=
- "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:40–1:25</span></div>"+
+ "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:40–1:25 (45 min)</span></div>"+
  '<dl class="meta-block">'+
  '<dt>Objectif</dt><dd>Formuler puis améliorer une instruction en mobilisant cinq leviers, du novice au contextualisé.</dd>'+
- '<dt>Modalité</dt><dd>Binôme — une tâche réelle, avec Prompt Builder.</dd>'+
+ '<dt>Modalité</dt><dd>Binôme — une tâche réelle, avec l\'outil de construction d\'instructions.</dd>'+
  '</dl>'+
  "<p class=\"panel-intro\">Une instruction vague produit une réponse générique. Ce n'est pas un défaut de l'outil : <strong>sans contexte, l'IA comble avec le plus probable</strong>. Une bonne instruction réduit cette zone d'incertitude.</p>"+
  '<div class="card">'+
@@ -547,19 +550,8 @@
  '<p><strong>Contextualisée</strong> — « Tu es professeur de SVT. Explique la photosynthèse en <strong>3 étapes simples</strong> à un <strong>élève de 4e</strong>, avec une <strong>analogie du quotidien</strong>, en <strong>120 mots</strong>. »</p>'+
  "<p class=\"reminder\">Un prompt n'est pas une commande, c'est <strong>le début d'un dialogue</strong>. Si la réponse ne convient pas : on reformule.</p>"+
  '</div>'+
- '<div class="callout">'+
- "<h3>Les 5 leviers d'une bonne instruction</h3>"+
- '<ul>'+
- '<li><strong>Rôle</strong> — « tu es professeur de… »</li>'+
- '<li><strong>Contexte</strong> — niveau, classe, programme, public</li>'+
- '<li><strong>Étapes</strong> — « pose tes questions une à une avant de générer »</li>'+
- "<li><strong>Format</strong> — tableau, liste, nombre de mots</li>"+
- '<li><strong>Contraintes</strong> — sources à citer, cadre, textes officiels</li>'+
- '</ul>'+
- '<span class="warn">Et toujours : <strong>aucune donnée personnelle</strong>. Les méthodes-acronymes (ACTIF, CARE…) inspirent mais ne dispensent pas de penser.</span>'+
- '</div>'+
  '<div class="card">'+
- '<h3>L\'outil <em>Prompt Builder</em> (PCOAB)</h3>'+
+ '<h3>L\'outil de construction d\'instructions</h3>'+
  '<p><a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
  '<p class="hint" style="margin:.3em 0 8px">Cinq champs → un prompt structuré, prêt à copier :</p>'+
  '<ul>'+
@@ -569,14 +561,13 @@
  '<li><strong>A</strong>udience = Public — pour qui c\'est destiné</li>'+
  '<li><strong>B</strong>oundaries = Limites — ce qu\'il faut éviter, le cadre, le format</li>'+
  '</ul>'+
- "<p class=\"reminder\">Guides de rédaction des prompts : autres outils. <a href=\"https://codimd.apps.education.fr/s/r1H5nglAY\" target=\"_blank\" rel=\"noopener\">Ouvrir la ressource</a></p>"+
  '</div>'+
  '<div class="card">'+
  '<h3>Atelier — du prompt novice au prompt contextualisé</h3>'+
- '<p class="hint" style="margin:.3em 0 12px">Choisissez une tâche réelle (consigne, mail aux familles, exercice…), rédigez un prompt novice, testez, puis reconstruisez-le avec Prompt Builder et comparez.</p>'+
+ '<p class="hint" style="margin:.3em 0 12px">Choisissez une tâche réelle (consigne, mail aux familles, exercice…), rédigez un prompt novice, testez, puis reconstruisez-le avec l\'outil de construction d\'instructions et comparez.</p>'+
  '<div class="field"><label for="pr-tache">Ma tâche réelle</label><textarea id="pr-tache" data-key="pr.tache" placeholder="rédiger une consigne, un mail aux familles, un exercice…"></textarea></div>'+
  '<div class="field"><label for="pr-novice">Mon prompt <strong>novice</strong></label><textarea id="pr-novice" data-key="pr.novice"></textarea></div>'+
- '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (Prompt Builder)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
+ '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (outil de construction d\'instructions)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
  "<div class=\"field\"><label for=\"pr-savoir\">Pour améliorer mon instruction, qu'ai-je dû <strong>savoir moi-même</strong> ? <span class=\"hint\">(sur mes élèves, le programme, le résultat attendu… ce que l'IA ne peut pas deviner)</span></label><textarea id=\"pr-savoir\" data-key=\"pr.savoir\" placeholder=\"le cœur de l'atelier : l'IA ne compense pas ce qu'on ne lui fournit pas\"></textarea></div>"+
  '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
  '</div>'+
@@ -586,7 +577,7 @@
  '</div>';
 
  PANELS.multi=
- '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:25–1:50</span></div>'+
+ '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:25–1:50 (25 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Comparer des modalités (texte / image / voix / document) pour caractériser l'apport multimodal <strong>et</strong> ses limites.</dd>"+
  '<dt>Modalité</dt><dd>Binôme — atelier « à la carte », 2 manipulations.</dd>'+
@@ -624,42 +615,39 @@
  '</div>';
 
  PANELS.eval=
- "<div class=\"panel-head\"><h2>5 · Repenser l'évaluation</h2><span class=\"panel-time\">2:05–2:40</span></div>"+
+ "<div class=\"panel-head\"><h2>5 · Repenser l'évaluation</h2><span class=\"panel-time\">2:05–2:40 (35 min)</span></div>"+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Reformuler une de vos évaluations pour rendre visible le <strong>raisonnement</strong> de l'élève, pas seulement sa production finale.</dd>"+
  '<dt>Modalité</dt><dd>Binôme — une consigne réelle passée au prompt guidé.</dd>'+
  '</dl>'+
- '<p class="panel-intro">Les IA génératives ravivent une tension : évalue-t-on le <strong>produit</strong> (la copie) ou le <strong>processus</strong> (le raisonnement) ?</p>'+
- '<div class="card">'+
- '<h3>La compétence se déduit, elle ne se voit pas</h3>'+
- "<p>On n'évalue jamais une compétence « en direct » : on la <strong>déduit de ce que l'élève produit</strong>.</p>"+
+ '<p class="panel-intro">Les IA génératives ravivent une tension : évalue-t-on le <strong>produit</strong> ou le <strong>processus</strong> ? La réponse détermine la <strong>qualité des preuves</strong> que l\'on recueille.</p>'+
+ '<h3>En situation non contrôlée (à la maison, avec l\'IA)</h3>'+
  '<ul>'+
- "<li>Une <strong>production finale</strong> qu'une IA peut générer <strong>renseigne peu</strong> sur ce que l'élève sait faire.</li>"+
+ "<li>Une <strong>production finale</strong> qu'une IA peut générer <strong>renseigne peu</strong> sur ce que l'élève sait faire <strong>seul</strong>.</li>"+
  "<li>Des <strong>traces de processus</strong> (brouillon, oral, étapes) <strong>renseignent beaucoup</strong> — et se délèguent mal.</li>"+
  '</ul>'+
- "<p class=\"reminder\">Recentrer sur le processus <strong>ne veut pas dire renoncer à évaluer</strong> : c'est recueillir de <strong>meilleures preuves</strong> de ce que l'élève sait faire seul.</p>"+
- '</div>'+
+ '<p>Pour évaluer juste, on conçoit donc la tâche <strong>autour du processus</strong>.</p>'+
  '<div class="callout">'+
- "<h3>Une tâche « résistante à l'IA » réunit 6 principes</h3>"+
+ "<h3>Une tâche robuste face à l'IA réunit 6 principes</h3>"+
  '<ul>'+
- '<li>centrée <strong>processus</strong> (brouillons, itérations)</li>'+
+ '<li>centrée sur le <strong>processus</strong> (brouillons, itérations)</li>'+
  '<li><strong>contextualisée</strong> (réalités locales, personnelles)</li>'+
  '<li><strong>métacognitive</strong> (réflexion sur l\'apprentissage)</li>'+
  '<li><strong>multimodale</strong> (texte, audio, visuel, oral…)</li>'+
- '<li><strong>inclusive</strong></li>'+
+ '<li><strong>inclusive</strong> (accessible à tous les élèves)</li>'+
  '<li><strong>validation supervisée</strong> (ex. soutenance orale)</li>'+
  '</ul>'+
  '</div>'+
  '<div class="card">'+
- '<h3>Le prompt guidé « Analyser et adapter des tâches d\'évaluation »</h3>'+
+ '<h3>Le prompt pour analyser et adapter des tâches d\'évaluation</h3>'+
  '<p><a href="https://docs.google.com/document/d/e/2PACX-1vTMsSSBSaJ9FCPG_he25VSwmZ_5a6OjdvhNoBN4X4cNO-vej3hQO5xaAIG8pNEEdmzFEfVIS8_ekf2q/pub" target="_blank" rel="noopener">Ouvrir le prompt guidé</a></p>'+
  '<p class="hint" style="margin:.3em 0 8px"><strong>Mode d\'emploi :</strong> copiez tout le prompt → collez-le dans un chatbot → collez votre consigne d\'évaluation → laissez-vous guider. Le prompt attend votre confirmation à chaque phase : vous <strong>pilotez</strong>.</p>'+
  '<ul>'+
  '<li><strong>Phase 1 · Audit</strong> — repère les vulnérabilités de la tâche face à l\'IA</li>'+
- '<li><strong>Phase 2 · Options</strong> — propose 3 redesigns (charge faible / moyenne / forte)</li>'+
- '<li><strong>Phase 3 · Blueprint</strong> — détaille l\'option choisie</li>'+
+ '<li><strong>Phase 2 · Options</strong> — propose 3 reconceptions</li>'+
+ '<li><strong>Phase 3 · Plan</strong> — détaille l\'option choisie</li>'+
  '</ul>'+
- '<p class="reminder">Une consigne ne contient pas de données personnelles. <strong>Atteindre la Phase 2 est déjà une réussite</strong> ; la Phase 3 se poursuit après l\'atelier. L\'IA propose, vous restez le décideur.</p>'+
+ '<p class="reminder">L\'IA propose, vous décidez.</p>'+
  '</div>'+
  '<div class="card">'+
  '<h3>Mes notes</h3>'+
@@ -675,7 +663,7 @@
  '</div>';
 
  PANELS.pas=
- '<div class="panel-head"><h2>Mon premier pas</h2><span class="panel-time">2:40–3:00</span></div>'+
+ '<div class="panel-head"><h2>Mon premier pas</h2><span class="panel-time">2:40–3:00 (20 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Esprit</dt><dd>La clôture <strong>produit</strong> quelque chose : un engagement écrit, pas une synthèse.</dd>"+
  '</dl>'+
@@ -692,7 +680,7 @@
  '<h3>Mon premier pas</h3>'+
  '<p class="hint" style="margin:.3em 0 12px"><strong>UNE</strong> action que je teste dans les <strong>2 prochaines semaines</strong> : un réflexe vie privée adopté · un outil choisi dans le répertoire · un prompt reconstruit · une manipulation image/texte · une tâche d\'évaluation passée au prompt d\'adaptation.</p>'+
  '<div class="field"><label for="p-action">Mon action</label><textarea id="p-action" data-key="pas.action"></textarea></div>'+
- "<div class=\"field\"><label for=\"p-besoin\">Ce dont j'aurai besoin / la personne à qui je peux en parler</label><textarea id=\"p-besoin\" data-key=\"pas.besoin\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"p-besoin\">Ce dont j'aurai besoin</label><textarea id=\"p-besoin\" data-key=\"pas.besoin\"></textarea></div>"+
  '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
  '</div>'+
  '<div class="callout">'+
