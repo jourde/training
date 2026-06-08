@@ -432,6 +432,67 @@
  "- Rendre une évaluation plus robuste : "+mdLvl("pas.s3")+"\n\n"+
  "**Mon action (sous 2 semaines) :** "+(mdField("pas.action")||"—")+"\n"+
  "**Ce dont j'aurai besoin :** "+(mdField("pas.besoin")||"—");
+ },
+ "repertoireAnim":function(){
+ return "# Analyse — étape 2 « Choisir un outil »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à l'étape 2, chaque participant a exploré un répertoire d'outils IA (DRANE) et noté 1 à 3 outils qu'il aimerait essayer, avec l'usage envisagé. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe et classe les outils cités par fréquence ; repère les 3 à 5 plus demandés.\n"+
+ "2. Synthétise les usages visés (préparer, différencier, illustrer, corriger, communiquer…) et dégage les besoins dominants du groupe.\n"+
+ "3. Signale les outils potentiellement non référencés / non conformes (compte requis, hébergement hors UE) à vérifier avant tout usage en classe.\n"+
+ "4. Propose 2 à 3 outils à mettre en avant pour ce groupe (de préférence libres / sobres ou via l'ENT) et les points de vigilance associés.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 2]";
+ },
+ "promptAnim":function(){
+ return "# Analyse — étape 3 « Parler à l'IA »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à l'étape 3, chaque participant a choisi une tâche réelle, rédigé un prompt « novice », l'a reconstruit avec Prompt Builder, puis a répondu à : « qu'ai-je dû savoir moi-même pour l'améliorer ? ». Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Synthétise les types de tâches choisies.\n"+
+ "2. Compare prompts novices et reconstruits : quels leviers (rôle, contexte, étapes, format, contraintes) le groupe mobilise le mieux / le moins ?\n"+
+ "3. Analyse surtout la question « ce que j'ai dû savoir moi-même » : la prise de conscience que l'IA ne compense pas ce qu'on ne lui fournit pas est-elle présente ? Repère les réponses qui passent à côté (vagues, « rien »).\n"+
+ "4. Propose 2 à 3 façons concrètes de réancrer ce message pour ceux qui ne l'ont pas saisi.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 3]";
+ },
+ "multiAnim":function(){
+ return "# Analyse — étape 4 « La puissance multimodale »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à l'étape 4, chaque binôme a réalisé deux manipulations image / texte (OCR, illustration, infographie, description) et noté, pour chacune, l'apport observé et la limite / erreur observée. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les manipulations choisies par fréquence.\n"+
+ "2. Synthétise en deux colonnes les apports et les limites observés ; repère les limites les plus citées (fiabilité, droits d'image, OCR imparfait, erreur dans un beau rendu).\n"+
+ "3. Repère les éventuels « effets waouh » non critiques (apport cité sans limite associée) à tempérer.\n"+
+ "4. Propose 2 à 3 points de vigilance à souligner en mise en commun (évaluabilité, frugalité, données personnelles).\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 4]";
+ },
+ "evalAnim":function(){
+ return "# Analyse — étape 5 « Repenser l'évaluation »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à l'étape 5, chaque binôme a passé une de ses tâches d'évaluation au prompt guidé et noté : la tâche, l'option retenue (charge faible / moyenne / forte), ce qui est transposable dès demain, ce qui suppose un changement plus profond. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les types de tâches et les disciplines représentées.\n"+
+ "2. Synthétise les options retenues et les leviers de robustesse récurrents (justification orale, étapes intermédiaires, explicitation, oral…).\n"+
+ "3. Distingue ce qui est « transposable dès demain » de ce qui « suppose un changement plus profond » pour le groupe.\n"+
+ "4. Repère les craintes ou blocages exprimés et propose 2 à 3 points de synthèse / leviers d'accompagnement.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 5]";
+ },
+ "pasAnim":function(){
+ return "# Analyse — clôture « Mon premier pas »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne des enseignants grands débutants.\n\n"+
+ "CONTEXTE : à la clôture, chaque participant s'est auto-positionné (Pas encore / En chemin / Plutôt à l'aise / Tout à fait à l'aise) sur 5 compétences, a écrit UNE action à tester sous 2 semaines, et a noté ce dont il aurait besoin / à qui en parler. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "Les 5 compétences : réflexes vie privée (CNIL) · choisir un outil · formuler un prompt · apport / limite du multimodal · rendre une évaluation plus robuste.\n\n"+
+ "TA MISSION :\n"+
+ "1. Synthétise l'auto-positionnement : sur quelles compétences le groupe se sent-il le moins à l'aise ?\n"+
+ "2. Regroupe les actions engagées par type ; repère les plus fréquentes et les plus ambitieuses.\n"+
+ "3. Regroupe les besoins de soutien et les personnes-relais cités.\n"+
+ "4. Propose des relais ciblés et 2 à 3 pistes pour une éventuelle séance 2, au vu de ces résultats.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mon engagement » de la clôture]";
  }
  };
 
@@ -447,7 +508,7 @@
  '</dl>'+
  '<div class="callout">'+
  "<h3>La règle d'or — pour tout l'atelier et après</h3>"+
- "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles (élèves, familles, collègues) dans un outil d'IA non référencé par votre établissement.</li></ul>"+
+ "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles ni de données non susceptibles d'être rendues publiques dans l'IA sans l'autorisation de votre établissement.</li></ul>"+
  "<span class=\"warn\">Tout est faisable sans créer de compte : démonstration de l'animateur + l'outil de construction d'instructions, en local.</span>"+
  '</div>'+
  '<h3 style="margin:24px 0 10px">Au programme</h3>'+
@@ -535,6 +596,7 @@
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="repertoire">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="repertoire">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="repertoireAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>';
 
  PANELS.prompt=
@@ -574,6 +636,7 @@
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="prompt">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="prompt">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="promptAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>';
 
  PANELS.multi=
@@ -612,6 +675,7 @@
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="multi">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="multi">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="multiAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>';
 
  PANELS.eval=
@@ -660,6 +724,7 @@
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="eval">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="eval">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="evalAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>';
 
  PANELS.pas=
@@ -695,6 +760,7 @@
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="pas">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="pas">Copier mon engagement (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="pasAnim">Animateur — copier le prompt d\'analyse</button>'+
  '<button type="button" class="btn btn--filled" id="printBtn">Imprimer mes notes</button>'+
  '<button type="button" class="btn" id="clearBtn">Effacer mes saisies</button>'+
  '</div>';
