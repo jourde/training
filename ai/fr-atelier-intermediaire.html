@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Évaluer, convertir, fabriquer avec l'IA · Support participant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── DESIGN TOKENS — Material Design 3 "Deep Grey" ── */
+  :root{
+    --primary:#37474f;
+    --primary-hover:#263238;
+    --on-primary:#ffffff;
+    --primary-container:#cfd8dc;
+    --on-primary-container:#102027;
+    --surface:#f0f2f4;
+    --surface-1:#ffffff;
+    --surface-2:#f1f3f4;
+    --surface-3:#e7eaec;
+    --outline:#5f6b71;
+    --outline-variant:#c4ccd0;
+    --on-surface:#1b1f22;
+    --on-surface-variant:#3c474d;
+    --cat-autorise:#1b5e20;
+    --cat-encadre:#8a4b00;
+    --cat-interdit:#b3261e;
+    --cat-arbitrer:#0d47a1;
+    --radius:16px;
+    --radius-s:10px;
+    --elev-1:0 1px 2px rgba(0,0,0,.30),0 1px 3px 1px rgba(0,0,0,.15);
+    --elev-2:0 1px 2px rgba(0,0,0,.30),0 2px 6px 2px rgba(0,0,0,.15);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    background:var(--surface);color:var(--on-surface);line-height:1.55;font-size:16px}
+
+  /* ── ACCESSIBILITY ── */
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--primary);color:#fff;
+    padding:12px 16px;z-index:100;border-radius:0 0 var(--radius-s) 0}
+  .skip-link:focus{left:0}
+  .sr-only{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
+  textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+
+  /* ── TOP BAR ── */
+  .topbar{position:sticky;top:0;z-index:30;box-shadow:var(--elev-2)}
+  header.app-bar{background:var(--primary);color:var(--on-primary)}
+  .app-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px}
+  .app-bar h1{font-size:1.15rem;font-weight:500;margin:0}
+  .app-bar .subtitle{display:block;font-size:.8rem;font-weight:400;opacity:.85;margin-top:2px}
+
+  /* ── TAB NAVIGATION ── */
+  nav.tabs{background:var(--surface-1);border-bottom:1px solid var(--outline-variant)}
+  .tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto}
+  [role=tab]{flex:0 0 auto;border:none;background:transparent;color:var(--on-surface-variant);
+    font-family:inherit;font-size:.95rem;font-weight:500;padding:14px 18px;cursor:pointer;
+    border-bottom:3px solid transparent;white-space:nowrap}
+  [role=tab][aria-selected=true]{color:var(--primary);border-bottom-color:var(--primary)}
+  [role=tab]:hover{background:var(--surface-2)}
+
+  /* ── LAYOUT ── */
+  main{max-width:1100px;margin:0 auto;padding:24px 20px 120px}
+  [role=tabpanel][hidden]{display:none}
+  .panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin:0 0 6px}
+  .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
+  .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
+    background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
+  .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;text-align:justify}
+  h3{font-size:1.05rem;font-weight:500;margin:0}
+  .grid{display:grid;gap:16px}
+
+  /* ── CARD ── */
+  .card{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+    padding:18px 20px;margin:0 0 16px}
+  .card h3{margin-bottom:6px}
+
+  /* ── AGENDA / TIMELINE ── */
+  ol.agenda{list-style:none;margin:0;padding:0}
+  ol.agenda li{display:flex;gap:16px;align-items:flex-start;background:var(--surface-1);
+    border-radius:var(--radius-s);box-shadow:var(--elev-1);padding:14px 16px;margin-bottom:10px}
+  ol.agenda .time{flex:0 0 auto;min-width:92px;font-weight:700;font-variant-numeric:tabular-nums;
+    color:var(--on-primary-container);background:var(--primary-container);border-radius:8px;
+    padding:6px 8px;text-align:center;font-size:.85rem}
+  ol.agenda .pause .time{background:var(--surface-3);color:var(--on-surface-variant)}
+  ol.agenda h3{margin-bottom:2px}
+  ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:.95rem}
+
+  /* ── ACCORDION (details/summary) ── */
+  details{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+    margin:0 0 12px;overflow:hidden}
+  details>summary{cursor:pointer;padding:16px 20px;font-weight:500;font-size:1.02rem;
+    list-style:none;display:flex;align-items:center;gap:12px}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"+";font-size:1.3rem;font-weight:700;color:var(--primary);
+    width:24px;text-align:center;flex:0 0 auto}
+  details[open]>summary::before{content:"\2212"}
+  details>summary:hover{background:var(--surface-2)}
+  .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant)}
+  .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+    border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
+  .phase-current{border:2px solid var(--primary)}
+  .phase-current summary{background:var(--primary-container)}
+  .tag-current{margin-left:auto;font-size:.72rem;font-weight:700;background:var(--primary);
+    color:#fff;border-radius:999px;padding:3px 10px}
+
+  /* ── CHOICE CHIPS (radio buttons) ── */
+  fieldset{border:none;margin:0;padding:0}
+  legend{font-size:.82rem;color:var(--on-surface-variant);padding:0;margin-bottom:8px;font-weight:500}
+  .choices{display:flex;flex-wrap:wrap;gap:8px}
+  .choice{position:relative}
+  .choice input{position:absolute;opacity:0;width:1px;height:1px}
+  .choice label{display:inline-block;border:1.5px solid var(--outline);border-radius:999px;
+    padding:8px 16px;font-size:.88rem;font-weight:500;cursor:pointer;color:var(--on-surface);
+    background:var(--surface-1)}
+  .choice label:hover{background:var(--surface-2)}
+  .choice input:focus-visible+label{outline:3px solid #ffd54f;outline-offset:2px}
+  .choice input:checked+label{color:#fff;border-color:transparent}
+  .choice[data-cat=autorise] input:checked+label{background:var(--cat-autorise)}
+  .choice[data-cat=encadre]  input:checked+label{background:var(--cat-encadre)}
+  .choice[data-cat=interdit] input:checked+label{background:var(--cat-interdit)}
+  .choice[data-cat=arbitrer] input:checked+label{background:var(--cat-arbitrer)}
+  .choice[data-cat=impose]   input:checked+label{background:var(--primary)}
+  .choice[data-cat=local]    input:checked+label{background:var(--cat-arbitrer)}
+  .choice[data-cat=nsp]      input:checked+label{background:var(--on-surface-variant)}
+
+  /* ── TAGS & LABELS ── */
+  .case__dest,.tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    background:var(--surface-3);color:var(--on-surface-variant);border-radius:999px;padding:2px 10px;
+    display:inline-block}
+  .case__q{margin:6px 0 14px;font-weight:500}
+  .tag-rl{background:#fdeaea;color:#b3261e;margin-left:8px}
+  .case-rl{border-left:4px solid var(--cat-interdit)}
+
+  /* ── REVEAL BOX ── */
+  .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
+  .tri-reveal.show{display:block}
+  .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
+  .tri-reveal.ko{background:#fdeaea;color:#5f1411;border-left:4px solid var(--cat-interdit)}
+  .tri-reveal.info{background:var(--surface-2);color:var(--on-surface);border-left:4px solid var(--primary)}
+  .reveal-btn{margin:8px 0 2px}
+  .case-remark{margin-top:12px}
+  .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
+
+  /* ── FORM FIELDS ── */
+  .field{margin:0 0 18px}
+  .field:last-child{margin-bottom:0}
+  .field label{display:block;font-weight:500;margin-bottom:6px}
+  .field .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+  .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+  textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
+    border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
+    color:var(--on-surface)}
+
+  /* ── TABLE ── */
+  .tbl{width:100%;border-collapse:collapse;margin:4px 0 0;font-size:.94rem}
+  .tbl th,.tbl td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--outline-variant)}
+  .tbl th{color:var(--primary);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+  .tbl tr:last-child td{border-bottom:none}
+
+  /* ── CHECKBOX LIST ── */
+  .check-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;
+    border-bottom:1px solid var(--outline-variant)}
+  .check-item:last-child{border-bottom:none}
+  .check-item input{width:24px;height:24px;margin-top:2px;flex:0 0 auto;accent-color:var(--primary)}
+  .check-item label{cursor:pointer}
+
+  /* ── SLIDER / SELF-ASSESSMENT ── */
+  .slider-item{flex-direction:column;align-items:stretch;gap:10px}
+  .slider-item .slider-label{cursor:default}
+  .slider-row{display:flex;align-items:center;gap:14px}
+  .slider-row input[type=range]{flex:1 1 auto;width:auto;height:auto;margin:0;accent-color:var(--primary);cursor:pointer}
+  .slider-level{flex:0 0 auto;min-width:15ch;text-align:right;font-weight:600;color:var(--primary)}
+
+  /* ── CALLOUT & REMINDER ── */
+  .callout{background:var(--surface-2);border-left:6px solid var(--primary);border-radius:0 var(--radius-s) var(--radius-s) 0;
+    padding:14px 18px;margin:0 0 16px}
+  .callout h3{margin-bottom:8px}
+  .callout ul{margin:0;padding-left:20px}
+  .callout li{margin:6px 0;color:var(--on-surface-variant)}
+  .callout .warn{display:block;margin-top:10px;font-size:.9rem;color:var(--on-surface)}
+  .callout--danger{border-left-color:var(--cat-interdit)}
+  .callout--danger h3{color:var(--cat-interdit)}
+  .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
+    border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
+
+  /* ── PRINCIPLE PILLS ── */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}
+  .pill{display:inline-block;background:var(--surface-2);border:1.5px solid var(--outline-variant);
+    border-radius:999px;padding:7px 14px;font-size:.88rem;font-weight:500}
+
+  /* ── META BLOCK (dl/dt/dd grid) ── */
+  .meta-block{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--surface-2);
+    border-radius:var(--radius-s);padding:12px 16px;margin:8px 0 18px}
+  .meta-block dt{font-weight:700;color:var(--primary);font-size:.74rem;text-transform:uppercase;
+    letter-spacing:.04em;align-self:start;padding-top:2px}
+  .meta-block dd{margin:0;color:var(--on-surface)}
+
+  /* ── PROMPT SEED ── */
+  .seed{background:var(--surface-2);border:1px solid var(--outline-variant);border-radius:var(--radius-s);
+    padding:10px 14px;margin:0 0 10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;
+    color:var(--on-surface);position:relative}
+  .seed code{display:block;white-space:pre-wrap}
+
+  /* ── LINK CARD ── */
+  a.linkbtn{display:inline-block;background:var(--primary);color:#fff;text-decoration:none;
+    border-radius:999px;padding:10px 18px;font-weight:500;font-size:.9rem}
+  a.linkbtn:hover{background:var(--primary-hover)}
+
+  /* ── ACTIONS ROW & BUTTONS ── */
+  .save-note{font-size:.82rem;color:var(--on-surface-variant);margin:4px 0 0}
+  .actions-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .btn{font-family:inherit;font-weight:500;font-size:.9rem;border-radius:999px;cursor:pointer;
+    border:1px solid var(--outline);background:var(--surface-1);color:var(--primary);padding:10px 20px}
+  .btn:hover{background:var(--surface-2)}
+  .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+  .btn--filled:hover{background:var(--primary-hover)}
+  .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer)}
+  .btn--trainer:hover{background:#e8f0fe}
+  .btn--trainer::before{content:"⚙\00a0";font-size:.85em}
+  .btn--seed{padding:6px 14px;font-size:.82rem;margin-top:8px}
+
+  /* ── PANEL NAVIGATION ── */
+  .panel-nav{display:flex;justify-content:space-between;align-items:center;
+    margin-top:28px;padding-top:16px;border-top:1px solid var(--outline-variant)}
+
+  /* ── STEPS DURATION BOX ── */
+  .steps-list{background:var(--surface-1);border:1px solid var(--outline-variant);
+    border-radius:var(--radius-s);padding:10px 16px 12px;margin:0 0 18px}
+  .steps-title{margin:0 0 6px;font-size:.74rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.04em;color:var(--primary)}
+  .steps-list ol{margin:0;padding-left:22px}
+  .steps-list li{padding:3px 0}
+  .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
+
+  /* ── FLOATING TIMER WIDGET ── */
+  #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
+    width:min(580px,calc(100% - 24px));background:var(--primary);color:var(--on-primary);
+    border-radius:var(--radius);box-shadow:var(--elev-2);overflow:hidden}
+  #runclock[hidden]{display:none}
+  .rc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:8px 14px;font-weight:500;font-size:.9rem;background:rgba(0,0,0,.18)}
+  .rc-body{display:flex;align-items:center;gap:14px;padding:12px 14px;flex-wrap:wrap}
+  #rc-step{flex:1 1 170px;font-weight:500}
+  #rc-time{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.7rem;min-width:90px;text-align:center}
+  .rc-ctrl{display:flex;gap:8px}
+  #runclock button{font-family:inherit;cursor:pointer;border-radius:999px;border:2px solid rgba(255,255,255,.55);
+    background:transparent;color:#fff;padding:8px 14px;font-weight:500;font-size:.85rem}
+  #runclock button:hover{background:rgba(255,255,255,.16)}
+  #runclock button:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+  #rc-close{border:none;font-size:1.1rem;padding:2px 9px;line-height:1}
+  .rc-progress{height:6px;background:rgba(255,255,255,.22)}
+  #rc-bar{height:100%;background:#ffd54f;width:100%;transition:width .9s linear}
+
+  /* ── FOOTER ── */
+  footer{max-width:1100px;margin:0 auto;padding:24px 20px;color:var(--on-surface-variant);font-size:.82rem}
+
+  /* ── PRINT ── */
+  @media print{
+    .topbar,.skip-link,.btn,#runclock,footer .src{display:none!important}
+    [role=tabpanel][hidden]{display:block!important}
+    [role=tabpanel]{margin-bottom:24px}
+    .card,details,ol.agenda li{box-shadow:none;border:1px solid #999}
+    .details__body{display:block!important}
+    body{background:#fff}
+    main{padding-top:8px}
+    .print-title{display:block!important}
+  }
+  .print-title{display:none}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<div class="topbar">
+  <header class="app-bar">
+    <div class="app-bar-inner">
+      <h1>Évaluer, convertir, fabriquer avec l'IA
+        <span class="subtitle">Repenser ses évaluations, convertir ses sources, fabriquer ses outils · atelier intermédiaire · enseignants de lycée et de post-bac · 3 h</span>
+      </h1>
+    </div>
+  </header>
+  <nav class="tabs" aria-label="Phases de l'atelier">
+    <div class="tabs-inner" role="tablist">
+      <!-- Rendered by JS from TABS array -->
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+  <p class="print-title"><strong>Évaluer, convertir, fabriquer avec l'IA — notes du participant</strong></p>
+  <!-- Tab panels rendered by JS -->
+</main>
+
+<footer>
+  <p class="src">Toutes vos saisies restent sur cet appareil (stockage local du navigateur) — rien n'est envoyé. — Prompt guidé et atelier : F. Jourde, CC BY-SA (2026). Sources : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; CNIL.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ── UTILITIES ─────────────────────────────────────── */
+  var store={
+    get:function(k){try{return localStorage.getItem("evalIAinterm."+k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem("evalIAinterm."+k,v)}catch(e){}}
+  };
+  function el(t,a,h){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;}
+
+  /* ── CONTENT DATA ─────────────────────────────────── */
+  var TABS=[
+    ["accueil",  "Accueil",                ""],
+    ["eval",     "1 · Évaluation",         "0:00–0:55 (55 min.)"],
+    ["markdown", "2 · Markdown",           "0:55–1:30 (35 min.)"],
+    ["vibe",     "3 · Vibe coding",        "1:45–2:40 (55 min.)"],
+    ["livrables","Mes livrables",          "2:40–3:00 (20 min.)"]
+  ];
+
+  var TIMERS={
+    "eval": ["1 · Repenser l'évaluation", [
+      ["Coller le prompt dans une interface d'IA générative", 8],
+      ["Phase 1 (audit) → Phase 2 (3 options)", 38],
+      ["Confrontation en binôme", 9]
+    ]],
+    "markdown": ["2 · Convertir une source en Markdown", [
+      ["Le Markdown : définition, atouts, syntaxe", 12],
+      ["Exercice : convertir une source en .md (réutilisable en RAG)", 18],
+      ["Synthèse flash", 5]
+    ]],
+    "vibe": ["3 · Vibe coding", [
+      ["Cadre : démo, amorces, vigilance + Ressourcerie", 10],
+      ["Atelier : fabrique ton outil + itère", 38],
+      ["Grille critique + partage", 7]
+    ]]
+  };
+
+  /* ── MARKDOWN EXPORT BUILDERS ──────────────────────── */
+  function mdField(k){return (store.get(k)||"").trim();}
+  function dash(v){return v?v:"—";}
+
+  var MDBUILD={
+    "eval": function(){
+      return "## 1 · Repenser l'évaluation\n\n"
+        + "- **Tâche d'évaluation choisie** : "+dash(mdField("eval.tache"))+"\n"
+        + "- **Option retenue (Phase 2)** : "+dash(mdField("eval.option"))+"\n"
+        + "- **Transposable dès demain** : "+dash(mdField("eval.demain"))+"\n"
+        + "- **Suppose un changement plus profond** : "+dash(mdField("eval.profond"))+"\n";
+    },
+    "markdown": function(){
+      return "## 2 · Convertir une source en Markdown\n\n"
+        + "- **Source convertie** : "+dash(mdField("md.doc"))+"\n"
+        + "- **Outil / méthode de conversion** : "+dash(mdField("md.tool"))+"\n"
+        + "- **Observations sur le résultat** : "+dash(mdField("md.garde"))+"\n";
+    },
+    "livrables": function(){
+      var lines="## Mes livrables\n\n";
+      lines+="### Livrables (à réutiliser sous 3 semaines)\n\n";
+      lines+="- **Tâche d'évaluation revisitée** : "+dash(mdField("eval.tache"))+"\n";
+      lines+="  - option retenue : "+dash(mdField("eval.option"))+"\n";
+      lines+="  - changement plus profond : "+dash(mdField("eval.profond"))+"\n";
+      lines+="- **Source convertie en Markdown** : "+dash(mdField("md.doc"))+"\n";
+      lines+="- **Ce dont j'aurai besoin** : "+dash(mdField("liv.relais"))+"\n";
+      return lines;
+    },
+
+    "evalAnim": function(){
+      return "# Analyse des évaluations revisitées — étape 1 « Repenser l'évaluation »\n\n"
+        + "Tu es un formateur expert en évaluation et en intégration de l'IA générative, qui accompagne des enseignants de lycée et de post-bac.\n\n"
+        + "CONTEXTE : à l'étape 1 d'un atelier, chaque binôme a passé une de ses évaluations au prompt guidé d'adaptation, puis a noté quatre choses : la tâche d'évaluation choisie, l'option de reconception retenue (Phase 2), ce qui est transposable dès demain, et ce qui suppose un changement plus profond. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
+        + "TA MISSION :\n"
+        + "1. Regroupe les tâches par discipline et par type d'évaluation ; repère les formats les plus représentés.\n"
+        + "2. Caractérise les options de reconception retenues et, pour chacune, lesquels des 6 principes (processus, contextualisation, métacognition, multimodalité, inclusion, validation supervisée) elles activent — et lesquels restent peu mobilisés.\n"
+        + "3. Distingue ce qui est transposable dès demain de ce qui suppose un changement plus profond ; identifie les freins récurrents.\n"
+        + "4. Repère 2 à 3 idées particulièrement réutilisables que je pourrais partager au groupe.\n"
+        + "5. Propose 3 points à reprendre collectivement, chacun avec une façon concrète de l'aborder en quelques minutes.\n\n"
+        + "CONTRAINTES :\n"
+        + "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"
+        + "- Sois concis et directement actionnable (formateur pressé, en cours de séance).\n"
+        + "- Réponds en français.\n\n"
+        + "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n"
+        + "[Colle ici tous les exports « Copier mes notes » de l'étape 1]";
+    },
+
+    "markdownAnim": function(){
+      return "# Analyse des conversions Markdown — étape 2 « Préparer la donnée »\n\n"
+        + "Tu es un formateur expert en littératie des données et en IA générative, qui accompagne des enseignants de lycée et de post-bac.\n\n"
+        + "CONTEXTE : à l'étape 2 d'un atelier, chaque binôme a converti une source (souvent un PDF) en Markdown propre, réutilisable dans les prompts et dans un RAG. Chacun a noté : la source convertie, l'outil ou la méthode de conversion, et ses observations sur le résultat. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
+        + "TA MISSION :\n"
+        + "1. Dresse l'inventaire des sources converties (types de documents) et des outils ou méthodes utilisés.\n"
+        + "2. Synthétise les observations en grands thèmes : ce qui a bien fonctionné, les difficultés récurrentes (scories de mise en page, tableaux, images, OCR…).\n"
+        + "3. Repère les facteurs de réussite et les pièges les plus fréquents.\n"
+        + "4. Propose un mini mode opératoire recommandé pour le groupe (3 à 5 étapes) et 2 conseils pour la réutilisation en RAG.\n"
+        + "5. Suggère un point d'attention pour la suite de l'atelier au vu de ces résultats.\n\n"
+        + "CONTRAINTES :\n"
+        + "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"
+        + "- Sois concis et directement actionnable (formateur pressé, en cours de séance).\n"
+        + "- Réponds en français.\n\n"
+        + "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n"
+        + "[Colle ici tous les exports « Copier mes notes » de l'étape 2]";
+    },
+
+    "vibeAnim": function(){
+      return "# Analyse des outils fabriqués — étape 3 « Vibe coding »\n\n"
+        + "Tu es un formateur expert en numérique éducatif, frugalité et IA générative, qui accompagne des enseignants de lycée et de post-bac.\n\n"
+        + "CONTEXTE : à l'étape 3 d'un atelier, chaque binôme a fabriqué une mini-application HTML monopage pour la classe par « vibe coding », puis l'a présentée brièvement (besoin couvert, présence éventuelle d'un outil existant, défaut repéré, donnée à NE PAS coder en dur, point à vérifier avant la classe). Je te transmets ci-dessous les descriptions partagées par le groupe, à l'oral ou par écrit.\n\n"
+        + "TA MISSION :\n"
+        + "1. Dresse une typologie des besoins couverts par les outils fabriqués.\n"
+        + "2. Évalue le réflexe de frugalité : dans combien de cas un outil existait-il déjà ? Que faut-il en retenir ?\n"
+        + "3. Regroupe les défauts et bugs repérés ; signale les points RGPD (données à ne pas coder en dur) et d'accessibilité les plus fréquents.\n"
+        + "4. Repère 2 à 3 outils particulièrement réutilisables ou partageables sur la Forge des communs numériques éducatifs.\n"
+        + "5. Propose 3 points de vigilance à rappeler au groupe avant toute mise entre les mains des élèves.\n\n"
+        + "CONTRAINTES :\n"
+        + "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"
+        + "- Sois concis et directement actionnable (formateur pressé, en cours de séance).\n"
+        + "- Réponds en français.\n\n"
+        + "DESCRIPTIONS DU GROUPE (colle-les ci-dessous) :\n"
+        + "[Colle ici les descriptions des outils partagées par les binômes, à l'oral ou par écrit]";
+    },
+
+    "livrablesAnim": function(){
+      return "# Analyse des livrables — clôture\n\n"
+        + "Tu es un formateur expert en développement professionnel des enseignants et en IA générative, qui prépare la séance 2 d'un parcours.\n\n"
+        + "CONTEXTE : en clôture d'un atelier, chaque participant a consolidé ses livrables (une évaluation revisitée, une source convertie en Markdown) et noté ce dont il aura besoin pour les réutiliser en classe dans les semaines à venir. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
+        + "TA MISSION :\n"
+        + "1. Synthétise les livrables produits : disciplines, types d'évaluations revisitées, sources converties.\n"
+        + "2. Dégage les grands thèmes communs et les intentions de réutilisation en classe.\n"
+        + "3. Anticipe les obstacles probables à la mise en œuvre et les besoins de soutien exprimés (« ce dont j'aurai besoin »).\n"
+        + "4. Prépare la séance 2 : propose une trame de retour d'expérience et 3 à 5 questions de relance.\n"
+        + "5. Suggère des relais ou ressources à proposer pour soutenir le passage à l'action.\n\n"
+        + "CONTRAINTES :\n"
+        + "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"
+        + "- Sois concis et directement actionnable.\n"
+        + "- Réponds en français.\n\n"
+        + "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n"
+        + "[Colle ici tous les exports « Copier mes notes » de la clôture]";
+    }
+  };
+
+  var LEVELS=["Pas encore","En chemin","Plutôt à l'aise","Tout à fait à l'aise"];
+
+  var PROMPT_URL="https://docs.google.com/document/d/e/2PACX-1vTMsSSBSaJ9FCPG_he25VSwmZ_5a6OjdvhNoBN4X4cNO-vej3hQO5xaAIG8pNEEdmzFEfVIS8_ekf2q/pub";
+
+  /* ── HELPERS TO BUILD COMMON BLOCKS ────────────────── */
+  function panelHead(panel,title,time){
+    var head=el("div",{class:"panel-head"});
+    head.appendChild(el("h2",null,title));
+    if(time)head.appendChild(el("span",{class:"panel-time"},time));
+    panel.appendChild(head);
+  }
+  function field(id,key,label,hint,ph){
+    var f=el("div",{class:"field"});
+    var lbl="<label for=\""+id+"\">"+label+(hint?" <span class=\"hint\">"+hint+"</span>":"")+"</label>";
+    f.innerHTML=lbl+"<textarea id=\""+id+"\" data-key=\""+key+"\""+(ph?" placeholder=\""+ph+"\"":"")+"></textarea>";
+    return f;
+  }
+  function actionsRow(key,withTimer,withCopy){
+    var row=el("div",{class:"actions-row"});
+    if(withTimer)row.appendChild(el("button",{type:"button",class:"btn start-timer","data-md":key},"⏱ Lancer le minuteur"));
+    if(withCopy)row.appendChild(el("button",{type:"button",class:"btn copy-md","data-md":key},"Copier mes notes (Markdown)"));
+    if(MDBUILD[key+"Anim"])row.appendChild(el("button",{type:"button",class:"btn btn--trainer copy-md","data-md":key+"Anim"},"Animateur — copier le prompt d'analyse"));
+    row.appendChild(el("button",{type:"button",class:"btn btn--filled",id:key==="livrables"?"printBtn":null},"Imprimer mes notes"));
+    if(key==="livrables")row.appendChild(el("button",{type:"button",class:"btn",id:"clearBtn"},"Effacer mes saisies"));
+    return row;
+  }
+
+  var MAIN=document.getElementById("main");
+
+  /* ════════════ PANEL: ACCUEIL ════════════ */
+  (function(){
+    var p=el("section",{role:"tabpanel",id:"panel-accueil","aria-labelledby":"tab-accueil",tabindex:"0"});
+    panelHead(p,"Bienvenue","3 h");
+    p.appendChild(el("p",{class:"panel-intro"},"Aujourd'hui, on fait entrer l'IA <strong>au cœur</strong> de deux gestes du métier : <strong>repenser l'évaluation</strong> et <strong>fabriquer ses propres outils</strong> — sans lâcher le volant."));
+
+    var golden=el("div",{class:"callout callout--danger"});
+    golden.innerHTML="<h3>🔒 La règle d'or — pour tout l'atelier et après</h3>"
+      +"<ul><li><strong>Ne saisissez jamais de données personnelles</strong> ni de données non susceptibles d'être rendues publiques dans l’IA sans l'autorisation de votre établissement.</li></ul>";
+    p.appendChild(golden);
+
+    var prog=el("div",{class:"card"});
+    prog.innerHTML="<h3>Au programme — 3 temps</h3>";
+    p.appendChild(prog);
+
+    var ag=el("ol",{class:"agenda"});
+    ag.innerHTML=
+      "<li><span class=\"time\">0:00–0:55 (55 min.)</span><div><h3>1 · Repenser l'évaluation</h3><p>Le prompt guidé : audit → 3 options → plan.</p></div></li>"
+     +"<li><span class=\"time\">0:55–1:30 (35 min.)</span><div><h3>2 · Préparer la donnée</h3><p>Convertir une source (PDF…) en Markdown propre, réutilisable dans vos prompts et un RAG.</p></div></li>"
+     +"<li class=\"pause\"><span class=\"time\">1:30–1:45 (15 min.)</span><div><h3>⏸️ Pause</h3><p>15 minutes. Laissez les écrans ouverts.</p></div></li>"
+     +"<li><span class=\"time\">1:45–2:40 (55 min.)</span><div><h3>3 · Vibe coding</h3><p>Fabriquer une mini-app HTML pour la classe.</p></div></li>"
+     +"<li><span class=\"time\">2:40–3:00 (20 min.)</span><div><h3>Clôture</h3><p>Vos livrables prêts à réutiliser.</p></div></li>";
+    p.appendChild(ag);
+
+    MAIN.appendChild(p);
+  })();
+
+  /* ════════════ PANEL: ÉVALUATION ════════════ */
+  (function(){
+    var p=el("section",{role:"tabpanel",id:"panel-eval","aria-labelledby":"tab-eval",tabindex:"0"});
+    p.hidden=true;
+    panelHead(p,"1 · Repenser l'évaluation","0:00–0:55 (55 min.)");
+
+    var meta=el("dl",{class:"meta-block"});
+    meta.innerHTML="<dt>Objectif</dt><dd>Reformuler une de vos évaluations pour rendre visible le <strong>raisonnement</strong> de l'élève, pas seulement sa production finale.</dd>"
+      +"<dt>Modalité</dt><dd>Binôme — une consigne réelle passée au prompt guidé.</dd>";
+    p.appendChild(meta);
+
+    p.appendChild(el("p",{class:"panel-intro"},"Les IA génératives ravivent une tension : évalue-t-on le <strong>produit</strong> ou le <strong>processus</strong> ? La réponse détermine la <strong>qualité des preuves</strong> que l'on recueille."));
+
+    var sit=el("div",null);
+    sit.innerHTML="<h3 style=\"margin-top:8px\">En situation non contrôlée (à la maison, avec l'IA)</h3>"
+      +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li>Une <strong>production finale</strong> qu'une IA peut générer <strong>renseigne peu</strong> sur ce que l'élève sait faire <strong>seul</strong>.</li>"
+      +"<li>Des <strong>traces de processus</strong> (brouillon, oral, étapes) <strong>renseignent beaucoup</strong> — et se délèguent mal.</li>"
+      +"</ul>"
+      +"<p style=\"margin:10px 0 18px\">Pour évaluer juste, on conçoit donc la tâche <strong>autour du processus</strong>.</p>"
+      +"<h3>Une tâche robuste face à l'IA réunit 6 principes</h3>"
+      +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li>centrée sur le <strong>processus</strong> (brouillons, itérations)</li>"
+      +"<li><strong>contextualisée</strong> (réalités locales, personnelles)</li>"
+      +"<li><strong>métacognitive</strong> (réflexion sur l'apprentissage)</li>"
+      +"<li><strong>multimodale</strong> (texte, audio, visuel, oral…)</li>"
+      +"<li><strong>inclusive</strong> (accessible à tous les élèves)</li>"
+      +"<li><strong>validation supervisée</strong> (ex. soutenance orale)</li>"
+      +"</ul>";
+    p.appendChild(sit);
+
+    var link=el("div",{class:"card",style:"margin-top:24px"});
+    link.innerHTML="<h3>Le prompt pour analyser et adapter des tâches d'évaluation</h3>"
+      +"<p><a class=\"linkbtn\" href=\""+PROMPT_URL+"\" target=\"_blank\" rel=\"noopener\">Ouvrir le prompt guidé ↗</a></p>"
+      +"<p class=\"hint\" style=\"margin:.3em 0 8px\"><strong>Mode d'emploi :</strong> copiez tout le prompt → collez-le dans un chatbot → collez votre consigne d'évaluation → laissez-vous guider. Le prompt attend votre confirmation à chaque phase : vous <strong>pilotez</strong>.</p>"
+      +"<ul style=\"margin:0;padding-left:20px\">"
+      +"<li><strong>Phase 1 · Audit</strong> — repère les vulnérabilités de la tâche face à l'IA</li>"
+      +"<li><strong>Phase 2 · Options</strong> — propose 3 reconceptions</li>"
+      +"<li><strong>Phase 3 · Plan</strong> — détaille l'option choisie</li>"
+      +"</ul>"
+      +"<p class=\"reminder\" style=\"margin-top:14px\">L'IA propose, vous décidez.</p>";
+    p.appendChild(link);
+
+    var notes=el("div",{class:"card"});
+    notes.innerHTML="<h3>📝 Mes notes</h3>";
+    notes.appendChild(field("eval-tache","eval.tache","Ma tâche d'évaluation",null,null));
+    notes.appendChild(field("eval-option","eval.option","L'option que je retiens (Phase 2)",null,null));
+    notes.appendChild(field("eval-demain","eval.demain","Ce qui est transposable <strong>dès demain</strong>",null,null));
+    notes.appendChild(field("eval-profond","eval.profond","Ce qui suppose un <strong>changement plus profond</strong>",null,null));
+    notes.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    p.appendChild(notes);
+
+    p.appendChild(actionsRow("eval",true,true));
+    MAIN.appendChild(p);
+  })();
+
+  /* ════════════ PANEL: MARKDOWN ════════════ */
+  (function(){
+    var p=el("section",{role:"tabpanel",id:"panel-markdown","aria-labelledby":"tab-markdown",tabindex:"0"});
+    p.hidden=true;
+    panelHead(p,"2 · Préparer la donnée — le Markdown","0:55–1:30 (35 min.)");
+    var meta=el("dl",{class:"meta-block"});
+    meta.innerHTML="<dt>Objectif</dt><dd>Convertir une source (ex. un PDF) en <strong>Markdown propre</strong>, réutilisable dans vos prompts et dans un <strong>RAG</strong>.</dd>"
+      +"<dt>Modalité</dt><dd>En binôme, sur un de vos documents (cours, sujet, corpus — sans données personnelles).</dd>";
+    p.appendChild(meta);
+    p.appendChild(el("p",{class:"panel-intro"},"On veut souvent faire travailler l'IA sur un document entier. Le lui donner dans un <strong>format propre</strong> change la qualité de sa réponse."));
+
+    var explain=el("details",null);
+    explain.innerHTML="<summary><span>📖 Comprendre le Markdown (cliquer pour déplier)</span></summary>";
+    var eb=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+
+    var s_what=el("div",{style:"margin-bottom:22px"});
+    s_what.innerHTML="<h3>Le Markdown, qu'est-ce que c'est ?</h3>"
+      +"<p>Un format de <strong>texte brut</strong> où la structure tient à quelques signes simples :</p>"
+      +"<div class=\"pills\" style=\"margin-bottom:8px\"><span class=\"pill\"><code>#</code> titre</span><span class=\"pill\"><code>-</code> liste</span><span class=\"pill\"><code>**gras**</code></span></div>"
+      +"<p class=\"reminder\">Aucun logiciel particulier : un fichier <code>.md</code> s'ouvre dans <strong>n'importe quel éditeur de texte</strong>.</p>";
+    eb.appendChild(s_what);
+
+    var s_more=el("div",{style:"margin-bottom:22px"});
+    s_more.innerHTML="<h3>Définition et 5 avantages</h3>"
+      +"<p>Le Markdown est une méthode d'écriture qui permet de mettre en forme du texte (titres, gras, listes) en utilisant uniquement des symboles simples du clavier (comme <code>#</code> ou <code>*</code>), sans avoir à cliquer sur des boutons de mise en forme.</p>"
+      +"<p><strong>Les 5 grands avantages du Markdown</strong></p>"
+      +"<ul style=\"padding-left:20px;margin:6px 0\">"
+      +"<li><strong>Ultra-simple et rapide</strong> : vous mettez en forme votre texte tout en écrivant, sans jamais lever les mains du clavier. Par exemple, écrire <code>**bravo**</code> suffit pour afficher <strong>bravo</strong>.</li>"
+      +"<li><strong>Lisible immédiatement</strong> : même avant d'être converti ou « rendu », le texte brut reste parfaitement propre et facile à lire, contrairement au code HTML rempli de balises lourdes (comme <code>&lt;strong&gt;text&lt;/strong&gt;</code>).</li>"
+      +"<li><strong>Universel et portable</strong> : un fichier Markdown (<code>.md</code>) est un simple fichier texte. Il s'ouvre sur n'importe quel ordinateur, smartphone ou application, et ne sera jamais « périmé ».</li>"
+      +"<li><strong>Facilement convertible</strong> : on peut transformer instantanément un document Markdown en page web (HTML), en PDF ou en fichier Word.</li>"
+      +"<li><strong>Zéro distraction</strong> : pas de menus complexes ni de barres d'outils. Vous restez concentré à 100 % sur le fond de votre texte.</li>"
+      +"</ul>"
+      +"<p class=\"reminder\" style=\"margin-top:8px\"><strong>En résumé :</strong> le Markdown permet d'écrire du texte structuré et élégant deux fois plus vite, partout, et sans aucun effort technique.</p>"
+      +"<p style=\"margin-top:12px\"><a class=\"linkbtn\" href=\"https://e-publish.uliege.be/md/chapter/markdown/\" target=\"_blank\" rel=\"noopener\">Présentation de la syntaxe Markdown ↗</a></p>";
+    eb.appendChild(s_more);
+
+    var s_why=el("div",{style:"margin-bottom:22px"});
+    s_why.innerHTML="<h3>Pourquoi le Markdown aide l'IA à mieux traiter vos documents</h3>"
+      +"<table class=\"tbl\"><tr><th>Atout</th><th>Pourquoi ça compte</th></tr>"
+      +"<tr><td>🪶 <strong>Léger</strong></td><td>du texte brut = <strong>moins de « tokens »</strong> qu'un <code>.docx</code>/PDF → l'IA en traite <strong>plus à la fois</strong>, plus vite et plus sobrement.</td></tr>"
+      +"<tr><td>🧱 <strong>Clairement structuré</strong></td><td>titres et listes explicites → l'IA <strong>repère la structure</strong> → réponses plus fiables qu'un copier-coller en vrac.</td></tr></table>";
+    eb.appendChild(s_why);
+
+    var s_geste=el("div",null);
+    s_geste.innerHTML="<h3>Le geste, en 2 temps</h3>"
+      +"<ol style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li><strong>Convertir</strong> votre source en <code>.md</code>.</li>"
+      +"<li><strong>Vérifier</strong> la structure, puis <strong>réutiliser</strong> le <code>.md</code> dans vos prompts ou dans un RAG.</li></ol>";
+    eb.appendChild(s_geste);
+
+    explain.appendChild(eb);
+    p.appendChild(explain);
+
+    var ex=el("div",{class:"card"});
+    ex.innerHTML="<h3>✏️ Exercice — convertir une source en Markdown</h3>"
+      +"<p class=\"hint\" style=\"margin:.3em 0 12px\">Prenez une source réelle — idéalement un <strong>PDF</strong> — et produisez-en une version <code>.md</code> propre.</p>"
+      +"<ol style=\"padding-left:20px;margin:0 0 12px\">"
+      +"<li><strong>Choisir</strong> une source. Privilégiez un document de référence (ex. un <strong>syllabus</strong>) que vous réutiliserez souvent dans vos prompts.</li>"
+      +"<li><strong>Convertir</strong> en <code>.md</code> (Obsidian, pandoc, copier-coller puis nettoyage, ou photo → OCR).</li>"
+      +"<li><strong>Vérifier</strong> la structure : titres (<code>#</code>), listes (<code>-</code>), et plus aucune scorie de mise en page (numéros de page, retours de ligne parasites…).</li>"
+      +"</ol>"
+      +"<p class=\"reminder\">🔎 <strong>Pourquoi ça compte — le RAG.</strong> Ces sources propres sont précisément celles qu'on réutilise dans un <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>) : un assistant IA qui répond en <strong>puisant dans vos propres documents</strong> (base de cours, FAQ, corpus). Mieux la source est structurée, plus les réponses sont fiables.</p>";
+    ex.appendChild(field("md-doc","md.doc","La source que je convertis",null,"ex. un PDF de cours, un sujet…"));
+    ex.appendChild(field("md-tool","md.tool","L'outil / la méthode de conversion utilisé(e)",null,"Obsidian, pandoc, OCR…"));
+    ex.appendChild(field("md-garde","md.garde","Observations éventuelles sur le résultat",null,"…"));
+    ex.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    p.appendChild(ex);
+
+    p.appendChild(actionsRow("markdown",true,true));
+    MAIN.appendChild(p);
+  })();
+
+  /* ════════════ PANEL: VIBE CODING ════════════ */
+  (function(){
+    var p=el("section",{role:"tabpanel",id:"panel-vibe","aria-labelledby":"tab-vibe",tabindex:"0"});
+    p.hidden=true;
+    panelHead(p,"3 · Vibe coding — fabriquer une mini-app HTML","1:45–2:40 (55 min.)");
+    var meta=el("dl",{class:"meta-block"});
+    meta.innerHTML="<dt>Objectif</dt><dd>Produire et itérer une <strong>mini-application HTML monopage</strong> (sans coder), et <strong>juger</strong> son utilité.</dd>"
+      +"<dt>Modalité</dt><dd>En binôme, à partir d'un besoin réel.</dd>";
+    p.appendChild(meta);
+    p.appendChild(el("p",{class:"panel-intro"},"Le « vibe coding » : <strong>décrire</strong> en langage naturel l'outil voulu, l'IA <strong>génère</strong> le code, vous l'<strong>ouvrez</strong> dans le navigateur. Aucune compétence de code requise."));
+
+    var explain=el("details",null);
+    explain.innerHTML="<summary><span>📖 Comprendre le vibe coding (cliquer pour déplier)</span></summary>";
+    var eb=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+
+    var s_what=el("div",{style:"margin-bottom:22px"});
+    s_what.innerHTML="<h3>Le vibe coding, qu'est-ce que c'est ?</h3>"
+      +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li>Terme popularisé par <strong>Andrej Karpathy</strong> en 2025.</li>"
+      +"<li><strong>Coder en langage naturel</strong> avec un agent conversationnel : décrire ce qu'on veut obtenir et laisser une IA générer le code — faire confiance à l'IA et « oublier que le code existe ».</li>"
+      +"<li>Démarche adaptée aux <strong>projets simples</strong>, où l'autonomie et la vitesse priment (≠ développement web professionnel à grande échelle).</li>"
+      +"</ul>"
+      +"<h3 style=\"margin-top:16px\">Ce que ça change</h3>"
+      +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li>Le vibe coding fait passer le numérique (éducatif) d'une logique de <strong>consommation</strong> à une logique de <strong>création</strong>.</li>"
+      +"<li>Il permet aux <strong>non-développeurs</strong> de produire des outils adaptés à leur contexte, en exerçant leur créativité et leur expertise professionnelle.</li>"
+      +"<li>Cette capacité reste <strong>dépendante des grandes infrastructures numériques</strong>, mais elle transforme la <strong>posture professionnelle</strong> : ne plus seulement choisir des outils, mais construire un environnement d'action plus ajusté à ses besoins.</li>"
+      +"</ul>";
+    eb.appendChild(s_what);
+
+    var s_geste=el("div",{style:"margin-bottom:22px"});
+    s_geste.innerHTML="<h3>Le geste, en 3 temps</h3>"
+      +"<ol style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li><strong>Décrire</strong> l'outil à l'IA (« crée une page HTML autonome qui… »)</li>"
+      +"<li><strong>Coller</strong> le code généré dans un fichier <code>.html</code> <span class=\"hint\">(un éditeur de texte simple suffit)</span></li>"
+      +"<li><strong>Ouvrir</strong> le fichier dans le navigateur, <strong>tester</strong>, puis <strong>itérer</strong> (« agrandis les boutons », « améliore le contraste »…)</li></ol>"
+      +"<p class=\"reminder\" style=\"margin-top:14px\">🔁 On ne garde pas la première version : le vibe coding, c'est la <strong>boucle d'ajustement</strong>.</p>"
+      +"<p style=\"margin-top:12px\"><a class=\"linkbtn\" href=\"https://www.ralentirtravaux.com/apps/vibe-coding/\" target=\"_blank\" rel=\"noopener\">Page de conseils pour le vibe coding ↗</a></p>";
+    eb.appendChild(s_geste);
+
+    var s_princ=el("div",{style:"margin-bottom:22px"});
+    s_princ.innerHTML="<h3>Les principes sous-jacents</h3>"
+      +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
+      +"<li>Optimiser pour : <strong>simplicité</strong>, <strong>portabilité</strong>, <strong>rapidité</strong>, <strong>collaboration facile avec les LLMs</strong>.</li>"
+      +"<li>Des outils faciles à <strong>générer</strong>, à <strong>exécuter</strong>, à <strong>partager</strong>, à <strong>modifier</strong>.</li>"
+      +"</ul>";
+    eb.appendChild(s_princ);
+
+    var s_onefile=el("div",{style:"margin-bottom:22px"});
+    s_onefile.innerHTML="<h3>Un seul fichier : <code>outil.html</code></h3>"
+      +"<table class=\"tbl\">"
+      +"<tr><th>Couche</th><th>Rôle</th></tr>"
+      +"<tr><td><strong>HTML</strong></td><td>Structure et contenu</td></tr>"
+      +"<tr><td><strong>CSS</strong></td><td>Mise en forme visuelle</td></tr>"
+      +"<tr><td><strong>JavaScript</strong></td><td>Comportement et interactivité</td></tr>"
+      +"</table>"
+      +"<h3 style=\"margin-top:16px\">Pourquoi un seul fichier ?</h3>"
+      +"<table class=\"tbl\">"
+      +"<tr><th>Avantage</th><th>Ce que ça signifie</th></tr>"
+      +"<tr><td><strong>Autonome</strong></td><td>Tout tient dans un seul document</td></tr>"
+      +"<tr><td><strong>Portable</strong></td><td>Un fichier à partager, envoyer, sauvegarder — sans installation</td></tr>"
+      +"<tr><td><strong>Modifiable par un LLM</strong></td><td>« <em>Voici mon outil — améliore cette fonctionnalité.</em> »</td></tr>"
+      +"<tr><td><strong>Durable</strong></td><td>Résiste aux évolutions de l'écosystème numérique</td></tr>"
+      +"</table>";
+    eb.appendChild(s_onefile);
+
+    var s_vigil=el("div",null);
+    s_vigil.innerHTML="<h3>⚠️ Points de vigilance : sécurité et données</h3>"
+      +"<table class=\"tbl\">"
+      +"<tr><th>Point de vigilance</th><th>Risque</th><th>Règle pratique</th></tr>"
+      +"<tr><td><strong>Données personnelles</strong></td><td>Tout outil traitant des données personnelles est soumis au RGPD (Suisse : LPD/FADP)</td><td><em>Ne jamais coller de données nominatives dans un prompt. Tester avec des données fictives.</em></td></tr>"
+      +"<tr><td><strong>Applications connectées</strong></td><td>Un outil qui envoie des données vers un serveur externe crée un vecteur de risque</td><td><em>Préférer une architecture locale sans requête réseau.</em></td></tr>"
+      +"<tr><td><strong>Sécurité du code</strong></td><td>Le code généré par IA peut contenir des failles inaperçues (injections, dépendances vulnérables)</td><td><em>Ne pas déployer sur un réseau d'établissement sans revue par un responsable informatique.</em></td></tr>"
+      +"<tr><td><strong>Front-end statique</strong></td><td>La complexité augmente les risques et réduit le contrôle</td><td><em>Rester sur des fichiers HTML + CSS + JS locaux, sans serveur ni compte utilisateur.</em></td></tr>"
+      +"<tr><td><strong>Évaluabilité</strong></td><td>Un beau rendu peut cacher un bug ; un défaut d'accessibilité exclut des élèves</td><td><em>Tester chaque fonction avant de donner l'outil aux élèves ; vérifier l'accessibilité (contraste, taille, clavier).</em></td></tr>"
+      +"</table>"
+      +"<p class=\"reminder\" style=\"margin-top:14px\">🌐 Pour partager : héberger la page (Forge des communs numériques éducatifs, GitLab Pages…) ou simplement envoyer le fichier <code>.html</code>.</p>";
+    eb.appendChild(s_vigil);
+
+    explain.appendChild(eb);
+    p.appendChild(explain);
+
+    var resso=el("div",{class:"card"});
+    resso.innerHTML="<h3>Avant de fabriquer : La Ressourcerie de la Forge</h3>"
+      +"<p>Premier réflexe de frugalité — <strong>un outil existe peut-être déjà</strong>. La <strong>Ressourcerie de la Forge</strong> met en avant les <strong>ressources et applications éducatives libres</strong> produites et partagées par la communauté enseignante sur la <strong>Forge des communs numériques éducatifs</strong> : la plateforme du <strong>Ministère de l'Éducation nationale</strong> (fondée sur GitLab) où des enseignants déposent et mutualisent logiciels et contenus libres (PrimTux, MathALÉA, La Nuit du Code…).</p>"
+      +"<p class=\"reminder\" style=\"margin-top:12px\">💡 Cherchez-y un outil prêt à l'emploi ; à défaut, fabriquez le vôtre — et pensez à l'y <strong>partager</strong> à votre tour.</p>"
+      +"<p style=\"margin-top:12px\"><a class=\"linkbtn\" href=\"https://ressourcerie.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">Ouvrir La Ressourcerie ↗</a> &nbsp; <a class=\"linkbtn\" href=\"https://docs.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">Découvrir la Forge (doc) ↗</a></p>"
+      +"<p class=\"hint\" style=\"margin-top:8px;word-break:break-all\">🔗 <a href=\"https://ressourcerie.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">https://ressourcerie.forge.apps.education.fr/</a></p>";
+    p.appendChild(resso);
+
+
+    var loop=el("div",{class:"card"});
+    loop.innerHTML="<h3>Boucle de travail typique (démonstration)</h3>"
+      +"<table class=\"tbl\">"
+      +"<tr><th>#</th><th>Étape</th><th>Description</th></tr>"
+      +"<tr><td>1</td><td><strong>Décrire l'objectif</strong></td><td>Un prompt en langage naturel : « <em>Crée une application monopage présentant un formulaire d'auto-évaluation à 5 critères pour un oral d'anglais au lycée, avec une barre de progression visuelle.</em> »</td></tr>"
+      +"<tr><td>2</td><td><strong>L'IA génère le code</strong></td><td>Elle interprète la demande et produit une première version.</td></tr>"
+      +"<tr><td>3</td><td><strong>Exécuter et observer</strong></td><td>On ouvre le fichier dans le navigateur pour vérifier que le formulaire s'affiche et fonctionne comme prévu.</td></tr>"
+      +"<tr><td>4</td><td><strong>Corriger et affiner</strong></td><td>Si le résultat est incomplet, on précise : « <em>Les critères doivent être modifiables par l'enseignant.</em> »</td></tr>"
+      +"<tr><td>5</td><td><strong>Itérer</strong></td><td>Cette boucle — décrire, générer, tester, affiner — se répète jusqu'à ce que l'outil corresponde au besoin pédagogique.</td></tr>"
+      +"</table>";
+    p.appendChild(loop);
+
+    var seeds=el("div",{class:"card"});
+    seeds.innerHTML="<h3>Amorces de prompt — pour démarrer vite</h3>"
+      +"<p class=\"hint\" style=\"margin:.3em 0 12px\">Copiez une amorce, adaptez-la, puis itérez.</p>";
+    var SEED_GROUPS=[
+      ["Expliquer un concept de façon interactive",[
+        "Crée une page HTML autonome qui illustre la loi de Boyle-Mariotte : un cylindre avec piston, un curseur pour faire varier le volume, l'affichage en temps réel de la pression (P × V constant) et un graphe pression-volume qui se met à jour. Ajoute une courte explication et une question de vérification.",
+        "Crée une page HTML autonome : un schéma annoté interactif (ex. les parties d'une cellule, d'un volcan). Au clic sur une zone, une légende explicative apparaît.",
+        "Crée une page HTML autonome : une frise chronologique interactive. Je fournis une liste d'événements (date + description) ; on navigue le long de la frise et chaque événement s'affiche au clic."
+      ]],
+      ["Outils de classe",[
+        "Crée une page HTML autonome (un seul fichier, sans dépendance) : un minuteur de classe avec champ minutes, boutons Démarrer / Pause / Réinitialiser, gros affichage lisible et alerte sonore en fin.",
+        "Crée une page HTML autonome : un tirage au sort d'élèves. Je colle une liste de prénoms (un par ligne), un bouton tire un nom au hasard sans répétition tant que la liste n'est pas épuisée.",
+        "Crée une page HTML autonome : un QCM auto-corrigé. Je définis les questions, les options et la bonne réponse ; l'élève répond, voit son score et une correction à la fin.",
+        "Crée une page HTML autonome : des cartes mémoire (recto/verso). Je saisis des paires question/réponse ; on clique pour retourner la carte et passer à la suivante."
+      ]]
+    ];
+    function copySeed(text,btn){
+      function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}
+      function fb(){var t=document.createElement("textarea");t.value=text;t.setAttribute("readonly","");t.style.position="absolute";t.style.left="-9999px";document.body.appendChild(t);t.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le prompt :",text);}document.body.removeChild(t);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fb);}else{fb();}
+    }
+    SEED_GROUPS.forEach(function(g,gi){
+      seeds.appendChild(el("h4",{style:"margin:"+(gi?"18px":"6px")+" 0 8px;font-size:.95rem;color:var(--primary)"},g[0]));
+      g[1].forEach(function(s){
+        var d=el("div",{class:"seed"});
+        d.appendChild(el("code",null,s));
+        var b=el("button",{type:"button",class:"btn btn--seed"},"Copier");
+        b.addEventListener("click",function(){copySeed(s,b);});
+        d.appendChild(b);
+        seeds.appendChild(d);
+      });
+    });
+    p.appendChild(seeds);
+
+    p.appendChild(actionsRow("vibe",true,false));
+    MAIN.appendChild(p);
+  })();
+
+  /* ════════════ PANEL: LIVRABLES ════════════ */
+  (function(){
+    var p=el("section",{role:"tabpanel",id:"panel-livrables","aria-labelledby":"tab-livrables",tabindex:"0"});
+    p.hidden=true;
+    panelHead(p,"Mes livrables","2:40–3:00 (20 min.)");
+    p.appendChild(el("p",{class:"panel-intro"},"La clôture consolide vos <strong>livrables</strong> prêts à réutiliser en classe dans les prochaines semaines, et fait le point sur ce que vous savez désormais faire."));
+
+    /* Auto-positionnement sliders */
+    var self=el("div",{class:"card"});
+    self.innerHTML="<h3>Je sais désormais…</h3><p class=\"hint\" style=\"margin:.3em 0 12px\">Auto-positionnement, pour vous.</p>";
+    var objs=[
+      ["repenser une évaluation avec le prompt guidé","s0"],
+      ["convertir une source en Markdown propre (réutilisable, RAG)","s1"],
+      ["fabriquer une mini-app HTML pour la classe","s2"]
+    ];
+    objs.forEach(function(o){
+      var item=el("div",{class:"check-item slider-item"});
+      item.innerHTML="<label for=\""+o[1]+"\" class=\"slider-label\">"+o[0]+"</label>"
+        +"<div class=\"slider-row\"><input type=\"range\" id=\""+o[1]+"\" data-key=\""+o[1]+"\" min=\"0\" max=\"3\" step=\"1\" value=\"0\" aria-describedby=\""+o[1]+"lvl\">"
+        +"<output class=\"slider-level\" id=\""+o[1]+"lvl\" for=\""+o[1]+"\">Pas encore</output></div>";
+      self.appendChild(item);
+    });
+    p.appendChild(self);
+
+    var liv=el("div",{class:"card"});
+    liv.innerHTML="<h3>Mes livrables — à réutiliser dans les 3 prochaines semaines</h3>"
+      +"<p class=\"reminder\">Vos notes des onglets 1 et 2 (évaluation revisitée, source en Markdown) sont reprises automatiquement dans l'export Markdown ci-dessous. Complétez ici ce qui manque.</p>";
+    liv.appendChild(field("liv-relais","liv.relais","Ce dont j'aurai besoin",null,"…"));
+    p.appendChild(liv);
+
+    p.appendChild(actionsRow("livrables",false,true));
+    MAIN.appendChild(p);
+  })();
+
+  /* ── TAB NAVIGATION ────────────────────────────────── */
+  var tablist=document.querySelector("[role=tablist]");
+  var tabs=[];
+  TABS.forEach(function(t,i){
+    var btn=el("button",{
+      role:"tab",id:"tab-"+t[0],
+      "aria-selected":i===0?"true":"false",
+      "aria-controls":"panel-"+t[0],
+      tabindex:i===0?"0":"-1"
+    },t[1]);
+    tablist.appendChild(btn);
+    tabs.push(btn);
+  });
+  function selectTab(tab){
+    tabs.forEach(function(t){
+      var sel=t===tab;
+      t.setAttribute("aria-selected",sel?"true":"false");t.tabIndex=sel?0:-1;
+      var pn=document.getElementById(t.getAttribute("aria-controls"));
+      if(pn)pn.hidden=!sel;
+    });
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(tab,idx){
+    tab.addEventListener("click",function(){selectTab(tab);});
+    tab.addEventListener("keydown",function(e){
+      var n=null;
+      if(e.key==="ArrowRight")n=tabs[(idx+1)%tabs.length];
+      else if(e.key==="ArrowLeft")n=tabs[(idx-1+tabs.length)%tabs.length];
+      else if(e.key==="Home")n=tabs[0];
+      else if(e.key==="End")n=tabs[tabs.length-1];
+      if(n){e.preventDefault();selectTab(n);n.focus();}
+    });
+  });
+
+  /* Panel prev / next navigation */
+  tabs.forEach(function(tab,idx){
+    var panel=document.getElementById(tab.getAttribute("aria-controls"));
+    if(!panel)return;
+    var nav=el("div",{class:"panel-nav"});
+    if(idx>0){
+      var prev=el("button",{type:"button",class:"btn"},"← "+tabs[idx-1].textContent.trim());
+      prev.addEventListener("click",function(){selectTab(tabs[idx-1]);});
+      nav.appendChild(prev);
+    }else{nav.appendChild(el("span",null,""));}
+    if(idx<tabs.length-1){
+      var next=el("button",{type:"button",class:"btn"},tabs[idx+1].textContent.trim()+" →");
+      next.addEventListener("click",function(){selectTab(tabs[idx+1]);});
+      nav.appendChild(next);
+    }
+    panel.appendChild(nav);
+  });
+
+  /* ── GENERIC PERSISTENCE ───────────────────────────── */
+  Array.prototype.forEach.call(document.querySelectorAll("textarea[data-key]"),function(ta){
+    var k=ta.getAttribute("data-key");var v=store.get(k);if(v!=null)ta.value=v;
+    ta.addEventListener("input",function(){store.set(k,ta.value);});
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("input[type=range][data-key]"),function(sl){
+    var k=sl.getAttribute("data-key");var v=store.get(k);if(v!=null)sl.value=v;
+    var out=document.getElementById(sl.id+"lvl");
+    function upd(){if(out)out.textContent=LEVELS[+sl.value]||LEVELS[0];}
+    upd();sl.addEventListener("input",function(){store.set(k,sl.value);upd();});
+  });
+
+  /* ── CLEAR ALL ─────────────────────────────────────── */
+  var clearBtnEl=document.getElementById("clearBtn");
+  if(clearBtnEl)clearBtnEl.addEventListener("click",function(){
+    if(!window.confirm("Effacer toutes vos saisies sur cet appareil ?"))return;
+    try{
+      var rm=[];
+      for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key.indexOf("evalIAinterm.")===0)rm.push(key);}
+      rm.forEach(function(k){localStorage.removeItem(k);});
+    }catch(e){}
+    document.querySelectorAll("input:checked").forEach(function(x){x.checked=false;});
+    document.querySelectorAll("input[type=range][data-key]").forEach(function(sl){sl.value="0";var o=document.getElementById(sl.id+"lvl");if(o)o.textContent=LEVELS[0];});
+    document.querySelectorAll("textarea[data-key]").forEach(function(x){x.value="";});
+    document.querySelectorAll(".tri-reveal").forEach(function(r){r.className="tri-reveal";r.textContent="";});
+    document.querySelectorAll(".reveal-btn").forEach(function(b){b.style.display="";});
+  });
+
+  /* ── PRINT ─────────────────────────────────────────── */
+  var printBtnEl=document.getElementById("printBtn");
+  if(printBtnEl)printBtnEl.addEventListener("click",function(){window.print();});
+
+  /* ── COPY ANSWERS AS MARKDOWN ──────────────────────── */
+  function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
+  function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
+  Array.prototype.forEach.call(document.querySelectorAll(".copy-md"),function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
+
+  /* ── PHASE TIMER ────────────────────────────────────── */
+  var rc=document.createElement("div");rc.id="runclock";rc.hidden=true;rc.setAttribute("role","region");rc.setAttribute("aria-label","Minuteur de phase");
+  rc.innerHTML='<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div><div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span><div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div><div class="rc-progress"><div id="rc-bar"></div></div>';
+  document.body.appendChild(rc);
+  var rcPhase=rc.querySelector("#rc-phase"),rcStepEl=rc.querySelector("#rc-step"),rcTimeEl=rc.querySelector("#rc-time"),rcToggle=rc.querySelector("#rc-toggle"),rcNext=rc.querySelector("#rc-next"),rcClose=rc.querySelector("#rc-close"),rcBar=rc.querySelector("#rc-bar");
+  var rcSteps=[],rcIdx=0,rcRem=0,rcTot=0,rcGo=false,rcIv=null,rcDone=false;
+  function rcPad(n){return (n<10?"0":"")+n;}
+  function rcFmt(s){if(s<0)s=0;return rcPad(Math.floor(s/60))+":"+rcPad(s%60);}
+  function rcRender(){rcTimeEl.textContent=rcFmt(rcRem);rcBar.style.width=(rcTot?Math.max(0,rcRem/rcTot*100):0)+"%";rcToggle.textContent=rcGo?"Pause":"Reprendre";}
+  function rcEnsure(){if(!rcIv)rcIv=setInterval(rcTick,1000);}
+  function rcStop(){if(rcIv){clearInterval(rcIv);rcIv=null;}}
+  function rcStart(i){rcIdx=i;rcDone=false;var st=rcSteps[i];rcRem=st[1]*60;rcTot=rcRem;rcStepEl.textContent="Étape "+(i+1)+"/"+rcSteps.length+" · "+st[0]+" ("+st[1]+" min)";rcGo=true;rcRender();rcEnsure();}
+  function rcTick(){if(!rcGo)return;if(rcRem>0){rcRem--;rcRender();}else if(rcIdx+1<rcSteps.length){rcStart(rcIdx+1);}else{rcFinish();}}
+  function rcFinish(){rcGo=false;rcDone=true;rcStop();rcStepEl.textContent="Terminé ✓";rcTimeEl.textContent="00:00";rcBar.style.width="0%";rcToggle.textContent="Reprendre";}
+  function rcOpen(key){var t=TIMERS[key];if(!t)return;rcSteps=t[1];rcPhase.textContent=t[0];rc.hidden=false;rcStart(0);}
+  rcToggle.addEventListener("click",function(){if(rcDone)return;rcGo=!rcGo;rcRender();if(rcGo)rcEnsure();});
+  rcNext.addEventListener("click",function(){if(rcDone)return;if(rcIdx+1<rcSteps.length)rcStart(rcIdx+1);else rcFinish();});
+  rcClose.addEventListener("click",function(){rcGo=false;rcStop();rc.hidden=true;});
+  Array.prototype.forEach.call(document.querySelectorAll(".start-timer"),function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
+
+  /* ── STEPS DURATION BOXES (sourced from TIMERS) ──────── */
+  var PANELOF={};TABS.forEach(function(t){PANELOF[t[0]]="panel-"+t[0];});
+  Object.keys(TIMERS).forEach(function(key){
+    var panel=document.getElementById(PANELOF[key]);if(!panel)return;
+    var steps=TIMERS[key][1];var total=0;steps.forEach(function(st){total+=st[1];});
+    var box=document.createElement("div");box.className="steps-list";
+    var h='<p class="steps-title">Déroulé — '+total+' min au total</p><ol>';
+    steps.forEach(function(st){h+='<li><span class="step-row"><span class="step-lbl">'+st[0]+'</span><span class="steps-dur">'+st[1]+' min</span></span></li>';});
+    h+='</ol>';box.innerHTML=h;
+    var mb=panel.querySelector(".meta-block");
+    if(mb&&mb.parentNode){mb.parentNode.insertBefore(box,mb.nextSibling);}
+    else{var pi=panel.querySelector(".panel-intro");if(pi&&pi.parentNode){pi.parentNode.insertBefore(box,pi.nextSibling);}else{panel.appendChild(box);}}
+  });
+
+})();
+</script>
+</body>
+</html>
