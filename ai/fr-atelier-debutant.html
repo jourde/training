@@ -150,7 +150,6 @@
  .field{margin:0 0 18px}
  .field:last-child{margin-bottom:0}
  .field label{display:block;font-weight:500;margin-bottom:6px}
- .field .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
  .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
  textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
  border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
@@ -295,15 +294,15 @@
  ["avant","Avant de commencer","0:08–0:20"],
  ["outil","1 · IA & vie privée","0:20–0:30"],
  ["repertoire","2 · Choisir un outil","0:30–0:40"],
- ["prompt","3 · Parler à l'IA","0:40–1:25"],
- ["multi","4 · Multimodal","1:25–1:50"],
- ["eval","5 · Évaluation","2:05–2:40"],
+ ["prompt","3 · Parler à l'IA","0:40–1:15"],
+ ["multi","4 · Multimodal","1:15–1:40"],
+ ["eval","5 · Évaluation","1:55–2:40"],
  ["pas","Mon premier pas","2:40–3:00"]
  ];
 
  var TIMERS={
  "avant":["Avant de commencer",[
- ["Tour de table : intrigue / inquiète",12]
+ ["Tour de table",12]
  ]],
  "outil":["1 · IA & vie privée",[
  ["Commenter les 5 questions de la CNIL",7],
@@ -315,7 +314,7 @@
  ]],
  "prompt":["3 · Parler à l'IA",[
  ["Rédiger un prompt (requête, invite, instruction) novice + tester",12],
- ["Reconstruire avec l'outil de construction d'instructions",20],
+ ["Reconstruire avec l'outil de construction d'instructions",10],
  ["Comparer les deux réponses",13]
  ]],
  "multi":["4 · La puissance multimodale",[
@@ -323,7 +322,7 @@
  ]],
  "eval":["5 · Repenser l'évaluation",[
  ["Coller le prompt dans une interface d'IA générative",6],
- ["Phase 1 (audit) → Phase 2 (3 options)",23],
+ ["Phase 1 (audit) → Phase 2 (3 options)",33],
  ["Confrontation en binôme",6]
  ]],
  "pas":["Clôture — Mon premier pas",[
@@ -517,10 +516,10 @@
  '<li><span class="time">0:08–0:20</span><div><h3>Avant de commencer</h3><p>Tour de table : ce qui intrigue, ce qui inquiète.</p></div></li>'+
  "<li><span class=\"time\">0:20–0:30</span><div><h3>1 · IA &amp; vie privée</h3><p>5 questions à se poser pour protéger sa vie privée (CNIL).</p></div></li>"+
  "<li><span class=\"time\">0:30–0:40</span><div><h3>2 · Choisir un outil</h3><p>Explorer le répertoire d'outils IA (DRANE).</p></div></li>"+
- "<li><span class=\"time\">0:40–1:25</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction.</p></div></li>"+
- '<li><span class="time">1:25–1:50</span><div><h3>4 · La puissance multimodale</h3><p>Manipuler images et textes — et ses limites.</p></div></li>'+
- '<li class="pause"><span class="time">1:50–2:05</span><div><h3>Pause</h3><p>15 minutes — les écrans restent ouverts.</p></div></li>'+
- "<li><span class=\"time\">2:05–2:40</span><div><h3>5 · Repenser l'évaluation</h3><p>Le processus, pas seulement le produit.</p></div></li>"+
+ "<li><span class=\"time\">0:40–1:15</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction.</p></div></li>"+
+ '<li><span class="time">1:15–1:40</span><div><h3>4 · La puissance multimodale</h3><p>Manipuler images et textes — et ses limites.</p></div></li>'+
+ '<li class="pause"><span class="time">1:40–1:55</span><div><h3>Pause</h3><p>15 minutes — les écrans restent ouverts.</p></div></li>'+
+ "<li><span class=\"time\">1:55–2:40</span><div><h3>5 · Repenser l'évaluation</h3><p>Le processus, pas seulement le produit.</p></div></li>"+
  '<li><span class="time">2:40–3:00</span><div><h3>Clôture</h3><p>Engagement &amp; relais.</p></div></li>'+
  '</ol>';
 
@@ -600,7 +599,7 @@
  '</div>';
 
  PANELS.prompt=
- "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:40–1:25 (45 min)</span></div>"+
+ "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:40–1:15 (35 min)</span></div>"+
  '<dl class="meta-block">'+
  '<dt>Objectif</dt><dd>Formuler puis améliorer une instruction en mobilisant cinq leviers, du novice au contextualisé.</dd>'+
  '<dt>Modalité</dt><dd>Binôme — une tâche réelle, avec l\'outil de construction d\'instructions.</dd>'+
@@ -617,11 +616,11 @@
  '<p><a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
  '<p class="hint" style="margin:.3em 0 8px">Cinq champs → un prompt structuré, prêt à copier :</p>'+
  '<ul>'+
- '<li><strong>P</strong>ersona = Rôle — qui l\'IA doit être</li>'+
- '<li><strong>C</strong>ontext = Contexte — situation, niveau, contraintes de classe</li>'+
- '<li><strong>O</strong>bjective = Objectif — ce que vous voulez obtenir</li>'+
- '<li><strong>A</strong>udience = Public — pour qui c\'est destiné</li>'+
- '<li><strong>B</strong>oundaries = Limites — ce qu\'il faut éviter, le cadre, le format</li>'+
+ '<li>Rôle — qui l\'IA doit être</li>'+
+ '<li>Objectif — ce que vous voulez obtenir</li>'+
+ '<li>Contexte — situation, niveau, contraintes de classe</li>'+
+ '<li>Public — pour qui c\'est destiné</li>'+
+ '<li>Limites — ce qu\'il faut éviter, le cadre, le format</li>'+
  '</ul>'+
  '</div>'+
  '<div class="card">'+
@@ -640,7 +639,7 @@
  '</div>';
 
  PANELS.multi=
- '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:25–1:50 (25 min)</span></div>'+
+ '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:15–1:40 (25 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Comparer des modalités (texte / image / voix / document) pour caractériser l'apport multimodal <strong>et</strong> ses limites.</dd>"+
  '<dt>Modalité</dt><dd>Binôme — atelier « à la carte », 2 manipulations.</dd>'+
@@ -679,7 +678,7 @@
  '</div>';
 
  PANELS.eval=
- "<div class=\"panel-head\"><h2>5 · Repenser l'évaluation</h2><span class=\"panel-time\">2:05–2:40 (35 min)</span></div>"+
+ "<div class=\"panel-head\"><h2>5 · Repenser l'évaluation</h2><span class=\"panel-time\">1:55–2:40 (45 min)</span></div>"+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Reformuler une de vos évaluations pour rendre visible le <strong>raisonnement</strong> de l'élève, pas seulement sa production finale.</dd>"+
  '<dt>Modalité</dt><dd>Binôme — une consigne réelle passée au prompt guidé.</dd>'+
@@ -862,49 +861,153 @@
  if(printBtnEl)printBtnEl.addEventListener("click",function(){window.print();});
 
  /* ── COPY AS MARKDOWN ──────────────────────────────── */
- function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
- function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
- Array.prototype.forEach.call(document.querySelectorAll(".copy-md"),function(b){b.addEventListener("click",function(){mdCopy(b.getAttribute("data-md"),b);});});
+ function mdFallback(text, onSuccess) {
+   var ta = document.createElement("textarea");
+   ta.value = text;
+   ta.setAttribute("readonly", "");
+   ta.style.position = "absolute";
+   ta.style.left = "-9999px";
+   document.body.appendChild(ta);
+   ta.select();
+   try { document.execCommand("copy"); onSuccess(); }
+   catch (e) { window.prompt("Copiez le Markdown :", text); }
+   document.body.removeChild(ta);
+ }
+ function mdCopy(key, btn) {
+   var builder = MDBUILD[key];
+   if (!builder) return;
+   var text = builder();
+   function onSuccess() {
+     if (!btn.getAttribute("data-label")) btn.setAttribute("data-label", btn.textContent);
+     btn.textContent = "Copié ✓";
+     setTimeout(function () { btn.textContent = btn.getAttribute("data-label"); }, 1600);
+   }
+   if (navigator.clipboard && navigator.clipboard.writeText) {
+     navigator.clipboard.writeText(text).then(onSuccess, function () { mdFallback(text, onSuccess); });
+   } else {
+     mdFallback(text, onSuccess);
+   }
+ }
+ document.querySelectorAll(".copy-md").forEach(function(b) {
+   b.addEventListener("click", function(){ mdCopy(b.getAttribute("data-md"), b); });
+ });
  /* Lien vers le formulaire à côté de chaque bouton de copie participant */
- var FORM_URL="https://forms.gle/qATBGeGi8qiUcKro7";
- Array.prototype.forEach.call(document.querySelectorAll(".copy-md:not(.btn--trainer)"),function(b){
- var arrow=el("span",{"class":"flow-arrow","aria-hidden":"true"},"→");
- var a=el("a",{"class":"btn",href:FORM_URL,target:"_blank",rel:"noopener",style:"text-decoration:none"},"Coller dans le formulaire ↗");
- if(b.parentNode){b.parentNode.insertBefore(arrow,b.nextSibling);b.parentNode.insertBefore(a,arrow.nextSibling);}
+ var FORM_URL = "https://forms.gle/qATBGeGi8qiUcKro7";
+ document.querySelectorAll(".copy-md:not(.btn--trainer)").forEach(function(b) {
+   var arrow = el("span", {"class":"flow-arrow","aria-hidden":"true"}, "→");
+   var a = el("a", {"class":"btn",href:FORM_URL,target:"_blank",rel:"noopener",style:"text-decoration:none"}, "Coller dans le formulaire ↗");
+   if (b.parentNode) { b.parentNode.insertBefore(arrow, b.nextSibling); b.parentNode.insertBefore(a, arrow.nextSibling); }
  });
 
  /* ── PHASE TIMER ───────────────────────────────────── */
- var rc=document.createElement("div");rc.id="runclock";rc.hidden=true;rc.setAttribute("role","region");rc.setAttribute("aria-label","Minuteur de phase");
- rc.innerHTML='<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div><div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span><div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div><div class="rc-progress"><div id="rc-bar"></div></div>';
+ var rc = document.createElement("div");
+ rc.id = "runclock";
+ rc.hidden = true;
+ rc.setAttribute("role", "region");
+ rc.setAttribute("aria-label", "Minuteur de phase");
+ rc.innerHTML =
+   '<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div>' +
+   '<div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span>' +
+   '<div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div>' +
+   '<div class="rc-progress"><div id="rc-bar"></div></div>';
  document.body.appendChild(rc);
- var rcPhase=rc.querySelector("#rc-phase"),rcStepEl=rc.querySelector("#rc-step"),rcTimeEl=rc.querySelector("#rc-time"),rcToggle=rc.querySelector("#rc-toggle"),rcNext=rc.querySelector("#rc-next"),rcClose=rc.querySelector("#rc-close"),rcBar=rc.querySelector("#rc-bar");
- var rcSteps=[],rcIdx=0,rcRem=0,rcTot=0,rcGo=false,rcIv=null,rcDone=false;
- function rcPad(n){return (n<10?"0":"")+n;}
- function rcFmt(s){if(s<0)s=0;return rcPad(Math.floor(s/60))+":"+rcPad(s%60);}
- function rcRender(){rcTimeEl.textContent=rcFmt(rcRem);rcBar.style.width=(rcTot?Math.max(0,rcRem/rcTot*100):0)+"%";rcToggle.textContent=rcGo?"Pause":"Reprendre";}
- function rcEnsure(){if(!rcIv)rcIv=setInterval(rcTick,1000);}
- function rcStop(){if(rcIv){clearInterval(rcIv);rcIv=null;}}
- function rcStart(i){rcIdx=i;rcDone=false;var st=rcSteps[i];rcRem=st[1]*60;rcTot=rcRem;rcStepEl.textContent="Étape "+(i+1)+"/"+rcSteps.length+" · "+st[0]+" ("+st[1]+" min)";rcGo=true;rcRender();rcEnsure();}
- function rcTick(){if(!rcGo)return;if(rcRem>0){rcRem--;rcRender();}else if(rcIdx+1<rcSteps.length){rcStart(rcIdx+1);}else{rcFinish();}}
- function rcFinish(){rcGo=false;rcDone=true;rcStop();rcStepEl.textContent="Terminé ✓";rcTimeEl.textContent="00:00";rcBar.style.width="0%";rcToggle.textContent="Reprendre";}
- function rcOpen(key){var t=TIMERS[key];if(!t)return;rcSteps=t[1];rcPhase.textContent=t[0];rc.hidden=false;rcStart(0);}
- rcToggle.addEventListener("click",function(){if(rcDone)return;rcGo=!rcGo;rcRender();if(rcGo)rcEnsure();});
- rcNext.addEventListener("click",function(){if(rcDone)return;if(rcIdx+1<rcSteps.length)rcStart(rcIdx+1);else rcFinish();});
- rcClose.addEventListener("click",function(){rcGo=false;rcStop();rc.hidden=true;});
- Array.prototype.forEach.call(document.querySelectorAll(".start-timer"),function(b){b.addEventListener("click",function(){rcOpen(b.getAttribute("data-md"));});});
+
+ var rcPhase   = rc.querySelector("#rc-phase"),
+     rcStepEl  = rc.querySelector("#rc-step"),
+     rcTimeEl  = rc.querySelector("#rc-time"),
+     rcToggle  = rc.querySelector("#rc-toggle"),
+     rcNext    = rc.querySelector("#rc-next"),
+     rcClose   = rc.querySelector("#rc-close"),
+     rcBar     = rc.querySelector("#rc-bar");
+
+ var rcSteps = [], rcStepIndex = 0, rcRemaining = 0, rcTotal = 0,
+     rcRunning = false, rcInterval = null, rcFinished = false;
+
+ function padTwo(n) { return (n < 10 ? "0" : "") + n; }
+ function formatTime(s) { if (s < 0) s = 0; return padTwo(Math.floor(s / 60)) + ":" + padTwo(s % 60); }
+
+ function rcRender() {
+   rcTimeEl.textContent = formatTime(rcRemaining);
+   rcBar.style.width = (rcTotal ? Math.max(0, rcRemaining / rcTotal * 100) : 0) + "%";
+   rcToggle.textContent = rcRunning ? "Pause" : "Reprendre";
+ }
+ function rcEnsure() { if (!rcInterval) rcInterval = setInterval(rcTick, 1000); }
+ function rcStop()   { if (rcInterval) { clearInterval(rcInterval); rcInterval = null; } }
+
+ function rcStart(i) {
+   var st = rcSteps[i];
+   rcStepIndex = i;
+   rcFinished  = false;
+   rcRemaining = st[1] * 60;
+   rcTotal     = rcRemaining;
+   rcStepEl.textContent = "Étape " + (i + 1) + "/" + rcSteps.length + " · " + st[0] + " (" + st[1] + " min)";
+   rcRunning = true;
+   rcRender();
+   rcEnsure();
+ }
+ function rcTick() {
+   if (!rcRunning) return;
+   if (rcRemaining > 0) { rcRemaining--; rcRender(); }
+   else if (rcStepIndex + 1 < rcSteps.length) { rcStart(rcStepIndex + 1); }
+   else { rcFinish(); }
+ }
+ function rcFinish() {
+   rcRunning  = false;
+   rcFinished = true;
+   rcStop();
+   rcStepEl.textContent = "Terminé ✓";
+   rcTimeEl.textContent = "00:00";
+   rcBar.style.width    = "0%";
+   rcToggle.textContent = "Reprendre";
+ }
+ function rcOpen(key) {
+   var t = TIMERS[key];
+   if (!t) return;
+   rcSteps = t[1];
+   rcPhase.textContent = t[0];
+   rc.hidden = false;
+   rcStart(0);
+ }
+
+ rcToggle.addEventListener("click", function () {
+   if (rcFinished) return;
+   rcRunning = !rcRunning;
+   rcRender();
+   if (rcRunning) rcEnsure();
+ });
+ rcNext.addEventListener("click", function () {
+   if (rcFinished) return;
+   if (rcStepIndex + 1 < rcSteps.length) rcStart(rcStepIndex + 1);
+   else rcFinish();
+ });
+ rcClose.addEventListener("click", function () { rcRunning = false; rcStop(); rc.hidden = true; });
+ document.querySelectorAll(".start-timer").forEach(function(b) {
+   b.addEventListener("click", function(){ rcOpen(b.getAttribute("data-md")); });
+ });
 
  /* ── STEPS DURATION BOXES ──────────────────────────── */
- var PANELOF={};TABS.forEach(function(t){PANELOF[t[0]]="panel-"+t[0];});
- Object.keys(TIMERS).forEach(function(key){
- var panel=document.getElementById(PANELOF[key]);if(!panel)return;
- var steps=TIMERS[key][1];var total=0;steps.forEach(function(st){total+=st[1];});
- var box=document.createElement("div");box.className="steps-list";
- var h='<p class="steps-title">Étapes — '+total+' min au total</p><ol>';
- steps.forEach(function(st){h+='<li><span class="step-row"><span class="step-lbl">'+st[0]+'</span><span class="steps-dur">'+st[1]+' min</span></span></li>';});
- h+='</ol>';box.innerHTML=h;
- var mb=panel.querySelector(".meta-block");
- if(mb&&mb.parentNode){mb.parentNode.insertBefore(box,mb.nextSibling);}
- else{var pi=panel.querySelector(".panel-intro");if(pi&&pi.parentNode){pi.parentNode.insertBefore(box,pi.nextSibling);}else{panel.appendChild(box);}}
+ Object.keys(TIMERS).forEach(function(key) {
+   var panel = document.getElementById("panel-" + key);
+   if (!panel) return;
+   var steps = TIMERS[key][1];
+   var total = 0;
+   steps.forEach(function(st) { total += st[1]; });
+   var box = document.createElement("div");
+   box.className = "steps-list";
+   var h = '<p class="steps-title">Étapes — ' + total + ' min au total</p><ol>';
+   steps.forEach(function(st) {
+     h += '<li><span class="step-row"><span class="step-lbl">' + st[0] + '</span><span class="steps-dur">' + st[1] + ' min</span></span></li>';
+   });
+   h += '</ol>';
+   box.innerHTML = h;
+   var mb = panel.querySelector(".meta-block");
+   if (mb && mb.parentNode) {
+     mb.parentNode.insertBefore(box, mb.nextSibling);
+   } else {
+     var pi = panel.querySelector(".panel-intro");
+     if (pi && pi.parentNode) { pi.parentNode.insertBefore(box, pi.nextSibling); }
+     else { panel.appendChild(box); }
+   }
  });
 
 })();
