@@ -88,7 +88,7 @@
  padding:6px 8px;text-align:center;font-size:.85rem}
  ol.agenda .pause .time{background:var(--surface-3);color:var(--on-surface-variant)}
  ol.agenda h3{margin-bottom:2px}
- ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:.95rem}
+ ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:1rem}
 
  /* ── ACCORDION (details/summary) ── */
  details{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
@@ -101,6 +101,7 @@
  details[open]>summary::before{content:"\2212"}
  details>summary:hover{background:var(--surface-2)}
  .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant)}
+ .card-fold__body{padding:0 20px 18px}
  .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
  border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
  .phase-current{border:2px solid var(--primary)}
@@ -137,7 +138,7 @@
  .case-rl{border-left:4px solid var(--cat-interdit)}
 
  /* ── REVEAL BOX ── */
- .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
+ .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:1rem}
  .tri-reveal.show{display:block}
  .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
  .tri-reveal.ko{background:#fdeaea;color:#5f1411;border-left:4px solid var(--cat-interdit)}
@@ -150,7 +151,7 @@
  .field{margin:0 0 18px}
  .field:last-child{margin-bottom:0}
  .field label{display:block;font-weight:500;margin-bottom:6px}
- .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+ .hint{font-weight:400;color:var(--on-surface-variant);font-size:1rem}
  textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
  border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
  color:var(--on-surface)}
@@ -175,8 +176,8 @@
  .callout h3{margin-bottom:8px}
  .callout ul{margin:0;padding-left:20px}
  .callout li{margin:6px 0;color:var(--on-surface-variant)}
- .callout .warn{display:block;margin-top:10px;font-size:.9rem;color:var(--on-surface)}
- .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
+ .callout .warn{display:block;margin-top:10px;font-size:1rem;color:var(--on-surface)}
+ .reminder{font-size:1rem;color:var(--on-surface-variant);background:var(--surface-2);
  border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
 
  /* ── META BLOCK (dl/dt/dd grid) ── */
@@ -187,7 +188,7 @@
  .meta-block dd{margin:0;color:var(--on-surface)}
 
  /* ── ACTIONS ROW & BUTTONS ── */
- .save-note{font-size:.82rem;color:var(--on-surface-variant);margin:4px 0 0}
+ .save-note{font-size:1rem;color:var(--on-surface-variant);margin:4px 0 0}
  .actions-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;align-items:center}
  .flow-arrow{align-self:center;color:var(--outline);font-weight:700;font-size:1.3rem;line-height:1;margin:0 -4px}
  .btn{font-family:inherit;font-weight:500;font-size:.9rem;border-radius:999px;cursor:pointer;
@@ -205,10 +206,17 @@
 
  /* ── STEPS DURATION BOX ── */
  .steps-list{background:var(--surface-1);border:1px solid var(--outline-variant);
- border-radius:var(--radius-s);padding:10px 16px 12px;margin:0 0 18px}
- .steps-title{margin:0 0 6px;font-size:.74rem;font-weight:700;text-transform:uppercase;
+ border-radius:var(--radius-s);margin:0 0 18px;box-shadow:none;overflow:hidden}
+ details.steps-list>summary{cursor:pointer;list-style:none;display:flex;align-items:center;
+ gap:10px;padding:12px 16px}
+ details.steps-list>summary::-webkit-details-marker{display:none}
+ details.steps-list>summary::before{content:"+";font-size:1.1rem;font-weight:700;
+ color:var(--primary);width:18px;text-align:center;flex:0 0 auto}
+ details.steps-list[open]>summary::before{content:"\2212"}
+ details.steps-list>summary:hover{background:var(--surface-2)}
+ .steps-title{margin:0;font-size:.74rem;font-weight:700;text-transform:uppercase;
  letter-spacing:.04em;color:var(--primary)}
- .steps-list ol{margin:0;padding-left:22px}
+ .steps-list ol{margin:0;padding:0 16px 12px 40px}
  .steps-list li{padding:3px 0}
  .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
  .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
@@ -264,8 +272,8 @@
 <div class="topbar">
  <header class="app-bar">
  <div class="app-bar-inner">
- <h1>Découvrir l'IA générative — l'utiliser sans mettre en risque les données
- <span class="subtitle">Espace de travail du participant · Niveau débutant · personnel administratif · Académie de La Réunion · atelier 3 h</span>
+ <h1>Découvrir l'IA générative — Personnel administratif
+ <span class="subtitle">Espace de travail du participant · Niveau débutant · personnel administratif · atelier 3 h</span>
  </h1>
  </div>
  </header>
@@ -282,7 +290,7 @@
 </main>
 
 <footer>
- <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources d'inspiration : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; CNIL, fiche « Agent : comment utiliser un système d'IA dans le cadre de vos missions ».</p>
+ <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/fr.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources d'inspiration : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; CNIL, fiche « Agent : comment utiliser un système d'IA dans le cadre de vos missions ».</p>
 </footer>
 
 <script>
@@ -300,19 +308,19 @@
  var TABS=[
  ["accueil","Accueil",""],
  ["avant","Avant de commencer","0:00–0:10"],
- ["donnees","1 · Mes données","0:10–0:22"],
+ ["donnees","1 · Protéger les données","0:10–0:22"],
  ["outil","2 · Quel outil ?","0:22–0:36"],
  ["prompt","3 · Parler à l'IA","0:36–1:11"],
  ["multi","4 · Multimodal","1:11–1:33"],
  ["vibe","5 · Fabriquer un outil","1:53–2:37"],
- ["pas","Mon premier pas","2:37–2:57"]
+ ["pas","Clôture","2:37–2:57"]
  ];
 
  var TIMERS={
  "avant":["Avant de commencer",[
  ["Tour de table express (post-its)",6]
  ]],
- "donnees":["1 · Mes données d'abord",[
+ "donnees":["1 · Protéger les données",[
  ["L'essentiel : ce que je ne confie jamais",6],
  ["Vote flash : GO / NO-GO / anonymiser",4],
  ["La check-list avant de coller",2]
@@ -378,7 +386,7 @@
  "[Colle ici toutes les réponses « tâche / inquiétude » recueillies]";
  },
  "donnees":function(){
- return "## 1 · Mes données d'abord\n\n"+
+ return "## 1 · Protéger les données\n\n"+
  "**Mes votes (vote flash GO / NO-GO / anonymiser) :**\n"+
  "- Un mail citant un élève par son nom : "+(VOTE_LAB[store.get("don.s1")]||"—")+"\n"+
  "- Une liste de classe (noms + dates de naissance) à mettre en forme : "+(VOTE_LAB[store.get("don.s2")]||"—")+"\n"+
@@ -386,7 +394,7 @@
  "**Mes remarques :** "+(mdField("don.remarques")||"—");
  },
  "donneesAnim":function(){
- return "# Analyse des votes « détective de données » — étape 1 « Mes données d'abord »\n\n"+
+ return "# Analyse des votes « détective de données » — étape 1 « Protéger les données »\n\n"+
  "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
  "CONTEXTE : à l'étape 1, chaque participant a voté (GO / NO-GO / GO après anonymisation) sur 3 situations de bureau, et a pu laisser des remarques. Je te transmets l'ensemble des relevés du groupe.\n\n"+
  "Les 3 situations :\n1. Un mail citant un élève par son nom.\n2. Une liste de classe (noms + dates de naissance) à mettre en forme.\n3. Une circulaire publique à reformuler.\n\n"+
@@ -524,7 +532,7 @@
  '<h3 style="margin:24px 0 10px">Au programme</h3>'+
  '<ol class="agenda">'+
  "<li><span class=\"time\">0:00–0:10</span><div><h3>Ouverture</h3><p>Tour de table : une tâche à déléguer, une inquiétude sur les données.</p></div></li>"+
- "<li><span class=\"time\">0:10–0:22</span><div><h3>1 · Mes données d'abord</h3><p>Le « détective de données » : ce que je ne confie jamais.</p></div></li>"+
+ "<li><span class=\"time\">0:10–0:22</span><div><h3>1 · Protéger les données</h3><p>Le « détective de données » : ce que je ne confie jamais.</p></div></li>"+
  "<li><span class=\"time\">0:22–0:36</span><div><h3>2 · Quel outil ?</h3><p>Autorisé ou non, et ce que j'ai le droit d'y mettre.</p></div></li>"+
  "<li><span class=\"time\">0:36–1:11</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction (prompting &amp; Prompt Builder).</p></div></li>"+
  '<li><span class="time">1:11–1:33</span><div><h3>4 · La puissance multimodale</h3><p>Lire, synthétiser, mettre en forme — et ses limites.</p></div></li>'+
@@ -554,17 +562,17 @@
  '</div>';
 
  PANELS.donnees=
- '<div class="panel-head"><h2>1 · Mes données d\'abord</h2><span class="panel-time">0:10–0:22 (12 min)</span></div>'+
+ '<div class="panel-head"><h2>1 · Protéger les données</h2><span class="panel-time">0:10–0:22 (12 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Adopter un réflexe simple : repérer dans une tâche réelle ce qui ne se confie jamais à un outil non référencé, et décider GO / NO-GO / GO après anonymisation.</dd>"+
  '<dt>Modalité</dt><dd>En groupe — l\'essentiel, puis un vote flash sur 3 situations.</dd>'+
  '</dl>'+
  "<p class=\"panel-intro\">Vous manipulez les données les plus sensibles de l'établissement (état civil, adresses, situations familiales, santé, bourses, absences, sanctions). Avant de coller quoi que ce soit dans un outil, devenez <strong>détective</strong>. Principe directeur : <strong>un outil non référencé peut stocker et réutiliser ce qu'on lui confie</strong> (hébergement parfois hors UE).</p>"+
  "<h3 style=\"margin:18px 0 8px\">Deux notions à avoir en tête</h3>"+
- '<details open><summary><span class="badge-num">1</span><span>Donnée personnelle</span></summary>'+
- "<div class=\"details__body\">Tout ce qui identifie une personne, <strong>directement OU indirectement</strong> : un nom, mais aussi une <strong>initiale + une classe</strong>, un <strong>matricule</strong>, une <strong>date de naissance</strong>.<br><span class=\"hint\">⚠️ <strong>Anonymiser ≠ enlever le nom</strong> : c'est enlever <strong>tout ce qui permet de ré-identifier</strong> la personne.</span></div></details>"+
+ '<details><summary><span class="badge-num">1</span><span>Donnée à caractère personnel</span></summary>'+
+ "<div class=\"details__body\">Tout ce qui identifie une personne, <strong>directement OU indirectement</strong>. Par exemple : un nom, une photo, une empreinte, une adresse postale, une adresse mail, un numéro de téléphone, un numéro de sécurité sociale, un matricule interne, une adresse IP, un identifiant de connexion informatique, un enregistrement vocal, etc.<br><span class=\"hint\">⚠️ <strong>Anonymiser ≠ enlever le nom</strong> : c'est enlever <strong>tout ce qui permet de ré-identifier</strong> la personne.<br><strong>Attention :</strong> s'il est possible par recoupement de plusieurs informations (âge, sexe, ville, diplôme, etc.) ou par l'utilisation de moyens techniques divers, d'identifier une personne, les données sont toujours considérées comme personnelles.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/une-donnee-caractere-personnel-cest-quoi\" target=\"_blank\" rel=\"noopener\">Une donnée à caractère personnel, c'est quoi&nbsp;? (CNIL) ↗</a></p></div></details>"+
  '<details><summary><span class="badge-num">2</span><span>Donnée sensible</span></summary>'+
- "<div class=\"details__body\">Santé, situation sociale, origine, opinions, religion… <em>Exemples</em> : un certificat médical, une demande de bourse, un signalement. À ne jamais confier à un outil non référencé.</div></details>"+
+ "<div class=\"details__body\">Ce sont les informations qui révèlent la prétendue origine raciale ou ethnique, les opinions politiques, les convictions religieuses ou philosophiques ou l'appartenance syndicale.<br>Ce sont également les données génétiques, les données biométriques aux fins d'identifier une personne physique de manière unique, les données concernant la santé, la vie sexuelle ou l'orientation sexuelle d'une personne physique.<br><strong>Il est interdit de recueillir et d'utiliser ces données.</strong><br><span class=\"hint\">🔒 À ne jamais confier à un outil non référencé.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/1823\" target=\"_blank\" rel=\"noopener\">Qu'est-ce qu'une donnée sensible&nbsp;? (CNIL) ↗</a></p></div></details>"+
  "<h3 style=\"margin:22px 0 8px\">Vote flash — GO / NO-GO / anonymiser&nbsp;?</h3>"+
  "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque situation, positionnez-vous, puis dépliez l'analyse. C'est pour vous (non transmis).</p>"+
  '<div class="card">'+
@@ -622,13 +630,13 @@
  '</dl>'+
  "<p class=\"panel-intro\">Avant la qualité d'un outil, c'est son <strong>statut</strong> qui décide de ce que vous pouvez y saisir. La notoriété d'un outil <strong>ne change rien</strong> à son statut RGPD. <strong>Le réflexe en deux questions :</strong> <em>(1) Quel est le statut de cet outil&nbsp;? (2) Donc qu'ai-je le droit d'y mettre&nbsp;?</em></p>"+
  "<h3 style=\"margin:18px 0 8px\">Les trois statuts</h3>"+
- '<details open><summary><span class="badge-num">✅</span><span>Autorisé / référencé</span></summary>'+
+ '<details><summary><span class="badge-num">✅</span><span>Autorisé / référencé</span></summary>'+
  "<div class=\"details__body\">ENT, GAR, outil validé par le <strong>DPO / le rectorat</strong> — la conformité a été <strong>déjà vérifiée</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> usage le plus serein ; dans le cadre prévu, certaines <strong>données de service</strong>.</div></details>"+
  '<details><summary><span class="badge-num">⚠️</span><span>Non référencé / grand public</span></summary>'+
  "<div class=\"details__body\">Assistant en accès libre, <strong>non validé</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> <strong>aucune donnée personnelle</strong> — uniquement des données fictives, des <strong>[CROCHETS]</strong>, des documents publics, avec précaution constante.</div></details>"+
  '<details><summary><span class="badge-num">⛔</span><span>Interdit</span></summary>'+
  "<div class=\"details__body\">Confier des <strong>données personnelles ou sensibles</strong> à un outil <strong>non référencé</strong>. On ne le fait pas.</div></details>"+
- "<h3 style=\"margin:22px 0 8px\">Mini-tri — outil × tâche → décision</h3>"+
+ "<h3 id=\"outil-minitri\" style=\"margin:22px 0 8px\">Mini-tri — outil × tâche → décision</h3>"+
  "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque couple, décidez, puis dépliez l'analyse.</p>"+
  '<div class="card">'+
  "<p class=\"case__q\">A — <strong>Outil ENT</strong> pour un <strong>publipostage</strong>.</p>"+
@@ -661,6 +669,12 @@
  "<div class=\"details__body\"><strong>NO-GO</strong> : outil <strong>non référencé</strong> + données <strong>personnelles et sensibles</strong> = cas interdit. Même anonymisé, un dossier d'élève reste souvent ré-identifiable : à traiter dans un outil <strong>référencé</strong> uniquement, dans le cadre prévu.</div></details>"+
  '</div>'+
  "<p class=\"reminder\">🔎 Repère : le <strong>DPO</strong> tranche ; la liste des outils <strong>référencés (ENT / GAR)</strong> est la référence. À statut égal, privilégiez les <strong>solutions libres et sobres</strong> et partez du <strong>besoin</strong>, pas de l'outil.</p>"+
+ '<div class="card">'+
+ '<h3>Explorer le répertoire d\'outils IA</h3>'+
+ "<p class=\"hint\" style=\"margin:.3em 0 12px\">Naviguez quelques minutes dans le <strong>répertoire interactif de la DRANE</strong> et repérez <strong>1 à 3 outils</strong> que vous aimeriez essayer — pas besoin de tester maintenant, juste repérer.</p>"+
+ "<p class=\"hint\" style=\"margin:0 0 10px\">Pour identifier les outils : répertoire interactif d'outils IA pour un usage pédagogique (DRANE PACA).</p>"+
+ '<p style="margin:0"><a class="btn btn--filled" href="https://repertoire-outils-ia-f0df4b.forge.apps.education.fr/" target="_blank" rel="noopener" style="text-decoration:none">Ouvrir le répertoire ↗</a> <span class="hint">— <a href="https://www.pedagogie.ac-nice.fr/drane/2026/02/27/rioiag/" target="_blank" rel="noopener">source (DRANE)</a></span></p>'+
+ '</div>'+
  "<div class=\"field\" style=\"margin-top:10px\"><label for=\"out-remarques\">Mes remarques</label><textarea id=\"out-remarques\" data-key=\"out.remarques\" placeholder=\"outils de mon service, cas limites, questions pour le DPO…\"></textarea></div>"+
  '<p class="save-note" style="margin:6px 0 0">Enregistré automatiquement sur cet appareil.</p>'+
  '<div class="actions-row">'+
@@ -685,20 +699,20 @@
  '<div class="card">'+
  '<h3>Les 5 leviers</h3>'+
  '<ul>'+
- "<li>🎭 <strong>Rôle</strong> — qui l'IA doit être (« tu es secrétaire de direction »)</li>"+
- '<li>🧭 <strong>Contexte</strong> — qui, quel service, quel cadre</li>'+
- '<li>🪜 <strong>Étapes</strong> — une production unique ou un dialogue (« pose-moi tes questions avant de rédiger »)</li>'+
- '<li>📐 <strong>Format</strong> — sous quelle forme (« un courrier de 120 mots, ton institutionnel »)</li>'+
- "<li>⛓️ <strong>Contraintes</strong> — le cadre, les mentions (« termine par une demande d'accusé de réception »)</li>"+
+ "<li><strong>Rôle</strong> — qui l'IA doit être (« tu es secrétaire de direction »)</li>"+
+ '<li><strong>Contexte</strong> — qui, quel service, quel cadre</li>'+
+ '<li><strong>Étapes</strong> — une production unique ou un dialogue (« pose-moi tes questions avant de rédiger »)</li>'+
+ '<li><strong>Format</strong> — sous quelle forme (« un courrier de 120 mots, ton institutionnel »)</li>'+
+ "<li><strong>Contraintes</strong> — le cadre, les mentions (« termine par une demande d'accusé de réception »)</li>"+
  '</ul>'+
- "<p class=\"reminder\">🔒 <strong>Données :</strong> mettez des <strong>[CROCHETS]</strong> ou des informations fictives à la place des vraies données (noms, adresses, dates réelles).</p>"+
+ "<p class=\"reminder\"><strong>Données :</strong> mettez des <strong>[CROCHETS]</strong> ou des informations fictives à la place des vraies données (noms, adresses, dates réelles).</p>"+
  '</div>'+
- '<div class="card">'+
- '<h3>L\'outil Prompt Builder (PCOAB)</h3>'+
- '<p><a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
+ '<div class="card" id="pr-builder-card">'+
+ '<h3>L\'outil de construction d\'instructions</h3>'+
+ '<p><a href="https://jourde.github.io/prompt-builder/fr.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder/fr.html</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
  '<p class="hint" style="margin:.3em 0 8px">Cinq champs → un prompt structuré, prêt à copier :</p>'+
  '<ul>'+
- "<li><strong>P</strong>ersona — qui l'IA doit être</li>"+
+ "<li><strong>Rôle</strong> — qui l'IA doit être</li>"+
  '<li><strong>C</strong>ontext — la situation, le service, les contraintes</li>'+
  '<li><strong>O</strong>bjective — ce que vous voulez obtenir</li>'+
  '<li><strong>A</strong>udience — pour qui c\'est destiné</li>'+
@@ -707,13 +721,16 @@
  '</div>'+
  '<div class="card">'+
  '<h3>Atelier — du prompt novice au prompt contextualisé</h3>'+
- '<p class="hint" style="margin:.3em 0 12px">Choisissez une tâche administrative réelle (mail, courrier, PV, note de service, synthèse), rédigez un prompt novice, testez, puis reconstruisez-le avec Prompt Builder et comparez. <strong>Données fictives ou [CROCHETS]</strong> à la place des vraies infos.</p>'+
+ '<p class="hint" style="margin:.3em 0 0">Choisissez une tâche administrative réelle (mail, courrier, PV, note de service, synthèse), rédigez un prompt novice, testez, puis reconstruisez-le avec l\'outil de construction d\'instructions et comparez. <strong>Données fictives ou [CROCHETS]</strong> à la place des vraies infos.</p>'+
+ '</div>'+
+ '<details class="card-fold" id="pr-notes"><summary>Mes notes — du prompt novice au contextualisé</summary>'+
+ '<div class="card-fold__body">'+
  '<div class="field"><label for="pr-tache">Ma tâche administrative réelle</label><textarea id="pr-tache" data-key="pr.tache" placeholder="rédiger un mail aux familles, un courrier, un PV, une note de service…"></textarea></div>'+
  '<div class="field"><label for="pr-novice">Mon prompt <strong>novice</strong></label><textarea id="pr-novice" data-key="pr.novice"></textarea></div>'+
- '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (Prompt Builder)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
+ '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (outil de construction d\'instructions)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
  "<div class=\"field\"><label for=\"pr-savoir\">Pour améliorer mon instruction, qu'ai-je dû <strong>savoir moi-même</strong> ? <span class=\"hint\">(le ton institutionnel, le destinataire, le cadre réglementaire… ce que l'IA ne peut pas deviner)</span></label><textarea id=\"pr-savoir\" data-key=\"pr.savoir\" placeholder=\"le cœur de l'atelier : l'IA ne compense pas ce qu'on ne lui fournit pas\"></textarea></div>"+
  '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
- '</div>'+
+ '</div></details>'+
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="prompt">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="prompt">Copier mes notes (Markdown)</button>'+
@@ -727,12 +744,16 @@
  '<dt>Modalité</dt><dd>Binôme — atelier « à la carte », 2 manipulations sur un document non nominatif.</dd>'+
  '</dl>'+
  "<p class=\"panel-intro\">Les outils récents ne traitent pas que le texte saisi au clavier : ils lisent une image, résument un document, le mettent en forme, le traduisent. Le mieux est d'<strong>essayer</strong> : choisissez deux manipulations parmi le menu, sur un document <strong>non nominatif</strong>.</p>"+
- '<details open><summary><span class="badge-num">1</span><span>OCR / lecture d\'image</span></summary><div class="details__body">Photographier un courrier papier, un document manuscrit → obtenir un <strong>texte éditable</strong>.<br><em>Usage</em> : numériser, réécrire, rendre un document accessible.</div></details>'+
+ '<details><summary><span class="badge-num">1</span><span>OCR / lecture d\'image</span></summary><div class="details__body">Photographier un courrier papier, un document manuscrit → obtenir un <strong>texte éditable</strong>.<br><em>Usage</em> : numériser, réécrire, rendre un document accessible.</div></details>'+
  '<details><summary><span class="badge-num">2</span><span>Synthèse</span></summary><div class="details__body">Donner une circulaire, une note, un long compte rendu → <strong>points clés ou tableau</strong>.<br><em>Usage</em> : gagner du temps de lecture, préparer une diffusion.</div></details>'+
  '<details><summary><span class="badge-num">3</span><span>Mise en forme / reformatage</span></summary><div class="details__body">Transformer un <strong>texte brut</strong> en tableau, liste, courrier propre.<br><em>Usage</em> : reformater rapidement.</div></details>'+
  '<details><summary><span class="badge-num">4</span><span>Traduction</span></summary><div class="details__body">Traduire un courrier, une consigne.<br><em>Usage</em> : contexte multilingue.</div></details>'+
  '<details><summary><span class="badge-num">5</span><span>Infographie / schéma simple <span class="hint">— à connaître / en démonstration</span></span></summary><div class="details__body">Transformer une <strong>information</strong> en visuel (schéma, frise).<br><em>Usage</em> : illustrer une communication. <em>Prudence</em> : vérifier les droits et l\'exactitude du rendu.</div></details>'+
- '<div class="card">'+
+ '<div class="card" id="multi-activity">'+
+ '<h3>Ce que vous allez faire</h3>'+
+ '<p class="hint" style="margin:.3em 0 0">En binôme, choisissez <strong>deux</strong> manipulations du menu ci-dessus et réalisez-les sur un <strong>document non nominatif fourni</strong> (circulaire publique, texte à mettre en tableau, image de document libre de droits). Pour chacune, observez ce que l\'outil <strong>apporte</strong>, là où il se <strong>trompe</strong>, et repérez une <strong>donnée à ne pas confier</strong>. Consignez vos observations dans la partie « Réflexion » ci-dessous.</p>'+
+ '</div>'+
+ '<div class="card" id="multi-manipA">'+
  '<h3>Manipulation A</h3>'+
  '<div class="field"><label for="ma-nom">Laquelle ?</label><textarea id="ma-nom" data-key="mu.a.nom" placeholder="OCR / synthèse / mise en forme / traduction…"></textarea></div>'+
  '<div class="field"><label for="ma-apport">Apport observé</label><textarea id="ma-apport" data-key="mu.a.apport"></textarea></div>'+
@@ -775,21 +796,12 @@
  "<li><strong>Enregistrer</strong> le code généré dans un fichier <code>.html</code> (un éditeur de texte simple suffit) — ou utiliser l'<strong>aperçu direct</strong> si votre outil en propose un (artefact / canevas)</li>"+
  "<li><strong>Ouvrir</strong> le fichier dans le navigateur, <strong>tester</strong>, puis <strong>itérer</strong> (« agrandis les champs », « ajoute une colonne date », « ajoute un bouton Word »)</li>"+
  '</ul>'+
- "<p class=\"reminder\">🔁 On ne garde pas la première version : le vibe coding, c'est la <strong>boucle d'ajustement</strong>.</p>"+
  '</div>'+
- "<h3 style=\"margin:22px 0 8px\">Un menu d'outils pour l'administratif — avec amorces de prompt</h3>"+
- '<details open><summary><span class="badge-num">📋</span><span>Formulaire → export Excel/Word</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> (un seul fichier, sans serveur). Elle affiche un <strong>formulaire</strong> avec les champs Nom, Prénom, Classe, Motif, Date. Un bouton <strong>Exporter en Excel</strong> télécharge les saisies en <code>.xlsx</code>, un bouton <strong>Exporter en Word</strong> en <code>.docx</code>. Tout fonctionne <strong>dans le navigateur</strong>, aucune donnée envoyée. Champs larges, contraste élevé. »</div></details>'+
- '<details><summary><span class="badge-num">✉️</span><span>Générateur de courrier-type</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> : je remplis quelques champs (Destinataire, Objet, Date, Lieu) et la page <strong>génère un courrier administratif propre</strong> prêt à copier, avec formules d\'appel et de politesse. Boutons <strong>Copier</strong> et <strong>Exporter en Word</strong>. Aucune donnée envoyée. »</div></details>'+
- '<details><summary><span class="badge-num">🔢</span><span>Convertisseur liste → tableau</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> où je colle une <strong>liste de lignes</strong> et qui les <strong>transforme en tableau</strong>, avec un bouton <strong>Exporter en Excel</strong> et le <strong>nombre de lignes</strong>. Tout dans le navigateur. »</div></details>'+
- '<details><summary><span class="badge-num">✅</span><span>Checklist de procédure imprimable</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> : une <strong>checklist</strong> (cases à cocher) pour [inscription d\'un élève / départ d\'un agent], avec possibilité d\'ajouter une ligne et un bouton <strong>Imprimer</strong>. Mise en page sobre. »</div></details>'+
- '<div class="card">'+
- '<h3>Mon atelier « fabrique ton outil »</h3>'+
- '<div class="field"><label for="vi-outil">L\'outil que je choisis</label><textarea id="vi-outil" data-key="vi.outil" placeholder="formulaire → export / courrier-type / convertisseur / checklist…"></textarea></div>'+
- '<div class="field"><label for="vi-defaut">⚠️ Un défaut repéré</label><textarea id="vi-defaut" data-key="vi.defaut" placeholder="un bug, un export qui ne marche pas, une ergonomie à revoir…"></textarea></div>'+
- '<div class="field"><label for="vi-donnee">🔒 Une donnée à NE PAS coder en dur</label><textarea id="vi-donnee" data-key="vi.donnee" placeholder="ex. une liste nominative → un champ vide à remplir localement"></textarea></div>'+
- '<div class="field"><label for="vi-iter">🔁 Mon itération (ce que j\'ai demandé en plus)</label><textarea id="vi-iter" data-key="vi.iter" placeholder="« agrandis les champs », « ajoute une colonne date », « ajoute un bouton Word »…"></textarea></div>'+
- '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
- '</div>'+
+ "<h3 style=\"margin:22px 0 8px\">Exemples d'outils pour l'administratif — avec amorces de prompt</h3>"+
+ '<details><summary><span class="badge-num">📋</span><span>Formulaire → export Excel/Word</span></summary><div class="details__body"><span class="vibe-prompt">« Crée une <strong>page HTML autonome</strong> (un seul fichier, sans serveur). Elle affiche un <strong>formulaire</strong> avec les champs Nom, Prénom, Service, Motif, Date. Un bouton <strong>Exporter en Excel</strong> télécharge les saisies en <code>.xlsx</code>, un bouton <strong>Exporter en Word</strong> en <code>.docx</code>. Tout fonctionne <strong>dans le navigateur</strong>, aucune donnée envoyée. Champs larges, contraste élevé. »</span><div class="actions-row" style="margin-top:12px"><button type="button" class="btn copy-prompt">Copier le prompt</button></div></div></details>'+
+ '<details><summary><span class="badge-num">✉️</span><span>Générateur de courrier-type</span></summary><div class="details__body"><span class="vibe-prompt">« Crée une <strong>page HTML autonome</strong> : je remplis quelques champs (Destinataire, Objet, Date, Lieu) et la page <strong>génère un courrier administratif propre</strong> prêt à copier, avec formules d\'appel et de politesse. Boutons <strong>Copier</strong> et <strong>Exporter en Word</strong>. Aucune donnée envoyée. »</span><div class="actions-row" style="margin-top:12px"><button type="button" class="btn copy-prompt">Copier le prompt</button></div></div></details>'+
+ '<details><summary><span class="badge-num">🔢</span><span>Convertisseur liste → tableau</span></summary><div class="details__body"><span class="vibe-prompt">« Crée une <strong>page HTML autonome</strong> où je colle une <strong>liste de lignes</strong> et qui les <strong>transforme en tableau</strong>, avec un bouton <strong>Exporter en Excel</strong> et le <strong>nombre de lignes</strong>. Tout dans le navigateur. »</span><div class="actions-row" style="margin-top:12px"><button type="button" class="btn copy-prompt">Copier le prompt</button></div></div></details>'+
+ '<details><summary><span class="badge-num">📅</span><span>Calculateur d\'échéance (délai)</span></summary><div class="details__body"><span class="vibe-prompt">« Crée une <strong>page HTML autonome</strong> où je saisis une <strong>date de départ</strong> et un <strong>nombre de jours</strong>, et qui calcule la <strong>date d\'échéance</strong>. Prévois une option <strong>« jours ouvrés »</strong> (exclure samedis et dimanches). Affiche le résultat en clair, avec un bouton <strong>Copier</strong>. Tout dans le navigateur, aucune donnée envoyée. »</span><div class="actions-row" style="margin-top:12px"><button type="button" class="btn copy-prompt">Copier le prompt</button></div></div></details>'+
  '<div class="callout">'+
  '<h3>Trois garde-fous</h3>'+
  '<ul>'+
@@ -799,6 +811,18 @@
  '</ul>'+
  '<span class="warn">🌐 Pour partager : envoyez simplement le fichier <code>.html</code>, ou hébergez-le (Forge des communs numériques éducatifs).</span>'+
  '</div>'+
+ '<div class="card" id="vibe-consigne">'+
+ '<h3>Ce que vous allez faire</h3>'+
+ '<p class="hint" style="margin:.3em 0 0">En binôme, choisissez <strong>un</strong> outil du menu ci-dessus (ou partez d\'un <strong>besoin réel</strong> de votre service). Copiez l\'amorce de prompt, <strong>décrivez l\'outil à l\'IA</strong>, récupérez la page HTML (fichier ou aperçu direct), <strong>ouvrez-la et testez-la</strong>, puis <strong>itérez une fois</strong> (« agrandis les champs », « ajoute une colonne date »…). Respectez les <strong>trois garde-fous</strong> ci-dessus, puis consignez vos observations dans la partie « Réflexion ».</p>'+
+ '</div>'+
+ '<div class="card" id="vibe-atelier">'+
+ '<h3>Mon atelier « fabrique ton outil »</h3>'+
+ '<div class="field"><label for="vi-outil">L\'outil que je choisis</label><textarea id="vi-outil" data-key="vi.outil" placeholder="formulaire → export / courrier-type / convertisseur / calculateur d\'échéance…"></textarea></div>'+
+ '<div class="field"><label for="vi-defaut">⚠️ Un défaut repéré</label><textarea id="vi-defaut" data-key="vi.defaut" placeholder="un bug, un export qui ne marche pas, une ergonomie à revoir…"></textarea></div>'+
+ '<div class="field"><label for="vi-donnee">🔒 Une donnée à NE PAS coder en dur</label><textarea id="vi-donnee" data-key="vi.donnee" placeholder="ex. une liste nominative → un champ vide à remplir localement"></textarea></div>'+
+ '<div class="field"><label for="vi-iter">🔁 Mon itération (ce que j\'ai demandé en plus)</label><textarea id="vi-iter" data-key="vi.iter" placeholder="« agrandis les champs », « ajoute une colonne date », « ajoute un bouton Word »…"></textarea></div>'+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="vibe">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="vibe">Copier mes notes (Markdown)</button>'+
@@ -806,7 +830,7 @@
  '</div>';
 
  PANELS.pas=
- '<div class="panel-head"><h2>Mon premier pas</h2><span class="panel-time">2:37–2:57 (20 min)</span></div>'+
+ '<div class="panel-head"><h2>Clôture</h2><span class="panel-time">2:37–2:57 (20 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Esprit</dt><dd>La clôture <strong>produit</strong> quelque chose : un engagement écrit, pas une synthèse.</dd>"+
  '</dl>'+
@@ -833,7 +857,7 @@
  "<li>🔒 Fiche <strong>CNIL</strong> : « Agent : comment utiliser un système d'IA dans le cadre de vos missions »</li>"+
  '<li>🎓 Parcours <a href="https://pix.fr/intelligence-artificielle/" target="_blank" rel="noopener"><strong>Pix IA</strong></a> : « Mon premier prompt ! » → « J\'améliore mes prompts ! »</li>'+
  "<li>📜 <a href=\"https://www.education.gouv.fr/cadre-d-usage-de-l-ia-en-education-450647\" target=\"_blank\" rel=\"noopener\"><strong>Cadre d'usage national de l'IA en éducation</strong></a> (juin 2025) + charte d'établissement</li>"+
- '<li>🛠️ <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener"><strong>Prompt Builder</strong></a></li>'+
+ '<li>🛠️ <a href="https://jourde.github.io/prompt-builder/fr.html" target="_blank" rel="noopener"><strong>Prompt Builder</strong></a></li>'+
  '</ul>'+
  "<span class=\"warn\">Vous n'avez pas tout vu, mais vous avez l'essentiel pour commencer <strong>sans vous mettre en risque</strong>.</span>"+
  '</div>'+
@@ -870,24 +894,37 @@
    "outil": function(p) {
      var firstDetails = p.querySelector("details");
      if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
-     var card = p.querySelector(".card");
-     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+     var mini = p.querySelector("#outil-minitri");
+     if (mini) mini.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), mini);
+     var ta = p.querySelector("[data-key='out.remarques']");
+     if (ta) {
+       var field = ta.closest(".field");
+       if (field) field.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), field);
+     }
    },
    "prompt": function(p) {
      var cards = p.querySelectorAll(".card");
      if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("explain", "📖 Explication"), cards[0]);
-     if (cards[3]) cards[3].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[3]);
+     var ex = p.querySelector("#pr-builder-card");
+     if (ex) ex.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), ex);
+     var rf = p.querySelector("#pr-notes");
+     if (rf) rf.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), rf);
    },
    "multi": function(p) {
      var firstDetails = p.querySelector("details");
      if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
-     var card = p.querySelector(".card");
-     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+     var act = p.querySelector("#multi-activity");
+     if (act) act.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), act);
+     var rf = p.querySelector("#multi-manipA");
+     if (rf) rf.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), rf);
    },
    "vibe": function(p) {
      var cards = p.querySelectorAll(".card");
      if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("explain", "📖 Explication"), cards[0]);
-     if (cards[1]) cards[1].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[1]);
+     var ex = p.querySelector("#vibe-consigne");
+     if (ex) ex.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), ex);
+     var rf = p.querySelector("#vibe-atelier");
+     if (rf) rf.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), rf);
    },
    "pas": function(p) {
      var cards = p.querySelectorAll(".card");
@@ -896,6 +933,32 @@
    }
  };
 
+ /* ── FOLD "RÉFLEXION" CONTENT (collapsed by default) ── */
+ var REFLECT_SUMMARY={
+   donnees:"Mes remarques",
+   outil:"Mes remarques",
+   multi:"Mes notes — manipulations A & B",
+   vibe:"Mes notes — fabrique ton outil",
+   pas:"Je sais désormais… — auto-positionnement"
+ };
+ function foldReflect(p,label){
+   var tag=p.querySelector(".phase-tag--reflect");
+   if(!tag)return;
+   var first=tag.nextElementSibling;
+   if(first&&first.tagName==="DETAILS"&&first.className.indexOf("card-fold")>-1)return; /* déjà replié */
+   var nodes=[],n=first;
+   while(n&&!(n.classList&&(n.classList.contains("phase-tag")||n.classList.contains("actions-row")||n.classList.contains("panel-nav")))){
+     var nx=n.nextElementSibling;nodes.push(n);n=nx;
+   }
+   if(!nodes.length)return;
+   var det=el("details",{class:"card-fold"});
+   det.appendChild(el("summary",null,label||"Mes notes"));
+   var body=el("div",{class:"card-fold__body"});
+   nodes.forEach(function(x){body.appendChild(x);});
+   det.appendChild(body);
+   tag.parentNode.insertBefore(det,tag.nextSibling);
+ }
+
  /* ── BUILD PANELS ──────────────────────────────────── */
  var MAIN=document.getElementById("main");
  TABS.forEach(function(t,i){
@@ -903,6 +966,7 @@
  if(i!==0)p.hidden=true;
  p.innerHTML=PANELS[t[0]];
  if(PANEL_TAGS[t[0]]) PANEL_TAGS[t[0]](p);
+ foldReflect(p, REFLECT_SUMMARY[t[0]]);
  MAIN.appendChild(p);
  });
 
@@ -1028,6 +1092,23 @@
  document.querySelectorAll(".copy-md").forEach(function(b) {
    b.addEventListener("click", function(){ mdCopy(b.getAttribute("data-md"), b); });
  });
+ /* Copie de l'amorce de prompt de chaque exemple (étape 5) */
+ document.querySelectorAll(".copy-prompt").forEach(function(b) {
+   b.addEventListener("click", function(){
+     var body = b.closest(".details__body");
+     var span = body && body.querySelector(".vibe-prompt");
+     if (!span) return;
+     var text = span.textContent.replace(/^\s*«\s*/, "").replace(/\s*»\s*$/, "").trim();
+     function onSuccess(){
+       if (!b.getAttribute("data-label")) b.setAttribute("data-label", b.textContent);
+       b.textContent = "Copié ✓";
+       setTimeout(function(){ b.textContent = b.getAttribute("data-label"); }, 1600);
+     }
+     if (navigator.clipboard && navigator.clipboard.writeText) {
+       navigator.clipboard.writeText(text).then(onSuccess, function(){ mdFallback(text, onSuccess); });
+     } else { mdFallback(text, onSuccess); }
+   });
+ });
  /* Lien vers le formulaire à côté de chaque bouton de copie participant.
     ▸ À PERSONNALISER : remplacez l'URL ci-dessous par celle de votre formulaire admin. */
  var FORM_URL = "https://forms.gle/VOTRE-FORMULAIRE-ADMIN";
@@ -1130,9 +1211,9 @@
    var steps = TIMERS[key][1];
    var total = 0;
    steps.forEach(function(st) { total += st[1]; });
-   var box = document.createElement("div");
+   var box = document.createElement("details");
    box.className = "steps-list";
-   var h = '<p class="steps-title">Étapes — ' + total + ' min au total</p><ol>';
+   var h = '<summary class="steps-title">Étapes — ' + total + ' min au total</summary><ol>';
    steps.forEach(function(st) {
      h += '<li><span class="step-row"><span class="step-lbl">' + st[0] + '</span><span class="steps-dur">' + st[1] + ' min</span></span></li>';
    });
