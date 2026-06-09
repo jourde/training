@@ -557,8 +557,10 @@
 
     p.appendChild(el("p",{class:"panel-intro"},"Les IA génératives ravivent une tension : évalue-t-on le <strong>produit</strong> ou le <strong>processus</strong> ? La réponse détermine la <strong>qualité des preuves</strong> que l'on recueille."));
 
-    var sit=el("div",null);
-    sit.innerHTML="<h3 style=\"margin-top:8px\">En situation non contrôlée (à la maison, avec l'IA)</h3>"
+    var sit=el("details",null);
+    sit.innerHTML="<summary><span>📖 Comprendre — produit, processus & 6 principes (cliquer pour déplier)</span></summary>"
+      +"<div class=\"details__body\" style=\"padding:0 20px 18px\">"
+      +"<h3 style=\"margin-top:8px\">En situation non contrôlée (à la maison, avec l'IA)</h3>"
       +"<ul style=\"margin:6px 0 0;padding-left:20px\">"
       +"<li>Une <strong>production finale</strong> qu'une IA peut générer <strong>renseigne peu</strong> sur ce que l'élève sait faire <strong>seul</strong>.</li>"
       +"<li>Des <strong>traces de processus</strong> (brouillon, oral, étapes) <strong>renseignent beaucoup</strong> — et se délèguent mal.</li>"
@@ -572,13 +574,15 @@
       +"<li><strong>multimodale</strong> (texte, audio, visuel, oral…)</li>"
       +"<li><strong>inclusive</strong> (accessible à tous les élèves)</li>"
       +"<li><strong>validation supervisée</strong> (ex. soutenance orale)</li>"
-      +"</ul>";
+      +"</ul></div>";
     p.appendChild(phaseTag("explain","📖 Explication"));
     p.appendChild(sit);
 
     p.appendChild(phaseTag("exercise","✏️ Exercice"));
-    var link=el("div",{class:"card",style:"margin-top:24px"});
-    link.innerHTML="<h3>Le prompt pour analyser et adapter des tâches d'évaluation</h3>"
+    var link=el("details",{open:""});
+    link.innerHTML="<summary><span>✏️ Exercice — adapter une évaluation avec le prompt guidé</span></summary>"
+      +"<div class=\"details__body\">"
+      +"<h3>Le prompt pour analyser et adapter des tâches d'évaluation</h3>"
       +"<p><a class=\"linkbtn\" href=\""+PROMPT_URL+"\" target=\"_blank\" rel=\"noopener\">Ouvrir le prompt guidé ↗</a></p>"
       +"<p class=\"hint\" style=\"margin:.3em 0 8px\"><strong>Mode d'emploi :</strong> copiez tout le prompt → collez-le dans un chatbot → collez votre consigne d'évaluation → laissez-vous guider. Le prompt attend votre confirmation à chaque phase : vous <strong>pilotez</strong>.</p>"
       +"<ul style=\"margin:0;padding-left:20px\">"
@@ -586,17 +590,19 @@
       +"<li><strong>Phase 2 · Options</strong> — propose 3 reconceptions</li>"
       +"<li><strong>Phase 3 · Plan</strong> — détaille l'option choisie</li>"
       +"</ul>"
-      +"<p class=\"reminder\" style=\"margin-top:14px\">L'IA propose, vous décidez.</p>";
+      +"<p class=\"reminder\" style=\"margin-top:14px\">L'IA propose, vous décidez.</p></div>";
     p.appendChild(link);
 
     p.appendChild(phaseTag("reflect","💬 Réflexion"));
-    var notes=el("div",{class:"card"});
-    notes.innerHTML="<h3>📝 Mes notes</h3>";
-    notes.appendChild(field("eval-tache","eval.tache","Ma tâche d'évaluation",null,null));
-    notes.appendChild(field("eval-option","eval.option","L'option que je retiens (Phase 2)",null,null));
-    notes.appendChild(field("eval-demain","eval.demain","Ce qui est transposable <strong>dès demain</strong>",null,null));
-    notes.appendChild(field("eval-profond","eval.profond","Ce qui suppose un <strong>changement plus profond</strong>",null,null));
-    notes.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    var notes=el("details",null);
+    notes.innerHTML="<summary><span>📝 Mes notes (cliquer pour déplier)</span></summary>";
+    var nb=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+    nb.appendChild(field("eval-tache","eval.tache","Ma tâche d'évaluation",null,null));
+    nb.appendChild(field("eval-option","eval.option","L'option que je retiens (Phase 2)",null,null));
+    nb.appendChild(field("eval-demain","eval.demain","Ce qui est transposable <strong>dès demain</strong>",null,null));
+    nb.appendChild(field("eval-profond","eval.profond","Ce qui suppose un <strong>changement plus profond</strong>",null,null));
+    nb.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    notes.appendChild(nb);
     p.appendChild(notes);
 
     p.appendChild(el("div",{class:"bridge"},"Vous venez de revisiter une évaluation en faisant travailler l'IA sur votre <strong>consigne</strong>. Mais pour qu'elle traite bien un <strong>document entier</strong>, encore faut-il le lui donner dans un format propre : place à la préparation de la donnée."));
@@ -660,24 +666,28 @@
     p.appendChild(explain);
 
     p.appendChild(phaseTag("exercise","✏️ Exercice"));
-    var ex=el("div",{class:"card"});
-    ex.innerHTML="<h3>✏️ Exercice — convertir une source en Markdown</h3>"
+    var ex=el("details",{open:""});
+    ex.innerHTML="<summary><span>✏️ Exercice — convertir une source en Markdown</span></summary>"
+      +"<div class=\"details__body\">"
       +"<p class=\"hint\" style=\"margin:.3em 0 12px\">Prenez une source réelle — idéalement un <strong>PDF</strong> — et produisez-en une version <code>.md</code> propre.</p>"
       +"<ol style=\"padding-left:20px;margin:0 0 12px\">"
       +"<li><strong>Choisir</strong> une source. Privilégiez un document de référence (ex. un <strong>syllabus</strong>) que vous réutiliserez souvent dans vos prompts.</li>"
       +"<li><strong>Convertir</strong> en <code>.md</code> (Obsidian, pandoc, copier-coller puis nettoyage, ou photo → OCR).</li>"
       +"<li><strong>Vérifier</strong> la structure : titres (<code>#</code>), listes (<code>-</code>), et plus aucune scorie de mise en page (numéros de page, retours de ligne parasites…).</li>"
       +"</ol>"
-      +"<p class=\"reminder\">🔎 <strong>Pourquoi ça compte — le RAG.</strong> Ces sources propres sont précisément celles qu'on réutilise dans un <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>) : un assistant IA qui répond en <strong>puisant dans vos propres documents</strong> (base de cours, FAQ, corpus). Mieux la source est structurée, plus les réponses sont fiables.</p>";
+      +"<p class=\"reminder\">🔎 <strong>Pourquoi ça compte — le RAG.</strong> Ces sources propres sont précisément celles qu'on réutilise dans un <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>) : un assistant IA qui répond en <strong>puisant dans vos propres documents</strong> (base de cours, FAQ, corpus). Mieux la source est structurée, plus les réponses sont fiables.</p>"
+      +"</div>";
     p.appendChild(ex);
 
     p.appendChild(phaseTag("reflect","💬 Réflexion"));
-    var notesmd=el("div",{class:"card"});
-    notesmd.innerHTML="<h3>📝 Mes notes</h3>";
-    notesmd.appendChild(field("md-doc","md.doc","La source que je convertis",null,"ex. un PDF de cours, un sujet…"));
-    notesmd.appendChild(field("md-tool","md.tool","L'outil / la méthode de conversion utilisé(e)",null,"Obsidian, pandoc, OCR…"));
-    notesmd.appendChild(field("md-garde","md.garde","Observations éventuelles sur le résultat",null,"…"));
-    notesmd.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    var notesmd=el("details",null);
+    notesmd.innerHTML="<summary><span>📝 Mes notes (cliquer pour déplier)</span></summary>";
+    var nbmd=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+    nbmd.appendChild(field("md-doc","md.doc","La source que je convertis",null,"ex. un PDF de cours, un sujet…"));
+    nbmd.appendChild(field("md-tool","md.tool","L'outil / la méthode de conversion utilisé(e)",null,"Obsidian, pandoc, OCR…"));
+    nbmd.appendChild(field("md-garde","md.garde","Observations éventuelles sur le résultat",null,"…"));
+    nbmd.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    notesmd.appendChild(nbmd);
     p.appendChild(notesmd);
 
     p.appendChild(el("div",{class:"bridge"},"Vous savez maintenant préparer une <strong>source propre</strong> pour l'IA. Jusqu'ici elle vous <strong>assiste</strong> sur du texte — et si elle vous <strong>fabriquait</strong> un véritable outil pour la classe ? C'est le vibe coding."));
@@ -768,16 +778,18 @@
     p.appendChild(explain);
 
     p.appendChild(phaseTag("exercise","✏️ Exercice"));
-    var resso=el("div",{class:"card"});
+    var exo=el("details",{open:""});
+    exo.innerHTML="<summary><span>✏️ Exercice — fabriquer votre outil</span></summary>";
+    var exb=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+    var resso=el("div",{style:"margin-bottom:22px"});
     resso.innerHTML="<h3>Avant de fabriquer : La Ressourcerie de la Forge</h3>"
       +"<p>Premier réflexe de frugalité — <strong>un outil existe peut-être déjà</strong>. La <strong>Ressourcerie de la Forge</strong> met en avant les <strong>ressources et applications éducatives libres</strong> produites et partagées par la communauté enseignante sur la <strong>Forge des communs numériques éducatifs</strong> : la plateforme du <strong>Ministère de l'Éducation nationale</strong> (fondée sur GitLab) où des enseignants déposent et mutualisent logiciels et contenus libres (PrimTux, MathALÉA, La Nuit du Code…).</p>"
       +"<p class=\"reminder\" style=\"margin-top:12px\">💡 Cherchez-y un outil prêt à l'emploi ; à défaut, fabriquez le vôtre — et pensez à l'y <strong>partager</strong> à votre tour.</p>"
       +"<p style=\"margin-top:12px\"><a class=\"linkbtn\" href=\"https://ressourcerie.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">Ouvrir La Ressourcerie ↗</a> &nbsp; <a class=\"linkbtn\" href=\"https://docs.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">Découvrir la Forge (doc) ↗</a></p>"
       +"<p class=\"hint\" style=\"margin-top:8px;word-break:break-all\">🔗 <a href=\"https://ressourcerie.forge.apps.education.fr/\" target=\"_blank\" rel=\"noopener\">https://ressourcerie.forge.apps.education.fr/</a></p>";
-    p.appendChild(resso);
+    exb.appendChild(resso);
 
-
-    var loop=el("div",{class:"card"});
+    var loop=el("div",{style:"margin-bottom:22px"});
     loop.innerHTML="<h3>Boucle de travail typique (démonstration)</h3>"
       +"<table class=\"tbl\">"
       +"<tr><th>#</th><th>Étape</th><th>Description</th></tr>"
@@ -787,9 +799,9 @@
       +"<tr><td>4</td><td><strong>Corriger et affiner</strong></td><td>Si le résultat est incomplet, on précise : « <em>Les critères doivent être modifiables par l'enseignant.</em> »</td></tr>"
       +"<tr><td>5</td><td><strong>Itérer</strong></td><td>Cette boucle — décrire, générer, tester, affiner — se répète jusqu'à ce que l'outil corresponde au besoin pédagogique.</td></tr>"
       +"</table>";
-    p.appendChild(loop);
+    exb.appendChild(loop);
 
-    var seeds=el("div",{class:"card"});
+    var seeds=el("div",null);
     seeds.innerHTML="<h3>Amorces de prompt — pour démarrer vite</h3>"
       +"<p class=\"hint\" style=\"margin:.3em 0 12px\">Copiez une amorce, adaptez-la, puis itérez.</p>";
     var SEED_GROUPS=[
@@ -819,14 +831,18 @@
         seeds.appendChild(d);
       });
     });
-    p.appendChild(seeds);
+    exb.appendChild(seeds);
+    exo.appendChild(exb);
+    p.appendChild(exo);
 
     p.appendChild(phaseTag("reflect","💬 Réflexion"));
-    var notes=el("div",{class:"card"});
-    notes.innerHTML="<h3>📝 Mes notes — mon outil</h3>";
-    notes.appendChild(field("vibe-besoin","vibe.besoin","Ce que j'ai construit",null,"l'outil et le besoin qu'il couvre…"));
-    notes.appendChild(field("vibe-verif","vibe.verif","Un point à vérifier avant de le donner aux élèves",null,"bug, accessibilité, donnée à ne pas coder en dur…"));
-    notes.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    var notes=el("details",null);
+    notes.innerHTML="<summary><span>📝 Mes notes — mon outil (cliquer pour déplier)</span></summary>";
+    var nbv=el("div",{class:"details__body",style:"padding:0 20px 18px"});
+    nbv.appendChild(field("vibe-besoin","vibe.besoin","Ce que j'ai construit",null,"l'outil et le besoin qu'il couvre…"));
+    nbv.appendChild(field("vibe-verif","vibe.verif","Un point à vérifier avant de le donner aux élèves",null,"bug, accessibilité, donnée à ne pas coder en dur…"));
+    nbv.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    notes.appendChild(nbv);
     p.appendChild(notes);
 
     p.appendChild(el("div",{class:"bridge"},"Vous avez <strong>fabriqué</strong> et <strong>jugé</strong> un outil. Vous repartez avec trois gestes outillés — mais rien ne change tant qu'ils ne franchissent pas la porte de votre classe. La clôture sert à ça : consolider vos livrables et un <strong>engagement concret</strong>."));
