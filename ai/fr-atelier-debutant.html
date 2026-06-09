@@ -248,6 +248,14 @@
  .print-title{display:block!important}
  }
  .print-title{display:none}
+
+ /* ── PHASE SECTION TAGS ── */
+ .phase-tag{display:flex;align-items:center;gap:8px;margin:28px 0 12px;
+   padding:10px 18px;border-radius:10px;font-size:.88rem;font-weight:700;
+   text-transform:uppercase;letter-spacing:.06em;width:fit-content}
+ .phase-tag--explain{background:#cfd8dc;color:#102027;border-left:4px solid #37474f}
+ .phase-tag--exercise{background:#e8f5e9;color:#1b5e20;border-left:4px solid #388e3c}
+ .phase-tag--reflect{background:#e8eaf6;color:#283593;border-left:4px solid #3949ab}
 </style>
 </head>
 <body>
@@ -764,12 +772,62 @@
  '<button type="button" class="btn" id="clearBtn">Effacer mes saisies</button>'+
  '</div>';
 
+ /* ── PHASE TAG HELPER ──────────────────────────────── */
+ function phaseTag(type, label) {
+   return el("div", {class: "phase-tag phase-tag--" + type}, label);
+ }
+
+ /* Insertion points for each panel — called right after p.innerHTML is set */
+ var PANEL_TAGS = {
+   "avant": function(p) {
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "outil": function(p) {
+     var firstDetails = p.querySelector("details");
+     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var ta = p.querySelector("[data-key='out.remarques']");
+     if (ta) {
+       var field = ta.closest(".field");
+       if (field) field.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), field);
+     }
+   },
+   "repertoire": function(p) {
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "prompt": function(p) {
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("explain", "📖 Explication"), cards[0]);
+     if (cards[2]) cards[2].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[2]);
+   },
+   "multi": function(p) {
+     var firstDetails = p.querySelector("details");
+     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "eval": function(p) {
+     var callout = p.querySelector(".callout");
+     if (callout) callout.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), callout);
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[0]);
+     if (cards[1]) cards[1].parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), cards[1]);
+   },
+   "pas": function(p) {
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), cards[0]);
+     if (cards[1]) cards[1].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[1]);
+   }
+ };
+
  /* ── BUILD PANELS ──────────────────────────────────── */
  var MAIN=document.getElementById("main");
  TABS.forEach(function(t,i){
  var p=el("section",{role:"tabpanel",id:"panel-"+t[0],"aria-labelledby":"tab-"+t[0],tabindex:"0"});
  if(i!==0)p.hidden=true;
  p.innerHTML=PANELS[t[0]];
+ if(PANEL_TAGS[t[0]]) PANEL_TAGS[t[0]](p);
  MAIN.appendChild(p);
  });
 
