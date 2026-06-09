@@ -191,6 +191,14 @@
   .bridge::before{content:"\2192";position:absolute;left:18px;top:13px;font-weight:700;font-size:1.25rem;line-height:1.5}
   .bridge strong{color:inherit}
 
+  /* ── PHASE SECTION TAGS ── */
+  .phase-tag{display:flex;align-items:center;gap:8px;margin:28px 0 12px;
+    padding:10px 18px;border-radius:var(--radius-s);font-size:.88rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;width:fit-content}
+  .phase-tag--explain{background:var(--primary-container);color:var(--on-primary-container);border-left:4px solid var(--primary)}
+  .phase-tag--exercise{background:#e8f5e9;color:#1b5e20;border-left:4px solid #388e3c}
+  .phase-tag--reflect{background:#e8eaf6;color:#283593;border-left:4px solid #3949ab}
+
   /* ── PRINCIPLE PILLS ── */
   .pills{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}
   .pill{display:inline-block;background:var(--surface-2);border:1.5px solid var(--outline-variant);
@@ -492,6 +500,7 @@
     if(key==="livrables")row.appendChild(el("button",{type:"button",class:"btn",id:"clearBtn"},"Effacer mes saisies"));
     return row;
   }
+  function phaseTag(type,label){return el("div",{class:"phase-tag phase-tag--"+type},label);}
 
   var MAIN=document.getElementById("main");
 
@@ -564,8 +573,10 @@
       +"<li><strong>inclusive</strong> (accessible à tous les élèves)</li>"
       +"<li><strong>validation supervisée</strong> (ex. soutenance orale)</li>"
       +"</ul>";
+    p.appendChild(phaseTag("explain","📖 Explication"));
     p.appendChild(sit);
 
+    p.appendChild(phaseTag("exercise","✏️ Exercice"));
     var link=el("div",{class:"card",style:"margin-top:24px"});
     link.innerHTML="<h3>Le prompt pour analyser et adapter des tâches d'évaluation</h3>"
       +"<p><a class=\"linkbtn\" href=\""+PROMPT_URL+"\" target=\"_blank\" rel=\"noopener\">Ouvrir le prompt guidé ↗</a></p>"
@@ -578,6 +589,7 @@
       +"<p class=\"reminder\" style=\"margin-top:14px\">L'IA propose, vous décidez.</p>";
     p.appendChild(link);
 
+    p.appendChild(phaseTag("reflect","💬 Réflexion"));
     var notes=el("div",{class:"card"});
     notes.innerHTML="<h3>📝 Mes notes</h3>";
     notes.appendChild(field("eval-tache","eval.tache","Ma tâche d'évaluation",null,null));
@@ -632,7 +644,8 @@
     s_why.innerHTML="<h3>Pourquoi le Markdown aide l'IA à mieux traiter vos documents</h3>"
       +"<table class=\"tbl\"><tr><th>Atout</th><th>Pourquoi ça compte</th></tr>"
       +"<tr><td>🪶 <strong>Léger</strong></td><td>du texte brut = <strong>moins de « tokens »</strong> qu'un <code>.docx</code>/PDF → l'IA en traite <strong>plus à la fois</strong>, plus vite et plus sobrement.</td></tr>"
-      +"<tr><td>🧱 <strong>Clairement structuré</strong></td><td>titres et listes explicites → l'IA <strong>repère la structure</strong> → réponses plus fiables qu'un copier-coller en vrac.</td></tr></table>";
+      +"<tr><td>🧱 <strong>Clairement structuré</strong></td><td>titres et listes explicites → l'IA <strong>repère la structure</strong> → réponses plus fiables qu'un copier-coller en vrac.</td></tr>"
+      +"<tr><td>✏️ <strong>Facilement modifiable</strong></td><td>texte brut = <strong>éditable dans n'importe quel éditeur</strong>, sans logiciel ni conversion. Un PDF fige le contenu et est difficile à modifier ; le <code>.md</code> rend le document <strong>à nouveau vivant</strong>.</td></tr></table>";
     eb.appendChild(s_why);
 
     var s_geste=el("div",null);
@@ -643,8 +656,10 @@
     eb.appendChild(s_geste);
 
     explain.appendChild(eb);
+    p.appendChild(phaseTag("explain","📖 Explication"));
     p.appendChild(explain);
 
+    p.appendChild(phaseTag("exercise","✏️ Exercice"));
     var ex=el("div",{class:"card"});
     ex.innerHTML="<h3>✏️ Exercice — convertir une source en Markdown</h3>"
       +"<p class=\"hint\" style=\"margin:.3em 0 12px\">Prenez une source réelle — idéalement un <strong>PDF</strong> — et produisez-en une version <code>.md</code> propre.</p>"
@@ -654,11 +669,16 @@
       +"<li><strong>Vérifier</strong> la structure : titres (<code>#</code>), listes (<code>-</code>), et plus aucune scorie de mise en page (numéros de page, retours de ligne parasites…).</li>"
       +"</ol>"
       +"<p class=\"reminder\">🔎 <strong>Pourquoi ça compte — le RAG.</strong> Ces sources propres sont précisément celles qu'on réutilise dans un <strong>RAG</strong> (<em>Retrieval-Augmented Generation</em>) : un assistant IA qui répond en <strong>puisant dans vos propres documents</strong> (base de cours, FAQ, corpus). Mieux la source est structurée, plus les réponses sont fiables.</p>";
-    ex.appendChild(field("md-doc","md.doc","La source que je convertis",null,"ex. un PDF de cours, un sujet…"));
-    ex.appendChild(field("md-tool","md.tool","L'outil / la méthode de conversion utilisé(e)",null,"Obsidian, pandoc, OCR…"));
-    ex.appendChild(field("md-garde","md.garde","Observations éventuelles sur le résultat",null,"…"));
-    ex.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
     p.appendChild(ex);
+
+    p.appendChild(phaseTag("reflect","💬 Réflexion"));
+    var notesmd=el("div",{class:"card"});
+    notesmd.innerHTML="<h3>📝 Mes notes</h3>";
+    notesmd.appendChild(field("md-doc","md.doc","La source que je convertis",null,"ex. un PDF de cours, un sujet…"));
+    notesmd.appendChild(field("md-tool","md.tool","L'outil / la méthode de conversion utilisé(e)",null,"Obsidian, pandoc, OCR…"));
+    notesmd.appendChild(field("md-garde","md.garde","Observations éventuelles sur le résultat",null,"…"));
+    notesmd.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
+    p.appendChild(notesmd);
 
     p.appendChild(el("div",{class:"bridge"},"Vous savez maintenant préparer une <strong>source propre</strong> pour l'IA. Jusqu'ici elle vous <strong>assiste</strong> sur du texte — et si elle vous <strong>fabriquait</strong> un véritable outil pour la classe ? C'est le vibe coding."));
     MAIN.appendChild(p);
@@ -744,8 +764,10 @@
     eb.appendChild(s_vigil);
 
     explain.appendChild(eb);
+    p.appendChild(phaseTag("explain","📖 Explication"));
     p.appendChild(explain);
 
+    p.appendChild(phaseTag("exercise","✏️ Exercice"));
     var resso=el("div",{class:"card"});
     resso.innerHTML="<h3>Avant de fabriquer : La Ressourcerie de la Forge</h3>"
       +"<p>Premier réflexe de frugalité — <strong>un outil existe peut-être déjà</strong>. La <strong>Ressourcerie de la Forge</strong> met en avant les <strong>ressources et applications éducatives libres</strong> produites et partagées par la communauté enseignante sur la <strong>Forge des communs numériques éducatifs</strong> : la plateforme du <strong>Ministère de l'Éducation nationale</strong> (fondée sur GitLab) où des enseignants déposent et mutualisent logiciels et contenus libres (PrimTux, MathALÉA, La Nuit du Code…).</p>"
@@ -799,6 +821,7 @@
     });
     p.appendChild(seeds);
 
+    p.appendChild(phaseTag("reflect","💬 Réflexion"));
     var notes=el("div",{class:"card"});
     notes.innerHTML="<h3>📝 Mes notes — mon outil</h3>";
     notes.appendChild(field("vibe-besoin","vibe.besoin","Ce que j'ai construit",null,"l'outil et le besoin qu'il couvre…"));
