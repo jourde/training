@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Découvrir l'IA générative · Espace de travail du participant (personnel administratif)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+ /* ── DESIGN TOKENS — Material Design 3 "Deep Grey" ── */
+ :root{
+ --primary:#37474f;
+ --primary-hover:#263238;
+ --on-primary:#ffffff;
+ --primary-container:#cfd8dc;
+ --on-primary-container:#102027;
+ --surface:#f0f2f4;
+ --surface-1:#ffffff;
+ --surface-2:#f1f3f4;
+ --surface-3:#e7eaec;
+ --outline:#5f6b71;
+ --outline-variant:#c4ccd0;
+ --on-surface:#1b1f22;
+ --on-surface-variant:#3c474d;
+ --cat-autorise:#1b5e20;
+ --cat-encadre:#8a4b00;
+ --cat-interdit:#b3261e;
+ --cat-arbitrer:#0d47a1;
+ --radius:16px;
+ --radius-s:10px;
+ --elev-1:0 1px 2px rgba(0,0,0,.30),0 1px 3px 1px rgba(0,0,0,.15);
+ --elev-2:0 1px 2px rgba(0,0,0,.30),0 2px 6px 2px rgba(0,0,0,.15);
+ }
+ *{box-sizing:border-box}
+ html{scroll-behavior:smooth}
+ body{margin:0;font-family:Roboto,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+ background:var(--surface);color:var(--on-surface);line-height:1.55;font-size:16px}
+
+ /* ── ACCESSIBILITY ── */
+ .skip-link{position:absolute;left:-999px;top:0;background:var(--primary);color:#fff;
+ padding:12px 16px;z-index:100;border-radius:0 0 var(--radius-s) 0}
+ .skip-link:focus{left:0}
+ .sr-only{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
+ textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+
+ /* ── TOP BAR ── */
+ .topbar{position:sticky;top:0;z-index:30;box-shadow:var(--elev-2)}
+ header.app-bar{background:var(--primary);color:var(--on-primary)}
+ .app-bar-inner{max-width:1100px;margin:0 auto;padding:14px 20px}
+ .app-bar h1{font-size:1.15rem;font-weight:500;margin:0}
+ .app-bar .subtitle{display:block;font-size:.8rem;font-weight:400;opacity:.85;margin-top:2px}
+
+ /* ── TAB NAVIGATION ── */
+ nav.tabs{background:var(--surface-1);border-bottom:1px solid var(--outline-variant)}
+ .tabs-inner{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto}
+ [role=tab]{flex:0 0 auto;border:none;background:transparent;color:var(--on-surface-variant);
+ font-family:inherit;font-size:.95rem;font-weight:500;padding:14px 18px;cursor:pointer;
+ border-bottom:3px solid transparent;white-space:nowrap}
+ [role=tab][aria-selected=true]{color:var(--primary);border-bottom-color:var(--primary)}
+ [role=tab]:hover{background:var(--surface-2)}
+
+ /* ── LAYOUT ── */
+ main{max-width:1100px;margin:0 auto;padding:24px 20px 120px}
+ [role=tabpanel][hidden]{display:none}
+ .panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin:0 0 6px}
+ .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
+ .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
+ background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
+ .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;text-align:justify}
+ h3{font-size:1.05rem;font-weight:500;margin:0}
+ .grid{display:grid;gap:16px}
+
+ /* ── CARD ── */
+ .card{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+ padding:18px 20px;margin:0 0 16px}
+ .card h3{margin-bottom:6px}
+ .card ul{margin:.4em 0;padding-left:20px}
+ .card li{margin:5px 0}
+
+ /* ── AGENDA / TIMELINE ── */
+ ol.agenda{list-style:none;margin:0;padding:0}
+ ol.agenda li{display:flex;gap:16px;align-items:flex-start;background:var(--surface-1);
+ border-radius:var(--radius-s);box-shadow:var(--elev-1);padding:14px 16px;margin-bottom:10px}
+ ol.agenda .time{flex:0 0 auto;min-width:92px;font-weight:700;font-variant-numeric:tabular-nums;
+ color:var(--on-primary-container);background:var(--primary-container);border-radius:8px;
+ padding:6px 8px;text-align:center;font-size:.85rem}
+ ol.agenda .pause .time{background:var(--surface-3);color:var(--on-surface-variant)}
+ ol.agenda h3{margin-bottom:2px}
+ ol.agenda p{margin:0;color:var(--on-surface-variant);font-size:.95rem}
+
+ /* ── ACCORDION (details/summary) ── */
+ details{background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);
+ margin:0 0 12px;overflow:hidden}
+ details>summary{cursor:pointer;padding:16px 20px;font-weight:500;font-size:1.02rem;
+ list-style:none;display:flex;align-items:center;gap:12px}
+ details>summary::-webkit-details-marker{display:none}
+ details>summary::before{content:"+";font-size:1.3rem;font-weight:700;color:var(--primary);
+ width:24px;text-align:center;flex:0 0 auto}
+ details[open]>summary::before{content:"\2212"}
+ details>summary:hover{background:var(--surface-2)}
+ .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant)}
+ .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+ border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
+ .phase-current{border:2px solid var(--primary)}
+ .phase-current summary{background:var(--primary-container)}
+ .tag-current{margin-left:auto;font-size:.72rem;font-weight:700;background:var(--primary);
+ color:#fff;border-radius:999px;padding:3px 10px}
+
+ /* ── CHOICE CHIPS (radio buttons) ── */
+ fieldset{border:none;margin:0;padding:0}
+ legend{font-size:.82rem;color:var(--on-surface-variant);padding:0;margin-bottom:8px;font-weight:500}
+ .choices{display:flex;flex-wrap:wrap;gap:8px}
+ .choice{position:relative}
+ .choice input{position:absolute;opacity:0;width:1px;height:1px}
+ .choice label{display:inline-block;border:1.5px solid var(--outline);border-radius:999px;
+ padding:8px 16px;font-size:.88rem;font-weight:500;cursor:pointer;color:var(--on-surface);
+ background:var(--surface-1)}
+ .choice label:hover{background:var(--surface-2)}
+ .choice input:focus-visible+label{outline:3px solid #ffd54f;outline-offset:2px}
+ .choice input:checked+label{color:#fff;border-color:transparent}
+ .choice[data-cat=autorise] input:checked+label{background:var(--cat-autorise)}
+ .choice[data-cat=encadre] input:checked+label{background:var(--cat-encadre)}
+ .choice[data-cat=interdit] input:checked+label{background:var(--cat-interdit)}
+ .choice[data-cat=arbitrer] input:checked+label{background:var(--cat-arbitrer)}
+ .choice[data-cat=impose] input:checked+label{background:var(--primary)}
+ .choice[data-cat=local] input:checked+label{background:var(--cat-arbitrer)}
+ .choice[data-cat=nsp] input:checked+label{background:var(--on-surface-variant)}
+
+ /* ── TAGS & LABELS ── */
+ .case__dest,.tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+ background:var(--surface-3);color:var(--on-surface-variant);border-radius:999px;padding:2px 10px;
+ display:inline-block}
+ .case__q{margin:6px 0 14px;font-weight:500}
+ .tag-rl{background:#fdeaea;color:#b3261e;margin-left:8px}
+ .case-rl{border-left:4px solid var(--cat-interdit)}
+
+ /* ── REVEAL BOX ── */
+ .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
+ .tri-reveal.show{display:block}
+ .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
+ .tri-reveal.ko{background:#fdeaea;color:#5f1411;border-left:4px solid var(--cat-interdit)}
+ .tri-reveal.info{background:var(--surface-2);color:var(--on-surface);border-left:4px solid var(--primary)}
+ .reveal-btn{margin:8px 0 2px}
+ .case-remark{margin-top:12px}
+ .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
+
+ /* ── FORM FIELDS ── */
+ .field{margin:0 0 18px}
+ .field:last-child{margin-bottom:0}
+ .field label{display:block;font-weight:500;margin-bottom:6px}
+ .hint{font-weight:400;color:var(--on-surface-variant);font-size:.88rem}
+ textarea{width:100%;font-family:inherit;font-size:1rem;border:1.5px solid var(--outline);
+ border-radius:var(--radius-s);padding:12px;resize:vertical;min-height:74px;background:var(--surface-1);
+ color:var(--on-surface)}
+
+ /* ── CHECKBOX LIST ── */
+ .check-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;
+ border-bottom:1px solid var(--outline-variant)}
+ .check-item:last-child{border-bottom:none}
+ .check-item input{width:24px;height:24px;margin-top:2px;flex:0 0 auto;accent-color:var(--primary)}
+ .check-item label{cursor:pointer}
+
+ /* ── SLIDER / SELF-ASSESSMENT ── */
+ .slider-item{flex-direction:column;align-items:stretch;gap:10px}
+ .slider-item .slider-label{cursor:default}
+ .slider-row{display:flex;align-items:center;gap:14px}
+ .slider-row input[type=range]{flex:1 1 auto;width:auto;height:auto;margin:0;accent-color:var(--primary);cursor:pointer}
+ .slider-level{flex:0 0 auto;min-width:15ch;text-align:right;font-weight:600;color:var(--primary)}
+
+ /* ── CALLOUT & REMINDER ── */
+ .callout{background:var(--surface-2);border-left:6px solid var(--primary);border-radius:0 var(--radius-s) var(--radius-s) 0;
+ padding:14px 18px;margin:0 0 16px}
+ .callout h3{margin-bottom:8px}
+ .callout ul{margin:0;padding-left:20px}
+ .callout li{margin:6px 0;color:var(--on-surface-variant)}
+ .callout .warn{display:block;margin-top:10px;font-size:.9rem;color:var(--on-surface)}
+ .reminder{font-size:.92rem;color:var(--on-surface-variant);background:var(--surface-2);
+ border-radius:var(--radius-s);padding:12px 14px;margin:0 0 16px}
+
+ /* ── META BLOCK (dl/dt/dd grid) ── */
+ .meta-block{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--surface-2);
+ border-radius:var(--radius-s);padding:12px 16px;margin:8px 0 18px}
+ .meta-block dt{font-weight:700;color:var(--primary);font-size:.74rem;text-transform:uppercase;
+ letter-spacing:.04em;align-self:start;padding-top:2px}
+ .meta-block dd{margin:0;color:var(--on-surface)}
+
+ /* ── ACTIONS ROW & BUTTONS ── */
+ .save-note{font-size:.82rem;color:var(--on-surface-variant);margin:4px 0 0}
+ .actions-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;align-items:center}
+ .flow-arrow{align-self:center;color:var(--outline);font-weight:700;font-size:1.3rem;line-height:1;margin:0 -4px}
+ .btn{font-family:inherit;font-weight:500;font-size:.9rem;border-radius:999px;cursor:pointer;
+ border:1px solid var(--outline);background:var(--surface-1);color:var(--primary);padding:10px 20px}
+ .btn:hover{background:var(--surface-2)}
+ .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+ .btn--filled:hover{background:var(--primary-hover)}
+ .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer)}
+ .btn--trainer:hover{background:#e8f0fe}
+ .btn--trainer::before{content:"\2699\00a0";font-size:.85em}
+
+ /* ── PANEL NAVIGATION ── */
+ .panel-nav{display:flex;justify-content:space-between;align-items:center;
+ margin-top:28px;padding-top:16px;border-top:1px solid var(--outline-variant)}
+
+ /* ── STEPS DURATION BOX ── */
+ .steps-list{background:var(--surface-1);border:1px solid var(--outline-variant);
+ border-radius:var(--radius-s);padding:10px 16px 12px;margin:0 0 18px}
+ .steps-title{margin:0 0 6px;font-size:.74rem;font-weight:700;text-transform:uppercase;
+ letter-spacing:.04em;color:var(--primary)}
+ .steps-list ol{margin:0;padding-left:22px}
+ .steps-list li{padding:3px 0}
+ .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+ .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
+
+ /* ── FLOATING TIMER WIDGET ── */
+ #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
+ width:min(580px,calc(100% - 24px));background:var(--primary);color:var(--on-primary);
+ border-radius:var(--radius);box-shadow:var(--elev-2);overflow:hidden}
+ #runclock[hidden]{display:none}
+ .rc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:8px 14px;font-weight:500;font-size:.9rem;background:rgba(0,0,0,.18)}
+ .rc-body{display:flex;align-items:center;gap:14px;padding:12px 14px;flex-wrap:wrap}
+ #rc-step{flex:1 1 170px;font-weight:500}
+ #rc-time{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.7rem;min-width:90px;text-align:center}
+ .rc-ctrl{display:flex;gap:8px}
+ #runclock button{font-family:inherit;cursor:pointer;border-radius:999px;border:2px solid rgba(255,255,255,.55);
+ background:transparent;color:#fff;padding:8px 14px;font-weight:500;font-size:.85rem}
+ #runclock button:hover{background:rgba(255,255,255,.16)}
+ #runclock button:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+ #rc-close{border:none;font-size:1.1rem;padding:2px 9px;line-height:1}
+ .rc-progress{height:6px;background:rgba(255,255,255,.22)}
+ #rc-bar{height:100%;background:#ffd54f;width:100%;transition:width .9s linear}
+
+ /* ── FOOTER ── */
+ footer{max-width:1100px;margin:0 auto;padding:24px 20px;color:var(--on-surface-variant);font-size:.82rem}
+ footer a{color:var(--primary)}
+
+ /* ── PRINT ── */
+ @media print{
+ .topbar,.skip-link,.btn,#runclock,footer .src{display:none!important}
+ [role=tabpanel][hidden]{display:block!important}
+ [role=tabpanel]{margin-bottom:24px}
+ .card,details,ol.agenda li{box-shadow:none;border:1px solid #999}
+ .details__body{display:block!important}
+ body{background:#fff}
+ main{padding-top:8px}
+ .print-title{display:block!important}
+ }
+ .print-title{display:none}
+
+ /* ── PHASE SECTION TAGS ── */
+ .phase-tag{display:flex;align-items:center;gap:8px;margin:28px 0 12px;
+   padding:10px 18px;border-radius:10px;font-size:.88rem;font-weight:700;
+   text-transform:uppercase;letter-spacing:.06em;width:fit-content}
+ .phase-tag--explain{background:#cfd8dc;color:#102027;border-left:4px solid #37474f}
+ .phase-tag--exercise{background:#e8f5e9;color:#1b5e20;border-left:4px solid #388e3c}
+ .phase-tag--reflect{background:#e8eaf6;color:#283593;border-left:4px solid #3949ab}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<div class="topbar">
+ <header class="app-bar">
+ <div class="app-bar-inner">
+ <h1>Découvrir l'IA générative — l'utiliser sans mettre en risque les données
+ <span class="subtitle">Espace de travail du participant · Niveau débutant · personnel administratif · Académie de La Réunion · atelier 3 h</span>
+ </h1>
+ </div>
+ </header>
+ <nav class="tabs" aria-label="Étapes de l'atelier">
+ <div class="tabs-inner" role="tablist">
+ <!-- Onglets générés par JS -->
+ </div>
+ </nav>
+</div>
+
+<main id="main">
+ <p class="print-title"><strong>Découvrir l'IA générative — espace de travail et notes du participant (personnel administratif)</strong></p>
+ <!-- Panneaux générés par JS -->
+</main>
+
+<footer>
+ <p class="src">Toutes vos saisies restent <strong>en local</strong> dans votre navigateur — rien n'est envoyé. — <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">F. Jourde</a> (2026) — CC BY-SA. Sources d'inspiration : Réseau Canopé 2026, « Les IA génératives en éducation » (dossiers 1 à 4) ; cadre d'usage national de l'IA en éducation (2025) ; CNIL, fiche « Agent : comment utiliser un système d'IA dans le cadre de vos missions ».</p>
+</footer>
+
+<script>
+(function(){
+ "use strict";
+
+ /* ── UTILITIES ─────────────────────────────────────── */
+ var store={
+ get:function(k){try{return localStorage.getItem("iaDebAdmin."+k)}catch(e){return null}},
+ set:function(k,v){try{localStorage.setItem("iaDebAdmin."+k,v)}catch(e){}}
+ };
+ function el(t,a,h){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;}
+
+ /* ── CONTENT DATA ─────────────────────────────────── */
+ var TABS=[
+ ["accueil","Accueil",""],
+ ["avant","Avant de commencer","0:00–0:10"],
+ ["donnees","1 · Mes données","0:10–0:22"],
+ ["outil","2 · Quel outil ?","0:22–0:36"],
+ ["prompt","3 · Parler à l'IA","0:36–1:11"],
+ ["multi","4 · Multimodal","1:11–1:33"],
+ ["vibe","5 · Fabriquer un outil","1:53–2:37"],
+ ["pas","Mon premier pas","2:37–2:57"]
+ ];
+
+ var TIMERS={
+ "avant":["Avant de commencer",[
+ ["Tour de table express (post-its)",6]
+ ]],
+ "donnees":["1 · Mes données d'abord",[
+ ["L'essentiel : ce que je ne confie jamais",6],
+ ["Vote flash : GO / NO-GO / anonymiser",4],
+ ["La check-list avant de coller",2]
+ ]],
+ "outil":["2 · Quel outil ?",[
+ ["L'essentiel : les 3 statuts",6],
+ ["Mini-tri en binômes (outil × tâche)",5],
+ ["Synthèse flash : le réflexe en 2 questions",3]
+ ]],
+ "prompt":["3 · Parler à l'IA",[
+ ["Démo côte à côte (vague / contextualisé)",6],
+ ["Les 5 leviers",6],
+ ["Atelier : prompt novice → Prompt Builder",18],
+ ["Mise en commun",5]
+ ]],
+ "multi":["4 · La puissance multimodale",[
+ ["Cadrage + menu de manipulations",4],
+ ["Atelier à la carte : 2 manipulations",13],
+ ["Mise en commun (apports / limites)",5]
+ ]],
+ "vibe":["5 · Fabriquer un petit outil",[
+ ["Démo + tri critique",8],
+ ["Atelier : fabrique ton outil + 1 itération",28],
+ ["Mise en commun",8]
+ ]],
+ "pas":["Clôture — Mon premier pas",[
+ ["Auto-positionnement « je sais… »",2],
+ ["Mon premier pas (engagement écrit)",10],
+ ["Partage en binôme + 3-4 voix",6],
+ ["Relais & pour continuer",2]
+ ]]
+ };
+
+ /* Self-assessment level labels */
+ var LEVELS=["Pas encore","En chemin","Plutôt à l'aise","Tout à fait à l'aise"];
+
+ function mdField(k){return (store.get(k)||"").trim();}
+ function mdLvl(k){var v=store.get(k);return (v==null||v==="")?"—":(LEVELS[+v]||LEVELS[0]);}
+
+ var VOTE_LAB={go:"GO",anon:"GO après anonymisation",nogo:"NO-GO"};
+ var STAT_LAB={autorise:"Autorisé / référencé",nonref:"Non référencé / grand public"};
+
+ var MDBUILD={
+ "accueil":function(){
+ return "## Avant de commencer\n\n"+
+ "- **Une tâche administrative que j'aimerais déléguer à l'IA** : "+(mdField("acc.tache")||"—")+"\n"+
+ "- **Une inquiétude concrète sur les données** : "+(mdField("acc.inquiete")||"—");
+ },
+ "accueilAnim":function(){
+ return "# Analyse des tâches à déléguer et des inquiétudes données — ouverture d'atelier IA générative (personnel administratif)\n\n"+
+ "Tu es un formateur expert en acculturation à l'intelligence artificielle générative, qui accompagne du personnel administratif d'établissement (secrétariat, gestion, scolarité, vie scolaire), grands débutants.\n\n"+
+ "CONTEXTE : en ouverture d'un atelier de 3 h, chaque participant a noté deux choses — une **tâche administrative** qu'il aimerait déléguer à l'IA, et une **inquiétude concrète sur les données**. Je te transmets ci-dessous l'ensemble des réponses recueillies auprès du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les **tâches à déléguer** en grandes familles (rédaction de courriers/mails, mise en forme, synthèse, suivi/tableaux, accueil-information…).\n"+
+ "2. Regroupe les **inquiétudes** en thèmes ; indique leur fréquence (dominante / secondaire / isolée) et cite 1 à 2 formulations représentatives.\n"+
+ "3. Repère les inquiétudes liées aux **données personnelles/sensibles** à rassurer dès l'ouverture, et les idées fausses à corriger.\n"+
+ "4. Propose-moi 3 accroches courtes pour démarrer l'atelier en tenant compte de ce que le groupe a exprimé.\n\n"+
+ "CONTRAINTES :\n"+
+ "- Reste factuel : ne déduis aucune information personnelle, ne nomme personne.\n"+
+ "- Sois concis et directement actionnable (formateur pressé, juste avant la séance).\n"+
+ "- Réponds en français.\n\n"+
+ "RÉPONSES DU GROUPE (colle-les ci-dessous) :\n"+
+ "[Colle ici toutes les réponses « tâche / inquiétude » recueillies]";
+ },
+ "donnees":function(){
+ return "## 1 · Mes données d'abord\n\n"+
+ "**Mes votes (vote flash GO / NO-GO / anonymiser) :**\n"+
+ "- Un mail citant un élève par son nom : "+(VOTE_LAB[store.get("don.s1")]||"—")+"\n"+
+ "- Une liste de classe (noms + dates de naissance) à mettre en forme : "+(VOTE_LAB[store.get("don.s2")]||"—")+"\n"+
+ "- Une circulaire publique à reformuler : "+(VOTE_LAB[store.get("don.s3")]||"—")+"\n\n"+
+ "**Mes remarques :** "+(mdField("don.remarques")||"—");
+ },
+ "donneesAnim":function(){
+ return "# Analyse des votes « détective de données » — étape 1 « Mes données d'abord »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à l'étape 1, chaque participant a voté (GO / NO-GO / GO après anonymisation) sur 3 situations de bureau, et a pu laisser des remarques. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "Les 3 situations :\n1. Un mail citant un élève par son nom.\n2. Une liste de classe (noms + dates de naissance) à mettre en forme.\n3. Une circulaire publique à reformuler.\n\n"+
+ "TA MISSION :\n"+
+ "1. Pour chaque situation, donne la répartition approximative des votes et repère les hésitations.\n"+
+ "2. Repère les confusions sur la notion de **donnée personnelle indirecte** (initiale + classe, matricule, date de naissance) et sur le sens d'**anonymiser** (≠ enlever seulement le nom).\n"+
+ "3. Synthétise les remarques en grands thèmes ; signale les idées fausses à corriger.\n"+
+ "4. Propose 2 à 3 points à re-clarifier en priorité, avec pour chacun une façon concrète de le reprendre en 1 à 2 min.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mon relevé » de l'étape 1]";
+ },
+ "outil":function(){
+ return "## 2 · Quel outil ?\n\n"+
+ "**Mon tri (outil × tâche → décision) :**\n"+
+ "- Outil ENT pour un publipostage : "+(VOTE_LAB[store.get("out.c1")]||"—")+"\n"+
+ "- Assistant grand public pour reformuler une circulaire publique : "+(VOTE_LAB[store.get("out.c2")]||"—")+"\n"+
+ "- Assistant grand public pour résumer un dossier d'élève : "+(VOTE_LAB[store.get("out.c3")]||"—")+"\n\n"+
+ "**Mes remarques :** "+(mdField("out.remarques")||"—");
+ },
+ "outilAnim":function(){
+ return "# Analyse — étape 2 « Quel outil ? Autorisé ou non, et qu'ai-je le droit d'y mettre »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à l'étape 2, chaque binôme a trié des couples « outil × tâche » et décidé GO / GO si anonymisé / NO-GO en mobilisant le réflexe en deux questions (1. quel statut de l'outil ? 2. donc qu'ai-je le droit d'y mettre ?). Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "Les 3 couples :\n1. Outil ENT pour un publipostage.\n2. Assistant grand public pour reformuler une circulaire publique.\n3. Assistant grand public pour résumer un dossier d'élève.\n\n"+
+ "TA MISSION :\n"+
+ "1. Pour chaque couple, donne la répartition des décisions et repère les erreurs (ex. accepter un dossier d'élève dans un outil non référencé).\n"+
+ "2. Vérifie que le groupe distingue bien **statut de l'outil** (référencé / non référencé) et **qualité/notoriété** de l'outil.\n"+
+ "3. Synthétise les remarques ; signale les confusions sur ce qu'on peut mettre dans un outil non référencé (aucune donnée personnelle).\n"+
+ "4. Propose 2 à 3 points à reclarifier, et le réflexe à réancrer.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 2]";
+ },
+ "prompt":function(){
+ return "## 3 · Parler à l'IA\n\n"+
+ "- **Tâche administrative choisie** : "+(mdField("pr.tache")||"—")+"\n\n"+
+ "**Prompt novice :**\n"+(mdField("pr.novice")||"—")+"\n\n"+
+ "**Prompt reconstruit (Prompt Builder) :**\n"+(mdField("pr.recons")||"—")+"\n\n"+
+ "- **Ce que j'ai dû savoir moi-même pour l'améliorer** : "+(mdField("pr.savoir")||"—");
+ },
+ "promptAnim":function(){
+ return "# Analyse — étape 3 « Parler à l'IA »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à l'étape 3, chaque binôme a choisi une tâche de bureau réelle (mail, courrier, PV, note, synthèse), rédigé un prompt « novice », l'a reconstruit avec Prompt Builder, puis a répondu à : « qu'ai-je dû savoir moi-même pour l'améliorer ? ». Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Synthétise les types de tâches administratives choisies.\n"+
+ "2. Compare prompts novices et reconstruits : quels leviers (rôle, contexte, étapes, format, contraintes) le groupe mobilise le mieux / le moins ?\n"+
+ "3. Analyse surtout « ce que j'ai dû savoir moi-même » : la prise de conscience que l'IA ne compense pas ce qu'on ne lui fournit pas (ton institutionnel, destinataire, cadre réglementaire) est-elle présente ? Repère les réponses vagues ou « rien ».\n"+
+ "4. Propose 2 à 3 façons concrètes de réancrer ce message.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 3]";
+ },
+ "multi":function(){
+ return "## 4 · La puissance multimodale\n\n"+
+ "**Manipulation A : "+(mdField("mu.a.nom")||"—")+"**\n"+
+ "- Apport : "+(mdField("mu.a.apport")||"—")+"\n"+
+ "- Limite / erreur : "+(mdField("mu.a.limite")||"—")+"\n"+
+ "- Donnée à NE PAS confier : "+(mdField("mu.a.donnee")||"—")+"\n\n"+
+ "**Manipulation B : "+(mdField("mu.b.nom")||"—")+"**\n"+
+ "- Apport : "+(mdField("mu.b.apport")||"—")+"\n"+
+ "- Limite / erreur : "+(mdField("mu.b.limite")||"—")+"\n"+
+ "- Donnée à NE PAS confier : "+(mdField("mu.b.donnee")||"—");
+ },
+ "multiAnim":function(){
+ return "# Analyse — étape 4 « La puissance multimodale »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à l'étape 4, chaque binôme a réalisé deux manipulations utiles au bureau (OCR, synthèse, mise en forme, traduction, infographie) sur des documents non nominatifs, et noté pour chacune l'apport, la limite / erreur, et une donnée à ne pas confier. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les manipulations choisies par fréquence.\n"+
+ "2. Synthétise en deux colonnes apports et limites ; repère les limites les plus citées (fiabilité, fidélité d'une synthèse, OCR imparfait, erreur dans un beau rendu).\n"+
+ "3. Repère les « effets waouh » non critiques (apport cité sans limite) à tempérer.\n"+
+ "4. Propose 2 à 3 points de vigilance à souligner en mise en commun (vérification, sobriété, données personnelles).\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 4]";
+ },
+ "vibe":function(){
+ return "## 5 · Fabriquer un petit outil (vibe coding)\n\n"+
+ "- **Outil choisi** : "+(mdField("vi.outil")||"—")+"\n"+
+ "- **Un défaut repéré** : "+(mdField("vi.defaut")||"—")+"\n"+
+ "- **Une donnée à NE PAS coder en dur** : "+(mdField("vi.donnee")||"—")+"\n"+
+ "- **Mon itération (ce que j'ai demandé en plus)** : "+(mdField("vi.iter")||"—");
+ },
+ "vibeAnim":function(){
+ return "# Analyse — étape 5 « Fabriquer un petit outil sans coder (vibe coding) »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à l'étape 5, chaque binôme a fait fabriquer par l'IA une petite page HTML autonome (formulaire→export, courrier-type, convertisseur liste→tableau, checklist), l'a testée et a itéré une fois. Pour chacun : outil choisi, un défaut repéré, une donnée à ne pas coder en dur, l'itération demandée. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "TA MISSION :\n"+
+ "1. Regroupe les outils fabriqués par fréquence et par utilité réelle (gain de temps vs doublon avec Excel/Word).\n"+
+ "2. Synthétise les défauts repérés (bugs, ergonomie, export défaillant) — montre l'enjeu d'**évaluabilité** (un beau bouton peut cacher un bug).\n"+
+ "3. Vérifie la maîtrise du réflexe **RGPD** : jamais de données personnelles codées en dur (champ vide à remplir localement).\n"+
+ "4. Propose 2 à 3 points de synthèse (frugalité, test avant usage, partage du .html) et des relais.\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 5]";
+ },
+ "pas":function(){
+ return "## Mon premier pas\n\n"+
+ "**Auto-positionnement :**\n"+
+ "- Appliquer la règle d'or et anonymiser : "+mdLvl("pas.s0")+"\n"+
+ "- Déterminer le statut d'un outil et ce que j'ai le droit d'y mettre : "+mdLvl("pas.s1")+"\n"+
+ "- Formuler et améliorer un prompt : "+mdLvl("pas.s2")+"\n"+
+ "- Distinguer apport et limite du multimodal : "+mdLvl("pas.s3")+"\n"+
+ "- Fabriquer un petit outil et juger son utilité : "+mdLvl("pas.s4")+"\n\n"+
+ "**Mon action (sous 2 semaines) :** "+(mdField("pas.action")||"—")+"\n"+
+ "**Ce dont j'aurai besoin :** "+(mdField("pas.besoin")||"—");
+ },
+ "pasAnim":function(){
+ return "# Analyse — clôture « Mon premier pas »\n\n"+
+ "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
+ "CONTEXTE : à la clôture, chaque participant s'est auto-positionné (Pas encore / En chemin / Plutôt à l'aise / Tout à fait à l'aise) sur 5 compétences, a écrit UNE action à tester sous 2 semaines, et a noté ce dont il aurait besoin / à qui en parler. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "Les 5 compétences : appliquer la règle d'or et anonymiser · déterminer le statut d'un outil et ce qu'on peut y mettre · formuler un prompt · apport / limite du multimodal · fabriquer un petit outil et juger son utilité.\n\n"+
+ "TA MISSION :\n"+
+ "1. Synthétise l'auto-positionnement : sur quelles compétences le groupe se sent-il le moins à l'aise ?\n"+
+ "2. Regroupe les actions engagées par type ; repère les plus fréquentes et les plus ambitieuses.\n"+
+ "3. Regroupe les besoins de soutien et les personnes-relais cités.\n"+
+ "4. Propose des relais ciblés et 2 à 3 pistes pour une éventuelle séance 2 (par métier : secrétariat, gestion, scolarité).\n\n"+
+ "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
+ "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mon engagement » de la clôture]";
+ }
+ };
+
+ /* ── PANEL CONTENT ─────────────────────────────────── */
+ var PANELS={};
+
+ PANELS.accueil=
+ '<div class="panel-head"><h2>Bienvenue — vos premiers pas</h2></div>'+
+ '<dl class="meta-block">'+
+ '<dt>Durée</dt><dd>3 h (pause de 20 min comprise)</dd>'+
+ '<dt>Public</dt><dd>Personnel administratif — secrétariat, gestion, scolarité, vie scolaire — grands débutants</dd>'+
+ "<dt>Esprit</dt><dd>On ne devient pas expert aujourd'hui : on fait ses premiers pas et on repart avec des repères et un réflexe de protection des données.</dd>"+
+ '</dl>'+
+ '<div class="callout">'+
+ "<h3>La règle d'or — pour tout l'atelier et après</h3>"+
+ "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles (élèves, familles, collègues) dans un outil d'IA <strong>non référencé</strong> par votre établissement.</li></ul>"+
+ "<span class=\"warn\">Vous êtes en première ligne : vous manipulez les données les plus sensibles de l'établissement. Tout est faisable sans créer de compte : démonstration de l'animateur + Prompt Builder, en local.</span>"+
+ '</div>'+
+ '<h3 style="margin:24px 0 10px">Au programme</h3>'+
+ '<ol class="agenda">'+
+ "<li><span class=\"time\">0:00–0:10</span><div><h3>Ouverture</h3><p>Tour de table : une tâche à déléguer, une inquiétude sur les données.</p></div></li>"+
+ "<li><span class=\"time\">0:10–0:22</span><div><h3>1 · Mes données d'abord</h3><p>Le « détective de données » : ce que je ne confie jamais.</p></div></li>"+
+ "<li><span class=\"time\">0:22–0:36</span><div><h3>2 · Quel outil ?</h3><p>Autorisé ou non, et ce que j'ai le droit d'y mettre.</p></div></li>"+
+ "<li><span class=\"time\">0:36–1:11</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction (prompting &amp; Prompt Builder).</p></div></li>"+
+ '<li><span class="time">1:11–1:33</span><div><h3>4 · La puissance multimodale</h3><p>Lire, synthétiser, mettre en forme — et ses limites.</p></div></li>'+
+ '<li class="pause"><span class="time">1:33–1:53</span><div><h3>Pause</h3><p>20 minutes — les écrans restent ouverts.</p></div></li>'+
+ "<li><span class=\"time\">1:53–2:37</span><div><h3>5 · Fabriquer un petit outil</h3><p>Vibe coding admin : un outil sur mesure, sans coder.</p></div></li>"+
+ '<li><span class="time">2:37–2:57</span><div><h3>Clôture</h3><p>Engagement &amp; relais.</p></div></li>'+
+ '</ol>';
+
+ PANELS.avant=
+ '<div class="panel-head"><h2>Avant de commencer</h2><span class="panel-time">0:00–0:10 (10 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Faire émerger, en confiance, ce que le groupe aimerait déléguer à l'IA et ce qui l'inquiète côté données — pour démarrer à partir du réel.</dd>"+
+ '<dt>Modalité</dt><dd>Note individuelle (pour soi) puis tour de table express — sans jugement.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">La conférence a déjà posé ce qu'est l'IA générative et ses enjeux. Ici, on passe à <strong>votre</strong> pratique : vos gestes de bureau, et surtout les <strong>données</strong> dont vous avez la charge. Prenez un instant pour poser une tâche que vous aimeriez déléguer — et une inquiétude concrète.</p>"+
+ '<div class="card">'+
+ "<h3>Ce que j'aimerais déléguer, ce qui m'inquiète</h3>"+
+ '<p class="hint" style="margin:.3em 0 12px">Notez, pour le tour de table express :</p>'+
+ "<div class=\"field\"><label for=\"a-tache\">Une <strong>tâche administrative</strong> que j'aimerais déléguer à l'IA</label><textarea id=\"a-tache\" data-key=\"acc.tache\" placeholder=\"ex. rédiger un mail aux familles, mettre en forme un tableau, résumer une circulaire…\"></textarea></div>"+
+ "<div class=\"field\"><label for=\"a-inquiete\">Une <strong>inquiétude concrète sur les données</strong></label><textarea id=\"a-inquiete\" data-key=\"acc.inquiete\" placeholder=\"…\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="avant">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="accueil">Copier mes réponses (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="accueilAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>'+
+ '</div>';
+
+ PANELS.donnees=
+ '<div class="panel-head"><h2>1 · Mes données d\'abord</h2><span class="panel-time">0:10–0:22 (12 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Adopter un réflexe simple : repérer dans une tâche réelle ce qui ne se confie jamais à un outil non référencé, et décider GO / NO-GO / GO après anonymisation.</dd>"+
+ '<dt>Modalité</dt><dd>En groupe — l\'essentiel, puis un vote flash sur 3 situations.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Vous manipulez les données les plus sensibles de l'établissement (état civil, adresses, situations familiales, santé, bourses, absences, sanctions). Avant de coller quoi que ce soit dans un outil, devenez <strong>détective</strong>. Principe directeur : <strong>un outil non référencé peut stocker et réutiliser ce qu'on lui confie</strong> (hébergement parfois hors UE).</p>"+
+ "<h3 style=\"margin:18px 0 8px\">Deux notions à avoir en tête</h3>"+
+ '<details open><summary><span class="badge-num">1</span><span>Donnée personnelle</span></summary>'+
+ "<div class=\"details__body\">Tout ce qui identifie une personne, <strong>directement OU indirectement</strong> : un nom, mais aussi une <strong>initiale + une classe</strong>, un <strong>matricule</strong>, une <strong>date de naissance</strong>.<br><span class=\"hint\">⚠️ <strong>Anonymiser ≠ enlever le nom</strong> : c'est enlever <strong>tout ce qui permet de ré-identifier</strong> la personne.</span></div></details>"+
+ '<details><summary><span class="badge-num">2</span><span>Donnée sensible</span></summary>'+
+ "<div class=\"details__body\">Santé, situation sociale, origine, opinions, religion… <em>Exemples</em> : un certificat médical, une demande de bourse, un signalement. À ne jamais confier à un outil non référencé.</div></details>"+
+ "<h3 style=\"margin:22px 0 8px\">Vote flash — GO / NO-GO / anonymiser&nbsp;?</h3>"+
+ "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque situation, positionnez-vous, puis dépliez l'analyse. C'est pour vous (non transmis).</p>"+
+ '<div class="card">'+
+ "<p class=\"case__q\">Situation 1 — Je veux faire reformuler un <strong>mail qui cite un élève par son nom</strong> (et sa classe).</p>"+
+ '<fieldset><legend>Mon vote</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="don1-go" name="don.s1" data-key="don.s1" value="go"><label for="don1-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="don1-anon" name="don.s1" data-key="don.s1" value="anon"><label for="don1-anon">GO après anonymisation</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don1-nogo" name="don.s1" data-key="don.s1" value="nogo"><label for="don1-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Sur un outil <strong>non référencé</strong> : <strong>NO-GO</strong> en l'état. Le nom est une donnée personnelle directe. <strong>GO après anonymisation</strong> est possible — mais retirer le nom ne suffit pas : <strong>initiale + classe</strong> peut suffire à ré-identifier. Remplacez par des données fictives ou des [CROCHETS].</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">Situation 2 — Je veux <strong>mettre en forme une liste de classe</strong> (noms + dates de naissance) en tableau.</p>"+
+ '<fieldset><legend>Mon vote</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="don2-go" name="don.s2" data-key="don.s2" value="go"><label for="don2-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="don2-anon" name="don.s2" data-key="don.s2" value="anon"><label for="don2-anon">GO après anonymisation</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don2-nogo" name="don.s2" data-key="don.s2" value="nogo"><label for="don2-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Outil <strong>non référencé</strong> : <strong>NO-GO</strong> tel quel (noms + dates de naissance = données personnelles). Pour tester la mise en forme : utilisez des <strong>données fictives</strong>, puis appliquez le format obtenu à votre vrai fichier <strong>en local</strong>. Sur un outil <strong>référencé/ENT</strong>, dans le cadre prévu, l'usage peut être plus serein — vérifiez avec le DPO.</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">Situation 3 — Je veux <strong>reformuler une circulaire publique</strong> (aucune donnée personnelle).</p>"+
+ '<fieldset><legend>Mon vote</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="don3-go" name="don.s3" data-key="don.s3" value="go"><label for="don3-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="don3-anon" name="don.s3" data-key="don.s3" value="anon"><label for="don3-anon">GO après anonymisation</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don3-nogo" name="don.s3" data-key="don.s3" value="nogo"><label for="don3-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\"><strong>GO</strong> : un document <strong>déjà public</strong>, sans donnée personnelle, peut être confié. Restez vigilant : relisez le résultat (la reformulation peut introduire une erreur).</div></details>"+
+ '</div>'+
+ "<h3 style=\"margin:22px 0 8px\">La check-list avant de coller</h3>"+
+ '<div class="card">'+
+ '<div class="check-item"><input type="checkbox" id="dck1" data-key="don.ck1"><label for="dck1">Y a-t-il une donnée <strong>personnelle</strong> (directe ou indirecte) ?</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck2" data-key="don.ck2"><label for="dck2">Y a-t-il une donnée <strong>sensible</strong> ?</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck3" data-key="don.ck3"><label for="dck3">L\'outil est-il <strong>référencé / autorisé</strong> par l\'établissement ?</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck4" data-key="don.ck4"><label for="dck4">Puis-je <strong>anonymiser</strong> sans dénaturer la tâche ? → si oui, <strong>GO après anonymisation</strong>.</label></div>'+
+ '</div>'+
+ "<p class=\"reminder\">🧭 Repère : pour savoir si un outil est autorisé, votre interlocuteur est le <strong>DPO</strong>. Les outils de l'<strong>ENT / référencés par le rectorat</strong> ont déjà passé l'étape conformité.</p>"+
+ "<div class=\"field\" style=\"margin-top:10px\"><label for=\"don-remarques\">Mes remarques</label><textarea id=\"don-remarques\" data-key=\"don.remarques\" placeholder=\"questions, cas concrets de mon service, points à creuser…\"></textarea></div>"+
+ '<p class="save-note" style="margin:6px 0 0">Vos votes, cases et remarques sont enregistrés sur cet appareil. Récupérez votre relevé ci-dessous.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="donnees">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="donnees">Copier mon relevé (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="donneesAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>'+
+ "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous savez ce que vous ne confiez jamais à la machine. Reste à savoir <strong>à quelle machine</strong> — car toutes ne se valent pas et toutes ne sont pas autorisées. C'est l'objet de l'<strong>étape 2</strong> : déterminer le statut d'un outil et en déduire ce qu'on a le droit d'y mettre.</p></div>";
+
+ PANELS.outil=
+ '<div class="panel-head"><h2>2 · Quel outil ?</h2><span class="panel-time">0:22–0:36 (14 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Déterminer le statut d'un outil (autorisé / non référencé) et en déduire ce qu'on a le droit d'y saisir.</dd>"+
+ '<dt>Modalité</dt><dd>En groupe puis mini-tri en binômes sur des couples « outil × tâche ».</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Avant la qualité d'un outil, c'est son <strong>statut</strong> qui décide de ce que vous pouvez y saisir. La notoriété d'un outil <strong>ne change rien</strong> à son statut RGPD. <strong>Le réflexe en deux questions :</strong> <em>(1) Quel est le statut de cet outil&nbsp;? (2) Donc qu'ai-je le droit d'y mettre&nbsp;?</em></p>"+
+ "<h3 style=\"margin:18px 0 8px\">Les trois statuts</h3>"+
+ '<details open><summary><span class="badge-num">✅</span><span>Autorisé / référencé</span></summary>'+
+ "<div class=\"details__body\">ENT, GAR, outil validé par le <strong>DPO / le rectorat</strong> — la conformité a été <strong>déjà vérifiée</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> usage le plus serein ; dans le cadre prévu, certaines <strong>données de service</strong>.</div></details>"+
+ '<details><summary><span class="badge-num">⚠️</span><span>Non référencé / grand public</span></summary>'+
+ "<div class=\"details__body\">Assistant en accès libre, <strong>non validé</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> <strong>aucune donnée personnelle</strong> — uniquement des données fictives, des <strong>[CROCHETS]</strong>, des documents publics, avec précaution constante.</div></details>"+
+ '<details><summary><span class="badge-num">⛔</span><span>Interdit</span></summary>'+
+ "<div class=\"details__body\">Confier des <strong>données personnelles ou sensibles</strong> à un outil <strong>non référencé</strong>. On ne le fait pas.</div></details>"+
+ "<h3 style=\"margin:22px 0 8px\">Mini-tri — outil × tâche → décision</h3>"+
+ "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque couple, décidez, puis dépliez l'analyse.</p>"+
+ '<div class="card">'+
+ "<p class=\"case__q\">A — <strong>Outil ENT</strong> pour un <strong>publipostage</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out1-go" name="out.c1" data-key="out.c1" value="go"><label for="out1-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out1-anon" name="out.c1" data-key="out.c1" value="anon"><label for="out1-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out1-nogo" name="out.c1" data-key="out.c1" value="nogo"><label for="out1-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Outil <strong>référencé</strong> → <strong>GO</strong> dans le cadre prévu : c'est l'usage le plus serein, y compris avec certaines données de service. En cas de doute sur le périmètre, vérifiez avec le DPO.</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">B — <strong>Assistant grand public</strong> pour <strong>reformuler une circulaire publique</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out2-go" name="out.c2" data-key="out.c2" value="go"><label for="out2-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out2-anon" name="out.c2" data-key="out.c2" value="anon"><label for="out2-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out2-nogo" name="out.c2" data-key="out.c2" value="nogo"><label for="out2-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Outil <strong>non référencé</strong>, mais document <strong>public sans donnée personnelle</strong> → <strong>GO</strong>. C'est exactement le bon usage d'un assistant grand public.</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">C — <strong>Assistant grand public</strong> pour <strong>résumer un dossier d'élève</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out3-go" name="out.c3" data-key="out.c3" value="go"><label for="out3-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out3-anon" name="out.c3" data-key="out.c3" value="anon"><label for="out3-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out3-nogo" name="out.c3" data-key="out.c3" value="nogo"><label for="out3-nogo">NO-GO</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\"><strong>NO-GO</strong> : outil <strong>non référencé</strong> + données <strong>personnelles et sensibles</strong> = cas interdit. Même anonymisé, un dossier d'élève reste souvent ré-identifiable : à traiter dans un outil <strong>référencé</strong> uniquement, dans le cadre prévu.</div></details>"+
+ '</div>'+
+ "<p class=\"reminder\">🔎 Repère : le <strong>DPO</strong> tranche ; la liste des outils <strong>référencés (ENT / GAR)</strong> est la référence. À statut égal, privilégiez les <strong>solutions libres et sobres</strong> et partez du <strong>besoin</strong>, pas de l'outil.</p>"+
+ "<div class=\"field\" style=\"margin-top:10px\"><label for=\"out-remarques\">Mes remarques</label><textarea id=\"out-remarques\" data-key=\"out.remarques\" placeholder=\"outils de mon service, cas limites, questions pour le DPO…\"></textarea></div>"+
+ '<p class="save-note" style="margin:6px 0 0">Enregistré automatiquement sur cet appareil.</p>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="outil">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="outil">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="outilAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>';
+
+ PANELS.prompt=
+ "<div class=\"panel-head\"><h2>3 · Parler à l'IA</h2><span class=\"panel-time\">0:36–1:11 (35 min)</span></div>"+
+ '<dl class="meta-block">'+
+ '<dt>Objectif</dt><dd>Formuler puis améliorer une instruction sur une tâche de bureau réelle, en mobilisant cinq leviers.</dd>'+
+ '<dt>Modalité</dt><dd>Binôme — une tâche réelle, avec Prompt Builder.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Une instruction vague produit une réponse générique. Ce n'est pas un défaut de l'outil : <strong>sans contexte, l'IA comble avec le plus probable</strong>. Une bonne instruction réduit cette zone d'incertitude.</p>"+
+ '<div class="card">'+
+ '<h3>Même tâche, deux instructions</h3>'+
+ '<p><strong>Vague</strong> — « Rédige un mail aux parents pour la réunion. »</p>'+
+ "<p><strong>Contextualisée</strong> — « Tu es <strong>secrétaire de direction</strong> d'un lycée. Rédige un mail <strong>bref et courtois</strong> aux familles des classes de 2de pour annoncer la réunion de rentrée du [DATE] à [HEURE] en salle polyvalente. Ton <strong>institutionnel</strong>, <strong>120 mots</strong>, termine par une demande d'<strong>accusé de réception</strong>. »</p>"+
+ "<p class=\"reminder\">Un prompt n'est pas une commande, c'est <strong>le début d'un dialogue</strong>. Si la réponse ne convient pas : on reformule.</p>"+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Les 5 leviers</h3>'+
+ '<ul>'+
+ "<li>🎭 <strong>Rôle</strong> — qui l'IA doit être (« tu es secrétaire de direction »)</li>"+
+ '<li>🧭 <strong>Contexte</strong> — qui, quel service, quel cadre</li>'+
+ '<li>🪜 <strong>Étapes</strong> — une production unique ou un dialogue (« pose-moi tes questions avant de rédiger »)</li>'+
+ '<li>📐 <strong>Format</strong> — sous quelle forme (« un courrier de 120 mots, ton institutionnel »)</li>'+
+ "<li>⛓️ <strong>Contraintes</strong> — le cadre, les mentions (« termine par une demande d'accusé de réception »)</li>"+
+ '</ul>'+
+ "<p class=\"reminder\">🔒 <strong>Données :</strong> mettez des <strong>[CROCHETS]</strong> ou des informations fictives à la place des vraies données (noms, adresses, dates réelles).</p>"+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>L\'outil Prompt Builder (PCOAB)</h3>'+
+ '<p><a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener">jourde.github.io/prompt-builder</a> — 100 % dans votre navigateur, <strong>aucune donnée envoyée</strong>, fonctionne hors-ligne une fois chargé.</p>'+
+ '<p class="hint" style="margin:.3em 0 8px">Cinq champs → un prompt structuré, prêt à copier :</p>'+
+ '<ul>'+
+ "<li><strong>P</strong>ersona — qui l'IA doit être</li>"+
+ '<li><strong>C</strong>ontext — la situation, le service, les contraintes</li>'+
+ '<li><strong>O</strong>bjective — ce que vous voulez obtenir</li>'+
+ '<li><strong>A</strong>udience — pour qui c\'est destiné</li>'+
+ '<li><strong>B</strong>oundaries — ce qu\'il faut éviter, le cadre, le format</li>'+
+ '</ul>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Atelier — du prompt novice au prompt contextualisé</h3>'+
+ '<p class="hint" style="margin:.3em 0 12px">Choisissez une tâche administrative réelle (mail, courrier, PV, note de service, synthèse), rédigez un prompt novice, testez, puis reconstruisez-le avec Prompt Builder et comparez. <strong>Données fictives ou [CROCHETS]</strong> à la place des vraies infos.</p>'+
+ '<div class="field"><label for="pr-tache">Ma tâche administrative réelle</label><textarea id="pr-tache" data-key="pr.tache" placeholder="rédiger un mail aux familles, un courrier, un PV, une note de service…"></textarea></div>'+
+ '<div class="field"><label for="pr-novice">Mon prompt <strong>novice</strong></label><textarea id="pr-novice" data-key="pr.novice"></textarea></div>'+
+ '<div class="field"><label for="pr-recons">Mon prompt <strong>reconstruit</strong> (Prompt Builder)</label><textarea id="pr-recons" data-key="pr.recons"></textarea></div>'+
+ "<div class=\"field\"><label for=\"pr-savoir\">Pour améliorer mon instruction, qu'ai-je dû <strong>savoir moi-même</strong> ? <span class=\"hint\">(le ton institutionnel, le destinataire, le cadre réglementaire… ce que l'IA ne peut pas deviner)</span></label><textarea id=\"pr-savoir\" data-key=\"pr.savoir\" placeholder=\"le cœur de l'atelier : l'IA ne compense pas ce qu'on ne lui fournit pas\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="prompt">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="prompt">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="promptAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>';
+
+ PANELS.multi=
+ '<div class="panel-head"><h2>4 · La puissance multimodale</h2><span class="panel-time">1:11–1:33 (22 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Réaliser une manipulation multimodale utile au bureau (lire, synthétiser, mettre en forme, traduire) et caractériser son apport <strong>et</strong> sa limite.</dd>"+
+ '<dt>Modalité</dt><dd>Binôme — atelier « à la carte », 2 manipulations sur un document non nominatif.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Les outils récents ne traitent pas que le texte saisi au clavier : ils lisent une image, résument un document, le mettent en forme, le traduisent. Le mieux est d'<strong>essayer</strong> : choisissez deux manipulations parmi le menu, sur un document <strong>non nominatif</strong>.</p>"+
+ '<details open><summary><span class="badge-num">1</span><span>OCR / lecture d\'image</span></summary><div class="details__body">Photographier un courrier papier, un document manuscrit → obtenir un <strong>texte éditable</strong>.<br><em>Usage</em> : numériser, réécrire, rendre un document accessible.</div></details>'+
+ '<details><summary><span class="badge-num">2</span><span>Synthèse</span></summary><div class="details__body">Donner une circulaire, une note, un long compte rendu → <strong>points clés ou tableau</strong>.<br><em>Usage</em> : gagner du temps de lecture, préparer une diffusion.</div></details>'+
+ '<details><summary><span class="badge-num">3</span><span>Mise en forme / reformatage</span></summary><div class="details__body">Transformer un <strong>texte brut</strong> en tableau, liste, courrier propre.<br><em>Usage</em> : reformater rapidement.</div></details>'+
+ '<details><summary><span class="badge-num">4</span><span>Traduction</span></summary><div class="details__body">Traduire un courrier, une consigne.<br><em>Usage</em> : contexte multilingue.</div></details>'+
+ '<details><summary><span class="badge-num">5</span><span>Infographie / schéma simple <span class="hint">— à connaître / en démonstration</span></span></summary><div class="details__body">Transformer une <strong>information</strong> en visuel (schéma, frise).<br><em>Usage</em> : illustrer une communication. <em>Prudence</em> : vérifier les droits et l\'exactitude du rendu.</div></details>'+
+ '<div class="card">'+
+ '<h3>Manipulation A</h3>'+
+ '<div class="field"><label for="ma-nom">Laquelle ?</label><textarea id="ma-nom" data-key="mu.a.nom" placeholder="OCR / synthèse / mise en forme / traduction…"></textarea></div>'+
+ '<div class="field"><label for="ma-apport">Apport observé</label><textarea id="ma-apport" data-key="mu.a.apport"></textarea></div>'+
+ '<div class="field"><label for="ma-limite">Limite / erreur observée</label><textarea id="ma-limite" data-key="mu.a.limite" placeholder="OCR imparfait, contresens, erreur dans un beau rendu, résumé qui déforme…"></textarea></div>'+
+ '<div class="field"><label for="ma-donnee">Une donnée à NE PAS confier</label><textarea id="ma-donnee" data-key="mu.a.donnee" placeholder="nom, matricule, situation… (utiliser un document non nominatif)"></textarea></div>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Manipulation B</h3>'+
+ '<div class="field"><label for="mb-nom">Laquelle ?</label><textarea id="mb-nom" data-key="mu.b.nom"></textarea></div>'+
+ '<div class="field"><label for="mb-apport">Apport observé</label><textarea id="mb-apport" data-key="mu.b.apport"></textarea></div>'+
+ '<div class="field"><label for="mb-limite">Limite / erreur observée</label><textarea id="mb-limite" data-key="mu.b.limite"></textarea></div>'+
+ '<div class="field"><label for="mb-donnee">Une donnée à NE PAS confier</label><textarea id="mb-donnee" data-key="mu.b.donnee"></textarea></div>'+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="callout">'+
+ '<h3>Deux garde-fous du cadre national</h3>'+
+ '<ul>'+
+ "<li><strong>Relisez et recoupez toujours.</strong> Renoncez à l'IA si vous ne pouvez pas <strong>vérifier</strong> le résultat (exactitude, fidélité).</li>"+
+ "<li><strong>Renoncez à l'IA</strong> si une solution plus <strong>sobre</strong> suffit (un scan classique, un copier-coller, un modèle existant).</li>"+
+ '</ul>'+
+ '<span class="warn">La réponse est vraisemblable, fluide… donc difficile à vérifier : une erreur dans un texte bien écrit ou un OCR passe inaperçue. Et toujours : <strong>aucun document nominatif</strong> confié à un outil non référencé.</span>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="multi">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="multi">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="multiAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>';
+
+ PANELS.vibe=
+ '<div class="panel-head"><h2>5 · Fabriquer un petit outil</h2><span class="panel-time">1:53–2:37 (44 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Objectif</dt><dd>Faire fabriquer par l'IA, sans coder, une petite page HTML autonome répondant à un geste de bureau réel — et juger son utilité, sa sobriété et le respect des données.</dd>"+
+ '<dt>Modalité</dt><dd>Binôme — on choisit un outil du menu, on le décrit à l\'IA, on teste, on itère.</dd>'+
+ '</dl>'+
+ "<p class=\"panel-intro\">Dernier geste, le plus surprenant : faire <strong>fabriquer par l'IA un petit outil sur mesure</strong> pour un geste de bureau répétitif — <strong>sans écrire une ligne de code</strong>. L'outil prend la forme d'une <strong>page HTML autonome</strong> (un seul fichier) qui s'ouvre dans votre navigateur. 🧭 D'abord la règle d'or : <strong>partir du besoin, pas de l'outil</strong> — un outil existe-t-il déjà (Excel, un modèle Word) ?</p>"+
+ '<div class="card">'+
+ '<h3>Le geste, en 3 temps</h3>'+
+ '<ul>'+
+ "<li><strong>Décrire</strong> l'outil voulu à l'IA, en langage clair (« crée une page HTML autonome qui… »)</li>"+
+ "<li><strong>Enregistrer</strong> le code généré dans un fichier <code>.html</code> (un éditeur de texte simple suffit) — ou utiliser l'<strong>aperçu direct</strong> si votre outil en propose un (artefact / canevas)</li>"+
+ "<li><strong>Ouvrir</strong> le fichier dans le navigateur, <strong>tester</strong>, puis <strong>itérer</strong> (« agrandis les champs », « ajoute une colonne date », « ajoute un bouton Word »)</li>"+
+ '</ul>'+
+ "<p class=\"reminder\">🔁 On ne garde pas la première version : le vibe coding, c'est la <strong>boucle d'ajustement</strong>.</p>"+
+ '</div>'+
+ "<h3 style=\"margin:22px 0 8px\">Un menu d'outils pour l'administratif — avec amorces de prompt</h3>"+
+ '<details open><summary><span class="badge-num">📋</span><span>Formulaire → export Excel/Word</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> (un seul fichier, sans serveur). Elle affiche un <strong>formulaire</strong> avec les champs Nom, Prénom, Classe, Motif, Date. Un bouton <strong>Exporter en Excel</strong> télécharge les saisies en <code>.xlsx</code>, un bouton <strong>Exporter en Word</strong> en <code>.docx</code>. Tout fonctionne <strong>dans le navigateur</strong>, aucune donnée envoyée. Champs larges, contraste élevé. »</div></details>'+
+ '<details><summary><span class="badge-num">✉️</span><span>Générateur de courrier-type</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> : je remplis quelques champs (Destinataire, Objet, Date, Lieu) et la page <strong>génère un courrier administratif propre</strong> prêt à copier, avec formules d\'appel et de politesse. Boutons <strong>Copier</strong> et <strong>Exporter en Word</strong>. Aucune donnée envoyée. »</div></details>'+
+ '<details><summary><span class="badge-num">🔢</span><span>Convertisseur liste → tableau</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> où je colle une <strong>liste de lignes</strong> et qui les <strong>transforme en tableau</strong>, avec un bouton <strong>Exporter en Excel</strong> et le <strong>nombre de lignes</strong>. Tout dans le navigateur. »</div></details>'+
+ '<details><summary><span class="badge-num">✅</span><span>Checklist de procédure imprimable</span></summary><div class="details__body">« Crée une <strong>page HTML autonome</strong> : une <strong>checklist</strong> (cases à cocher) pour [inscription d\'un élève / départ d\'un agent], avec possibilité d\'ajouter une ligne et un bouton <strong>Imprimer</strong>. Mise en page sobre. »</div></details>'+
+ '<div class="card">'+
+ '<h3>Mon atelier « fabrique ton outil »</h3>'+
+ '<div class="field"><label for="vi-outil">L\'outil que je choisis</label><textarea id="vi-outil" data-key="vi.outil" placeholder="formulaire → export / courrier-type / convertisseur / checklist…"></textarea></div>'+
+ '<div class="field"><label for="vi-defaut">⚠️ Un défaut repéré</label><textarea id="vi-defaut" data-key="vi.defaut" placeholder="un bug, un export qui ne marche pas, une ergonomie à revoir…"></textarea></div>'+
+ '<div class="field"><label for="vi-donnee">🔒 Une donnée à NE PAS coder en dur</label><textarea id="vi-donnee" data-key="vi.donnee" placeholder="ex. une liste nominative → un champ vide à remplir localement"></textarea></div>'+
+ '<div class="field"><label for="vi-iter">🔁 Mon itération (ce que j\'ai demandé en plus)</label><textarea id="vi-iter" data-key="vi.iter" placeholder="« agrandis les champs », « ajoute une colonne date », « ajoute un bouton Word »…"></textarea></div>'+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="callout">'+
+ '<h3>Trois garde-fous</h3>'+
+ '<ul>'+
+ "<li>🎯 <strong>Besoin avant outil</strong> — un outil existe-t-il déjà ? (frugalité du cadre national)</li>"+
+ "<li>🔒 <strong>RGPD</strong> — la page tourne <strong>100 % dans le navigateur</strong> et l'export se fabrique sur votre poste : aucune donnée envoyée (comme Prompt Builder). Mais ne <strong>codez jamais en dur</strong> de données personnelles : préférez un <strong>champ vide</strong> à remplir localement.</li>"+
+ "<li>🔎 <strong>Évaluabilité</strong> — un beau bouton peut cacher un <strong>bug</strong> : <strong>testez l'outil et l'export</strong> avant de vous en servir pour de vrai.</li>"+
+ '</ul>'+
+ '<span class="warn">🌐 Pour partager : envoyez simplement le fichier <code>.html</code>, ou hébergez-le (Forge des communs numériques éducatifs).</span>'+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="vibe">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="vibe">Copier mes notes (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="vibeAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '</div>';
+
+ PANELS.pas=
+ '<div class="panel-head"><h2>Mon premier pas</h2><span class="panel-time">2:37–2:57 (20 min)</span></div>'+
+ '<dl class="meta-block">'+
+ "<dt>Esprit</dt><dd>La clôture <strong>produit</strong> quelque chose : un engagement écrit, pas une synthèse.</dd>"+
+ '</dl>'+
+ '<div class="card">'+
+ '<h3>Je sais désormais…</h3>'+
+ '<p class="hint" style="margin:.3em 0 14px">Auto-positionnement silencieux — pour vous, sans note publique.</p>'+
+ '<div class="check-item slider-item"><label for="s0" class="slider-label">Appliquer la <strong>règle d\'or</strong> et <strong>anonymiser</strong></label><div class="slider-row"><input type="range" id="s0" data-key="pas.s0" min="0" max="3" step="1" value="0" aria-describedby="s0lvl"><output class="slider-level" id="s0lvl" for="s0">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s1" class="slider-label">Déterminer le <strong>statut d\'un outil</strong> et ce que j\'ai le droit d\'y mettre</label><div class="slider-row"><input type="range" id="s1" data-key="pas.s1" min="0" max="3" step="1" value="0" aria-describedby="s1lvl"><output class="slider-level" id="s1lvl" for="s1">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s2" class="slider-label">Formuler et améliorer un <strong>prompt</strong></label><div class="slider-row"><input type="range" id="s2" data-key="pas.s2" min="0" max="3" step="1" value="0" aria-describedby="s2lvl"><output class="slider-level" id="s2lvl" for="s2">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s3" class="slider-label">Distinguer <strong>apport</strong> et <strong>limite</strong> du multimodal</label><div class="slider-row"><input type="range" id="s3" data-key="pas.s3" min="0" max="3" step="1" value="0" aria-describedby="s3lvl"><output class="slider-level" id="s3lvl" for="s3">Pas encore</output></div></div>'+
+ '<div class="check-item slider-item"><label for="s4" class="slider-label">Fabriquer un <strong>petit outil</strong> et juger son utilité</label><div class="slider-row"><input type="range" id="s4" data-key="pas.s4" min="0" max="3" step="1" value="0" aria-describedby="s4lvl"><output class="slider-level" id="s4lvl" for="s4">Pas encore</output></div></div>'+
+ '</div>'+
+ '<div class="card">'+
+ '<h3>Mon premier pas</h3>'+
+ '<p class="hint" style="margin:.3em 0 12px"><strong>UNE</strong> action que je teste dans les <strong>2 prochaines semaines</strong> : un document anonymisé puis traité · un outil dont j\'ai vérifié le statut avant usage · un prompt reconstruit · une synthèse / un OCR vérifié · un petit outil fabriqué.</p>'+
+ '<div class="field"><label for="p-action">Mon action</label><textarea id="p-action" data-key="pas.action"></textarea></div>'+
+ "<div class=\"field\"><label for=\"p-besoin\">Ce dont j'aurai besoin / la personne à qui en parler</label><textarea id=\"p-besoin\" data-key=\"pas.besoin\"></textarea></div>"+
+ '<p class="save-note">Enregistré automatiquement sur cet appareil.</p>'+
+ '</div>'+
+ '<div class="callout">'+
+ '<h3>Pour continuer</h3>'+
+ '<ul>'+
+ '<li>☕ <a href="https://www.reseau-canope.fr/ia-et-education/dossier-ia-generatives-en-education" target="_blank" rel="noopener"><strong>Café IA</strong> / Atelier Canopé du département</a> — accompagnement en établissement</li>'+
+ "<li>🔒 Fiche <strong>CNIL</strong> : « Agent : comment utiliser un système d'IA dans le cadre de vos missions »</li>"+
+ '<li>🎓 Parcours <a href="https://pix.fr/intelligence-artificielle/" target="_blank" rel="noopener"><strong>Pix IA</strong></a> : « Mon premier prompt ! » → « J\'améliore mes prompts ! »</li>'+
+ "<li>📜 <a href=\"https://www.education.gouv.fr/cadre-d-usage-de-l-ia-en-education-450647\" target=\"_blank\" rel=\"noopener\"><strong>Cadre d'usage national de l'IA en éducation</strong></a> (juin 2025) + charte d'établissement</li>"+
+ '<li>🛠️ <a href="https://jourde.github.io/prompt-builder/prompt-builder.html" target="_blank" rel="noopener"><strong>Prompt Builder</strong></a></li>'+
+ '</ul>'+
+ "<span class=\"warn\">Vous n'avez pas tout vu, mais vous avez l'essentiel pour commencer <strong>sans vous mettre en risque</strong>.</span>"+
+ '</div>'+
+ '<div class="actions-row">'+
+ '<button type="button" class="btn start-timer" data-md="pas">Lancer le minuteur</button>'+
+ '<button type="button" class="btn copy-md" data-md="pas">Copier mon engagement (Markdown)</button>'+
+ '<button type="button" class="btn btn--trainer copy-md" data-md="pasAnim">Animateur — copier le prompt d\'analyse</button>'+
+ '<button type="button" class="btn btn--filled" id="printBtn">Imprimer mes notes</button>'+
+ '<button type="button" class="btn" id="clearBtn">Effacer mes saisies</button>'+
+ '</div>';
+
+ /* ── PHASE TAG HELPER ──────────────────────────────── */
+ function phaseTag(type, label) {
+   return el("div", {class: "phase-tag phase-tag--" + type}, label);
+ }
+
+ /* Insertion points for each panel — called right after p.innerHTML is set */
+ var PANEL_TAGS = {
+   "avant": function(p) {
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "donnees": function(p) {
+     var firstDetails = p.querySelector("details");
+     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+     var ta = p.querySelector("[data-key='don.remarques']");
+     if (ta) {
+       var field = ta.closest(".field");
+       if (field) field.parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), field);
+     }
+   },
+   "outil": function(p) {
+     var firstDetails = p.querySelector("details");
+     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "prompt": function(p) {
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("explain", "📖 Explication"), cards[0]);
+     if (cards[3]) cards[3].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[3]);
+   },
+   "multi": function(p) {
+     var firstDetails = p.querySelector("details");
+     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var card = p.querySelector(".card");
+     if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
+   },
+   "vibe": function(p) {
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("explain", "📖 Explication"), cards[0]);
+     if (cards[1]) cards[1].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[1]);
+   },
+   "pas": function(p) {
+     var cards = p.querySelectorAll(".card");
+     if (cards[0]) cards[0].parentNode.insertBefore(phaseTag("reflect", "💬 Réflexion"), cards[0]);
+     if (cards[1]) cards[1].parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), cards[1]);
+   }
+ };
+
+ /* ── BUILD PANELS ──────────────────────────────────── */
+ var MAIN=document.getElementById("main");
+ TABS.forEach(function(t,i){
+ var p=el("section",{role:"tabpanel",id:"panel-"+t[0],"aria-labelledby":"tab-"+t[0],tabindex:"0"});
+ if(i!==0)p.hidden=true;
+ p.innerHTML=PANELS[t[0]];
+ if(PANEL_TAGS[t[0]]) PANEL_TAGS[t[0]](p);
+ MAIN.appendChild(p);
+ });
+
+ /* ── TAB BAR ───────────────────────────────────────── */
+ var tablist=document.querySelector("[role=tablist]");
+ var tabs=[];
+ TABS.forEach(function(t,i){
+ var btn=el("button",{
+ role:"tab",id:"tab-"+t[0],
+ "aria-selected":i===0?"true":"false",
+ "aria-controls":"panel-"+t[0],
+ tabindex:i===0?"0":"-1"
+ },t[1]);
+ tablist.appendChild(btn);
+ tabs.push(btn);
+ });
+
+ function selectTab(tab){
+ tabs.forEach(function(t){
+ var sel=t===tab;
+ t.setAttribute("aria-selected",sel?"true":"false");t.tabIndex=sel?0:-1;
+ var p=document.getElementById(t.getAttribute("aria-controls"));
+ if(p)p.hidden=!sel;
+ });
+ window.scrollTo(0,0);
+ }
+ tabs.forEach(function(tab,idx){
+ tab.addEventListener("click",function(){selectTab(tab);});
+ tab.addEventListener("keydown",function(e){
+ var n=null;
+ if(e.key==="ArrowRight")n=tabs[(idx+1)%tabs.length];
+ else if(e.key==="ArrowLeft")n=tabs[(idx-1+tabs.length)%tabs.length];
+ else if(e.key==="Home")n=tabs[0];
+ else if(e.key==="End")n=tabs[tabs.length-1];
+ if(n){e.preventDefault();selectTab(n);n.focus();}
+ });
+ });
+
+ /* Panel prev / next navigation */
+ tabs.forEach(function(tab,idx){
+ var panel=document.getElementById(tab.getAttribute("aria-controls"));
+ if(!panel)return;
+ var nav=el("div",{class:"panel-nav"});
+ if(idx>0){
+ var prev=el("button",{type:"button",class:"btn"},"← "+tabs[idx-1].textContent.trim());
+ prev.addEventListener("click",function(){selectTab(tabs[idx-1]);});
+ nav.appendChild(prev);
+ }else{nav.appendChild(el("span",null,""));}
+ if(idx<tabs.length-1){
+ var next=el("button",{type:"button",class:"btn"},tabs[idx+1].textContent.trim()+" →");
+ next.addEventListener("click",function(){selectTab(tabs[idx+1]);});
+ nav.appendChild(next);
+ }
+ panel.appendChild(nav);
+ });
+
+ /* ── GENERIC PERSISTENCE ───────────────────────────── */
+ Array.prototype.forEach.call(document.querySelectorAll("textarea[data-key]"),function(ta){
+ var k=ta.getAttribute("data-key");var v=store.get(k);if(v!=null)ta.value=v;
+ ta.addEventListener("input",function(){store.set(k,ta.value);});
+ });
+ Array.prototype.forEach.call(document.querySelectorAll("input[type=range][data-key]"),function(sl){
+ var k=sl.getAttribute("data-key");var v=store.get(k);if(v!=null)sl.value=v;
+ var out=document.getElementById(sl.id+"lvl");
+ function upd(){if(out)out.textContent=LEVELS[+sl.value]||LEVELS[0];}
+ upd();sl.addEventListener("input",function(){store.set(k,sl.value);upd();});
+ });
+ Array.prototype.forEach.call(document.querySelectorAll("input[type=radio][data-key]"),function(r){
+ var k=r.getAttribute("data-key");if(store.get(k)===r.value)r.checked=true;
+ r.addEventListener("change",function(){if(r.checked)store.set(k,r.value);});
+ });
+ Array.prototype.forEach.call(document.querySelectorAll("input[type=checkbox][data-key]"),function(c){
+ var k=c.getAttribute("data-key");if(store.get(k)==="1")c.checked=true;
+ c.addEventListener("change",function(){store.set(k,c.checked?"1":"0");});
+ });
+
+ /* ── CLEAR ALL ─────────────────────────────────────── */
+ var clearBtnEl=document.getElementById("clearBtn");
+ if(clearBtnEl)clearBtnEl.addEventListener("click",function(){
+ if(!window.confirm("Effacer toutes vos saisies sur cet appareil ?"))return;
+ try{
+ var rm=[];
+ for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key.indexOf("iaDebAdmin.")===0)rm.push(key);}
+ rm.forEach(function(k){localStorage.removeItem(k);});
+ }catch(e){}
+ document.querySelectorAll("input:checked").forEach(function(x){x.checked=false;});
+ document.querySelectorAll("input[type=range][data-key]").forEach(function(sl){sl.value="0";var o=document.getElementById(sl.id+"lvl");if(o)o.textContent=LEVELS[0];});
+ document.querySelectorAll("textarea[data-key]").forEach(function(x){x.value="";});
+ });
+
+ /* ── PRINT ─────────────────────────────────────────── */
+ var printBtnEl=document.getElementById("printBtn");
+ if(printBtnEl)printBtnEl.addEventListener("click",function(){window.print();});
+
+ /* ── COPY AS MARKDOWN ──────────────────────────────── */
+ function mdFallback(text, onSuccess) {
+   var ta = document.createElement("textarea");
+   ta.value = text;
+   ta.setAttribute("readonly", "");
+   ta.style.position = "absolute";
+   ta.style.left = "-9999px";
+   document.body.appendChild(ta);
+   ta.select();
+   try { document.execCommand("copy"); onSuccess(); }
+   catch (e) { window.prompt("Copiez le Markdown :", text); }
+   document.body.removeChild(ta);
+ }
+ function mdCopy(key, btn) {
+   var builder = MDBUILD[key];
+   if (!builder) return;
+   var text = builder();
+   function onSuccess() {
+     if (!btn.getAttribute("data-label")) btn.setAttribute("data-label", btn.textContent);
+     btn.textContent = "Copié ✓";
+     setTimeout(function () { btn.textContent = btn.getAttribute("data-label"); }, 1600);
+   }
+   if (navigator.clipboard && navigator.clipboard.writeText) {
+     navigator.clipboard.writeText(text).then(onSuccess, function () { mdFallback(text, onSuccess); });
+   } else {
+     mdFallback(text, onSuccess);
+   }
+ }
+ document.querySelectorAll(".copy-md").forEach(function(b) {
+   b.addEventListener("click", function(){ mdCopy(b.getAttribute("data-md"), b); });
+ });
+ /* Lien vers le formulaire à côté de chaque bouton de copie participant.
+    ▸ À PERSONNALISER : remplacez l'URL ci-dessous par celle de votre formulaire admin. */
+ var FORM_URL = "https://forms.gle/VOTRE-FORMULAIRE-ADMIN";
+ document.querySelectorAll(".copy-md:not(.btn--trainer)").forEach(function(b) {
+   var arrow = el("span", {"class":"flow-arrow","aria-hidden":"true"}, "→");
+   var a = el("a", {"class":"btn",href:FORM_URL,target:"_blank",rel:"noopener",style:"text-decoration:none"}, "Coller dans le formulaire ↗");
+   if (b.parentNode) { b.parentNode.insertBefore(arrow, b.nextSibling); b.parentNode.insertBefore(a, arrow.nextSibling); }
+ });
+
+ /* ── PHASE TIMER ───────────────────────────────────── */
+ var rc = document.createElement("div");
+ rc.id = "runclock";
+ rc.hidden = true;
+ rc.setAttribute("role", "region");
+ rc.setAttribute("aria-label", "Minuteur de phase");
+ rc.innerHTML =
+   '<div class="rc-head"><span id="rc-phase"></span><button id="rc-close" type="button" aria-label="Fermer le minuteur">✕</button></div>' +
+   '<div class="rc-body"><span id="rc-step" aria-live="polite"></span><span id="rc-time" aria-hidden="true">00:00</span>' +
+   '<div class="rc-ctrl"><button id="rc-toggle" type="button">Pause</button><button id="rc-next" type="button">Étape suivante</button></div></div>' +
+   '<div class="rc-progress"><div id="rc-bar"></div></div>';
+ document.body.appendChild(rc);
+
+ var rcPhase   = rc.querySelector("#rc-phase"),
+     rcStepEl  = rc.querySelector("#rc-step"),
+     rcTimeEl  = rc.querySelector("#rc-time"),
+     rcToggle  = rc.querySelector("#rc-toggle"),
+     rcNext    = rc.querySelector("#rc-next"),
+     rcClose   = rc.querySelector("#rc-close"),
+     rcBar     = rc.querySelector("#rc-bar");
+
+ var rcSteps = [], rcStepIndex = 0, rcRemaining = 0, rcTotal = 0,
+     rcRunning = false, rcInterval = null, rcFinished = false;
+
+ function padTwo(n) { return (n < 10 ? "0" : "") + n; }
+ function formatTime(s) { if (s < 0) s = 0; return padTwo(Math.floor(s / 60)) + ":" + padTwo(s % 60); }
+
+ function rcRender() {
+   rcTimeEl.textContent = formatTime(rcRemaining);
+   rcBar.style.width = (rcTotal ? Math.max(0, rcRemaining / rcTotal * 100) : 0) + "%";
+   rcToggle.textContent = rcRunning ? "Pause" : "Reprendre";
+ }
+ function rcEnsure() { if (!rcInterval) rcInterval = setInterval(rcTick, 1000); }
+ function rcStop()   { if (rcInterval) { clearInterval(rcInterval); rcInterval = null; } }
+
+ function rcStart(i) {
+   var st = rcSteps[i];
+   rcStepIndex = i;
+   rcFinished  = false;
+   rcRemaining = st[1] * 60;
+   rcTotal     = rcRemaining;
+   rcStepEl.textContent = "Étape " + (i + 1) + "/" + rcSteps.length + " · " + st[0] + " (" + st[1] + " min)";
+   rcRunning = true;
+   rcRender();
+   rcEnsure();
+ }
+ function rcTick() {
+   if (!rcRunning) return;
+   if (rcRemaining > 0) { rcRemaining--; rcRender(); }
+   else if (rcStepIndex + 1 < rcSteps.length) { rcStart(rcStepIndex + 1); }
+   else { rcFinish(); }
+ }
+ function rcFinish() {
+   rcRunning  = false;
+   rcFinished = true;
+   rcStop();
+   rcStepEl.textContent = "Terminé ✓";
+   rcTimeEl.textContent = "00:00";
+   rcBar.style.width    = "0%";
+   rcToggle.textContent = "Reprendre";
+ }
+ function rcOpen(key) {
+   var t = TIMERS[key];
+   if (!t) return;
+   rcSteps = t[1];
+   rcPhase.textContent = t[0];
+   rc.hidden = false;
+   rcStart(0);
+ }
+
+ rcToggle.addEventListener("click", function () {
+   if (rcFinished) return;
+   rcRunning = !rcRunning;
+   rcRender();
+   if (rcRunning) rcEnsure();
+ });
+ rcNext.addEventListener("click", function () {
+   if (rcFinished) return;
+   if (rcStepIndex + 1 < rcSteps.length) rcStart(rcStepIndex + 1);
+   else rcFinish();
+ });
+ rcClose.addEventListener("click", function () { rcRunning = false; rcStop(); rc.hidden = true; });
+ document.querySelectorAll(".start-timer").forEach(function(b) {
+   b.addEventListener("click", function(){ rcOpen(b.getAttribute("data-md")); });
+ });
+
+ /* ── STEPS DURATION BOXES ──────────────────────────── */
+ Object.keys(TIMERS).forEach(function(key) {
+   var panel = document.getElementById("panel-" + key);
+   if (!panel) return;
+   var steps = TIMERS[key][1];
+   var total = 0;
+   steps.forEach(function(st) { total += st[1]; });
+   var box = document.createElement("div");
+   box.className = "steps-list";
+   var h = '<p class="steps-title">Étapes — ' + total + ' min au total</p><ol>';
+   steps.forEach(function(st) {
+     h += '<li><span class="step-row"><span class="step-lbl">' + st[0] + '</span><span class="steps-dur">' + st[1] + ' min</span></span></li>';
+   });
+   h += '</ol>';
+   box.innerHTML = h;
+   var mb = panel.querySelector(".meta-block");
+   if (mb && mb.parentNode) {
+     mb.parentNode.insertBefore(box, mb.nextSibling);
+   } else {
+     var pi = panel.querySelector(".panel-intro");
+     if (pi && pi.parentNode) { pi.parentNode.insertBefore(box, pi.nextSibling); }
+     else { panel.appendChild(box); }
+   }
+ });
+
+})();
+</script>
+</body>
+</html>
