@@ -88,6 +88,16 @@
   details[open]>summary::before{content:"\2212"}
   details>summary:hover{background:var(--surface-2)}
   .details__body{padding:0 20px 18px 56px;color:var(--on-surface-variant);text-align:justify;hyphens:auto}
+  .reperes-hint{color:var(--on-surface-variant);font-size:.92rem;margin:0 0 12px}
+  .repere>summary{font-weight:700}
+  .repere-body{padding:2px 20px 14px}
+  .repere-body .callout{margin:0}
+  .repere-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--outline-variant)}
+  .repere-row:last-child{border-bottom:none}
+  .repere-row__t{margin:0 0 2px;font-weight:500;color:var(--on-surface)}
+  .repere-row__d{margin:0;color:var(--on-surface-variant);font-size:.95rem;text-align:justify;hyphens:auto}
+  .repere-row--now .repere-row__t{color:var(--primary)}
+  .repere-row__tag{font-size:.68rem;font-weight:700;background:var(--primary);color:#fff;border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle}
   .badge-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
     border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
   .phase-current{border:2px solid var(--primary)}
@@ -112,6 +122,7 @@
   .choice[data-cat=interdit] input:checked+label{background:var(--cat-interdit)}
   .choice[data-cat=arbitrer] input:checked+label{background:var(--cat-arbitrer)}
   .choice[data-cat=impose]   input:checked+label{background:var(--primary)}
+  .choice[data-cat=obligatoire] input:checked+label{background:var(--cat-arbitrer)}
   .choice[data-cat=local]    input:checked+label{background:var(--cat-arbitrer)}
   .choice[data-cat=nsp]      input:checked+label{background:var(--on-surface-variant)}
 
@@ -123,7 +134,7 @@
   .case-remark label{display:block;font-size:.82rem;font-weight:500;color:var(--on-surface-variant);margin-bottom:4px}
   .case-remark textarea{min-height:52px}
 
-  /* Phase 2 — tri « anticiper puis vérifier » */
+  /* Exercice — « anticiper puis vérifier » */
   .tri-reveal{display:none;margin:10px 0 2px;border-radius:var(--radius-s);padding:10px 14px;font-size:.92rem}
   .tri-reveal.show{display:block}
   .tri-reveal.ok{background:#e6f4ea;color:#0f3d1a;border-left:4px solid var(--cat-autorise)}
@@ -248,21 +259,18 @@
   <header class="app-bar">
     <div class="app-bar-inner">
       <h1>Co-construire la charte IA de l'établissement
-        <span class="subtitle">Support participant · atelier 3 h 15</span>
+        <span class="subtitle">Support participant · atelier 1 h 45</span>
       </h1>
     </div>
   </header>
   <nav class="tabs" aria-label="Phases de l'atelier">
     <div class="tabs-inner" role="tablist">
       <button role="tab" id="tab-deroule" aria-selected="true"  aria-controls="panel-deroule">Déroulé</button>
-      <button role="tab" id="tab-accueil" aria-selected="false" aria-controls="panel-accueil" tabindex="-1">Amorce</button>
+      <button role="tab" id="tab-p1" aria-selected="false" aria-controls="panel-p1" tabindex="-1">Amorce</button>
       <button role="tab" id="tab-reperes" aria-selected="false" aria-controls="panel-reperes" tabindex="-1">Repères</button>
-      <button role="tab" id="tab-p1" aria-selected="false" aria-controls="panel-p1" tabindex="-1">Phase 1</button>
-      <button role="tab" id="tab-p2" aria-selected="false" aria-controls="panel-p2" tabindex="-1">Phase 2</button>
-      <button role="tab" id="tab-p3" aria-selected="false" aria-controls="panel-p3" tabindex="-1">Phase 3</button>
-      <button role="tab" id="tab-p4" aria-selected="false" aria-controls="panel-p4" tabindex="-1">Phase 4</button>
-      <button role="tab" id="tab-cdc" aria-selected="false" aria-controls="panel-cdc" tabindex="-1">Phase 5</button>
-      <button role="tab" id="tab-p5" aria-selected="false" aria-controls="panel-p5" tabindex="-1">Phase 6</button>
+      <button role="tab" id="tab-appro" aria-selected="false" aria-controls="panel-appro" tabindex="-1">Appropriation</button>
+      <button role="tab" id="tab-p2" aria-selected="false" aria-controls="panel-p2" tabindex="-1">Obligations</button>
+      <button role="tab" id="tab-p5" aria-selected="false" aria-controls="panel-p5" tabindex="-1">Gouvernance</button>
       <button role="tab" id="tab-cloture" aria-selected="false" aria-controls="panel-cloture" tabindex="-1">Clôture</button>
     </div>
   </nav>
@@ -274,71 +282,19 @@
   <!-- DÉROULÉ : rappel simple -->
   <section role="tabpanel" id="panel-deroule" aria-labelledby="tab-deroule" tabindex="0">
     <div class="panel-head"><h2>Déroulé de l'atelier</h2></div>
-    <p class="panel-intro" style="max-width:none">Trois heures quinze, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
+    <p class="panel-intro" style="max-width:none">Une heure quarante-cinq, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
     <ol class="agenda" id="agenda"></ol>
-  </section>
-
-  <!-- ACCUEIL -->
-  <section role="tabpanel" id="panel-accueil" aria-labelledby="tab-accueil" tabindex="0" hidden>
-    <div class="panel-head"><h2>Amorce</h2><span class="panel-time">0:00–0:05 (5 min)</span></div>
-    <dl class="meta-block">
-      <dt>Objectif</dt><dd>Situer ce qu'est (et n'est pas) une charte IA et où s'insère l'atelier ; relier le cadre à sa propre expérience.</dd>
-      <dt>Modalités</dt><dd>Réflexion personnelle (amorce écrite), puis apport en plénière.</dd>
-    </dl>
-    <p class="panel-intro">On part d'abord de votre réalité ; le cadre commun (idées-socles et démarche DRANE) est présenté dans l'onglet <strong>Repères</strong>.</p>
-
-    <div class="phase-tag phase-tag--reflect">💬 Réflexion</div>
-    <div class="card">
-      <h3>Amorce — votre expérience</h3>
-      <p class="hint" style="margin:.3em 0 12px">Avant l'apport, notez pour vous un usage de l'IA déjà croisé dans votre établissement et le doute qu'il vous laisse.</p>
-      <div class="field">
-        <label for="acc-amorce" class="sr-only" style="position:absolute;left:-999px">Usage croisé et doute</label>
-        <textarea id="acc-amorce" data-key="acc.amorce" placeholder="Un usage observé… et le doute qu'il pose…"></textarea>
-      </div>
-      <p class="save-note">Enregistré sur cet appareil.</p>
-    </div>
-    <div class="actions-row"><button class="btn start-timer" type="button" data-md="amorce">⏱ Lancer le minuteur</button>
-      <button class="btn copy-md" type="button" data-md="amorce">Copier mes réponses (Markdown)</button>
-      <button class="btn btn--trainer copy-prompt" type="button" data-md="amorce">Voir le prompt d'analyse (formateur)</button></div>
-  </section>
-
-  <!-- REPÈRES -->
-  <section role="tabpanel" id="panel-reperes" aria-labelledby="tab-reperes" tabindex="0" hidden>
-    <div class="panel-head"><h2>Repères&nbsp;: la charte et la démarche</h2><span class="panel-time">0:05–0:15 (10 min)</span></div>
-    <dl class="meta-block">
-      <dt>Objectif</dt><dd>Disposer d'un cadre commun : la nature d'une charte IA et la démarche DRANE en cinq phases.</dd>
-      <dt>Modalités</dt><dd>Apport en plénière, fiche à l'appui ; consultable à tout moment.</dd>
-    </dl>
-    <p class="panel-intro">Ce qu'est une charte IA et où s'insère cet atelier.</p>
-
-    <div class="phase-tag phase-tag--explain">📖 Explication</div>
-    <h3 style="margin:8px 0 10px">Ce que dit le cadre national (juin 2025)</h3>
-    <div id="cadre"></div>
-    <p class="save-note">D'après le « Cadre d'usage de l'IA en éducation » (ministère de l'Éducation nationale, 14 juin 2025).</p>
-
-    <h3 style="margin:24px 0 10px">Sept idées-socles sur la charte</h3>
-    <div id="socles"></div>
-    <p class="save-note">D'après la « synthèse thématique transversale » des dossiers Réseau Canopé 2026, <em>Les IA génératives en éducation</em>.</p>
-
-    <h3 style="margin:24px 0 10px">Sept principes d'une IA digne de confiance (HLEG, 2019)</h3>
-    <div id="hleg"></div>
-    <p class="save-note">Sept exigences du groupe d'experts de haut niveau (HLEG) de la Commission européenne — <a href="https://digital-strategy.ec.europa.eu/fr/library/ethics-guidelines-trustworthy-ai" target="_blank" rel="noopener">« Ethics Guidelines for Trustworthy AI » (2019)</a> — applicables à toute organisation et complémentaires des quatre repères du cadre national. Exemple d'application en établissement&nbsp;: le « AI Ethical Code of Conduct » de l'Université d'Utrecht (<a href="https://www.uu.nl/en/organisation/ai-policy/about-ai-at-uu/uu-ai-ethical-code-of-conduct" target="_blank" rel="noopener">uu.nl</a>). Ces principes structurent l'activité « Code de conduite ».</p>
-
-    <h3 style="margin:24px 0 10px">La démarche DRANE en cinq phases</h3>
-    <p class="reminder">Cet atelier correspond à la <strong>phase 3 (co-rédaction)</strong>&nbsp;: il suppose les phases 1 et 2 amorcées et ouvre sur les phases 4 et 5.</p>
-    <div id="phases"></div>
-    <p class="save-note">Cinq phases adaptées de la DRANE Île-de-France, <a href="https://drane.region-academique-idf.fr/article591.html" target="_blank" rel="noopener">« Charte numérique à l'ère de l'Intelligence artificielle »</a> (mis à jour le 25 mars 2026).</p>
   </section>
 
   <!-- PHASE 1 -->
   <section role="tabpanel" id="panel-p1" aria-labelledby="tab-p1" tabindex="0" hidden>
-    <div class="panel-head"><h2>Usages réels et tensions</h2><span class="panel-time">0:15–0:30 (15 min)</span></div>
+    <div class="panel-head"><h2>Usages réels et tensions</h2><span class="panel-time">0:00–0:20 (20 min)</span></div>
     <dl class="meta-block">
       <dt>Objectif</dt><dd>Recenser les usages réels de l'IA (élèves et personnels) et nommer les doutes qu'ils soulèvent.</dd>
-      <dt>Modalités</dt><dd>Réflexion personnelle (notes), puis tour de table sans jugement en plénière.</dd>
+      <dt>Modalités</dt><dd>Cadrage de la séance (livrable, règle du non-jugement), puis réflexion personnelle (notes) et tour de table en plénière.</dd>
     </dl>
-    <p class="panel-intro">Tour de table sans jugement&nbsp;: on nomme ce qui se passe déjà, côté élèves comme côté personnels, et les doutes que cela soulève.</p>
-    <div class="phase-tag phase-tag--reflect">💬 Réflexion</div>
+    <p class="panel-intro">Après un bref cadrage (ce que la séance produit, règle du non-jugement)&nbsp;: tour de table sans jugement — on nomme ce qui se passe déjà, côté élèves comme côté personnels, et les doutes que cela soulève.</p>
+    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
     <div class="card">
       <h3>Côté élèves</h3>
       <p class="hint" style="margin:6px 0 4px;color:var(--on-surface-variant)">Ce que vous observez chez les élèves.</p>
@@ -378,16 +334,120 @@
       <button class="btn btn--trainer copy-prompt" type="button" data-md="p1">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
-  <!-- PHASE 2 -->
-  <section role="tabpanel" id="panel-p2" aria-labelledby="tab-p2" tabindex="0" hidden>
-    <div class="panel-head"><h2>Socle national, droit et marge locale</h2><span class="panel-time">0:30–0:50 (20 min)</span></div>
+  <!-- REPÈRES -->
+  <section role="tabpanel" id="panel-reperes" aria-labelledby="tab-reperes" tabindex="0" hidden>
+    <div class="panel-head"><h2>Repères&nbsp;: la charte et la démarche</h2><span class="panel-time">0:20–0:30 (10 min)</span></div>
     <dl class="meta-block">
-      <dt>Objectif</dt><dd>Distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.</dd>
-      <dt>Modalités</dt><dd>Tri individuel sur l'app, puis travail en sous-groupes et restitution en plénière.</dd>
+      <dt>Objectif</dt><dd>Disposer d'un cadre commun : la nature d'une charte IA et la démarche DRANE en cinq phases.</dd>
+      <dt>Modalités</dt><dd>Apport en plénière, fiche à l'appui ; consultable à tout moment.</dd>
     </dl>
-    <p class="panel-intro">Pour chaque élément, distinguez ce qui est <strong>imposé</strong> par le cadre national et le droit de ce qui se <strong>décide localement</strong>. <strong>Choisissez d'abord</strong>&nbsp;: la réponse attendue et la règle s'affichent ensuite. Vos choix sont enregistrés.</p>
+    <p class="panel-intro">Ce qu'est une charte IA et où s'insère cet atelier.</p>
+
+    <div class="phase-tag phase-tag--explain">📖 Explication</div>
+    <p class="reperes-hint">Cinq fiches dépliables, consultables à tout moment — cliquez un titre pour l'ouvrir.</p>
+    <div class="actions-row" style="margin:-4px 0 14px"><button type="button" class="btn" id="reperes-toggle">Tout déplier</button></div>
+
+    <details class="repere"><summary>La charte, traduction locale du cadre national (schéma)</summary>
+      <div class="repere-body" style="text-align:center">
+      <svg viewBox="0 0 480 358" role="img" aria-labelledby="schemaTitre schemaDesc" style="display:block;width:100%;height:auto;max-width:560px;margin:0 auto;font-family:Roboto,Arial,sans-serif">
+        <title id="schemaTitre">Relation entre le cadre national et la charte IA d'établissement</title>
+        <desc id="schemaDesc">Le cadre national d'usage de l'IA pose les principes et les obligations ; la charte d'établissement les traduit en règles locales par coconstruction ; cette charte met à jour les documents existants (règlement intérieur, charte numérique) et est votée en conseil d'administration.</desc>
+        <defs>
+          <marker id="schemaArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#37474f"></path>
+          </marker>
+        </defs>
+        <rect x="20" y="12" width="440" height="74" rx="14" fill="#37474f"></rect>
+        <text x="240" y="42" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">Cadre national d'usage de l'IA (juin 2025)</text>
+        <text x="240" y="66" text-anchor="middle" fill="#cfd8dc" font-size="11.5">Principes (4 repères) et obligations : RGPD · RIA</text>
+        <line x1="240" y1="86" x2="240" y2="132" stroke="#37474f" stroke-width="2.5" marker-end="url(#schemaArrow)"></line>
+        <rect x="58" y="97" width="364" height="24" rx="12" fill="#ffffff" stroke="#c4ccd0"></rect>
+        <text x="240" y="113" text-anchor="middle" fill="#3c474d" font-size="11">traduit et adapte au contexte local · coconstruction</text>
+        <rect x="20" y="140" width="440" height="74" rx="14" fill="#cfd8dc" stroke="#37474f" stroke-width="2"></rect>
+        <text x="240" y="170" text-anchor="middle" fill="#102027" font-size="16" font-weight="700">Charte IA de l'établissement</text>
+        <text x="240" y="194" text-anchor="middle" fill="#102027" font-size="11.5">Règles concrètes — usages élèves / usages professionnels</text>
+        <line x1="240" y1="214" x2="240" y2="260" stroke="#37474f" stroke-width="2.5" marker-end="url(#schemaArrow)"></line>
+        <rect x="92" y="225" width="296" height="24" rx="12" fill="#ffffff" stroke="#c4ccd0"></rect>
+        <text x="240" y="241" text-anchor="middle" fill="#3c474d" font-size="11">met à jour et s'adosse à · vote en CA</text>
+        <rect x="20" y="268" width="440" height="74" rx="14" fill="#e7eaec" stroke="#5f6b71"></rect>
+        <text x="240" y="298" text-anchor="middle" fill="#1b1f22" font-size="16" font-weight="700">Règlement intérieur · charte numérique</text>
+        <text x="240" y="322" text-anchor="middle" fill="#3c474d" font-size="11.5">Documents existants mis à jour, non un document de plus</text>
+      </svg>
+      </div>
+    </details>
+
+    <details class="repere" open><summary>Ce que dit le cadre national (juin 2025)</summary>
+      <div class="repere-body">
+        <div id="cadre"></div>
+        <figure style="margin:14px 0 0">
+          <a href="https://drane.ac-lyon.fr/spip/IMG/jpg/cadre_usage_ia_1751469955_page-0002.jpg" target="_blank" rel="noopener">
+            <img src="https://drane.ac-lyon.fr/spip/IMG/jpg/cadre_usage_ia_1751469955_page-0002.jpg" alt="Infographie de synthèse du cadre d'usage de l'IA en éducation (DRANE de l'académie de Lyon)" loading="lazy" style="display:block;width:100%;height:auto;border:1px solid var(--outline-variant);border-radius:var(--radius-s)">
+          </a>
+          <figcaption class="save-note">Infographie de synthèse : DRANE de l'académie de Lyon, d'après le cadre d'usage de l'IA en éducation. <a href="https://drane.ac-lyon.fr/spip/IMG/jpg/cadre_usage_ia_1751469955_page-0002.jpg" target="_blank" rel="noopener">Voir en grand</a>.</figcaption>
+        </figure>
+        <p class="save-note">D'après le <a href="https://www.education.gouv.fr/cadre-d-usage-de-l-ia-en-education-450647" target="_blank" rel="noopener">« Cadre d'usage de l'IA en éducation »</a> (ministère de l'Éducation nationale, 14 juin 2025).</p>
+      </div>
+    </details>
+
+    <details class="repere"><summary>Sept idées-socles sur la charte</summary>
+      <div class="repere-body">
+        <div id="socles"></div>
+        <p class="save-note">D'après la « synthèse thématique transversale » des dossiers Réseau Canopé 2026, <em>Les IA génératives en éducation</em>.</p>
+      </div>
+    </details>
+
+    <details class="repere"><summary>La démarche DRANE en cinq phases</summary>
+      <div class="repere-body">
+        <p class="reminder">Cet atelier correspond à la <strong>phase 3 (co-rédaction)</strong>&nbsp;: il suppose les phases 1 et 2 amorcées et ouvre sur les phases 4 et 5.</p>
+        <div id="phases"></div>
+        <p class="save-note">Cinq phases adaptées de la DRANE Île-de-France, <a href="https://drane.region-academique-idf.fr/article591.html" target="_blank" rel="noopener">« Charte numérique à l'ère de l'Intelligence artificielle »</a> (mis à jour le 25 mars 2026).</p>
+      </div>
+    </details>
+
+    <details class="repere"><summary>Sept principes d'une IA digne de confiance (HLEG, 2019)</summary>
+      <div class="repere-body">
+        <div id="hleg"></div>
+        <p class="save-note">Sept exigences du groupe d'experts de haut niveau (HLEG) de la Commission européenne — <a href="https://digital-strategy.ec.europa.eu/fr/library/ethics-guidelines-trustworthy-ai" target="_blank" rel="noopener">« Ethics Guidelines for Trustworthy AI » (2019)</a> — applicables à toute organisation et complémentaires des quatre repères du cadre national. Exemple d'application en établissement&nbsp;: le « AI Ethical Code of Conduct » de l'Université d'Utrecht (<a href="https://www.uu.nl/en/organisation/ai-policy/about-ai-at-uu/uu-ai-ethical-code-of-conduct" target="_blank" rel="noopener">uu.nl</a>).</p>
+      </div>
+    </details>
+
+    <p class="reperes-hint" style="margin-top:14px">↳ Repères juridiques détaillés (calendrier du RIA, essentiel RGPD, outils référencés et souverains)&nbsp;: dans l’onglet <strong>Obligations</strong>.</p>
+  </section>
+
+  <!-- APPROPRIATION DU CADRE -->
+  <section role="tabpanel" id="panel-appro" aria-labelledby="tab-appro" tabindex="0" hidden>
+    <div class="panel-head"><h2>Appropriation du cadre d’usage</h2><span class="panel-time">0:30–0:45 (15 min)</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>S’approprier concrètement ce que le cadre national autorise, interdit et encadre, côté personnels.</dd>
+      <dt>Modalités</dt><dd>Lecture en commun et discutée du guide, en plénière.</dd>
+    </dl>
+    <p class="panel-intro">Lisez ensemble le guide « IA pour les enseignants » (ce que vous POUVEZ / NE POUVEZ PAS faire / PRÉCAUTIONS), adossé au Cadre d’usage et aux FAQ CNIL, et discutez-en au fil de la lecture.</p>
+
+    <div class="phase-tag phase-tag--explain">📖 Ressource</div>
+    <div class="card">
+      <h3>Guide pratique — « IA pour les enseignants »</h3>
+      <p class="hint" style="margin:.3em 0 12px">Le « do / don’t » du cadre d’usage, avec les références officielles (Ministère, CNIL).</p>
+      <div class="actions-row"><a class="btn btn--filled" href="https://jourde.github.io/digital-education/varia/france-cadre-ia.html" target="_blank" rel="noopener">Ouvrir le guide ↗</a></div>
+      <p class="save-note">D’après « <a href="https://www.pedagogie.ac-nice.fr/drane/2025/09/09/cadre-usage-de-lia-en-education-simplifie/" target="_blank" rel="noopener">Cadre d’usage de l’IA en éducation simplifié</a> » (DRANE de l’académie de Nice, 2025).</p>
+    </div>
+
     <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
-    <div id="p2items" class="grid"></div>
+    <div class="card">
+      <h3>Lecture en commun et discutée</h3>
+      <p>Projetez le guide et parcourez-le ensemble, rubrique par rubrique (POUVEZ / NE POUVEZ PAS / PRÉCAUTIONS). À chaque point, échangez&nbsp;: est-ce déjà le cas chez nous&nbsp;? où sont les zones grises&nbsp;?</p>
+      <p><strong>Question directrice&nbsp;:</strong> parmi ces éléments, lesquels devraient faire <strong>partie essentielle de notre charte</strong>&nbsp;? Ce repérage collectif nourrit les phases suivantes.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="appro">⏱ Lancer le minuteur</button></div>
+  </section>
+
+  <!-- PHASE 1 — OBLIGATIONS -->
+  <section role="tabpanel" id="panel-p2" aria-labelledby="tab-p2" tabindex="0" hidden>
+    <div class="panel-head"><h2>Obligations légales non négociables</h2><span class="panel-time">0:45–1:05 (20 min)</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Identifier les obligations et interdictions légales non négociables qui s’imposent à l’établissement (RGPD et règlement européen sur l’IA), quels que soient les choix pédagogiques locaux.</dd>
+      <dt>Modalités</dt><dd>Test individuel sur l’app, puis mise en commun en plénière.</dd>
+    </dl>
+    <p class="panel-intro">Pour chaque énoncé, indiquez s’il s’agit d’une <strong>obligation</strong> ou d’une <strong>interdiction</strong> légale. <strong>Choisissez d’abord</strong>&nbsp;: la réponse attendue, la règle et sa source (RGPD ou règlement IA) s’affichent ensuite. Vos choix sont enregistrés.</p>
 
     <div class="phase-tag phase-tag--explain">📖 Explication</div>
     <div class="callout" style="margin-top:8px">
@@ -397,138 +457,42 @@
         <li><strong>Marquage</strong> des contenus générés par IA (art. 50.2)&nbsp;: 2 décembre 2026.</li>
         <li><strong>Obligations « haut risque » éducation</strong> (Annexe III)&nbsp;: reportées au 2 décembre 2027.</li>
       </ul>
-      <span class="warn">Report sous réserve d'adoption formelle du <em>Digital Omnibus</em>&nbsp;; à défaut, le calendrier initial (2 août 2026) s'applique. À retenir aussi&nbsp;: une sanction ne doit jamais reposer sur le seul résultat d'un détecteur d'IA.</span>
+      <span class="warn">Report sous réserve d’adoption formelle du <em>Digital Omnibus</em>&nbsp;; à défaut, le calendrier initial (2 août 2026) s’applique. À retenir aussi&nbsp;: une sanction ne doit jamais reposer sur le seul résultat d’un détecteur d’IA.</span>
     </div>
+    <div class="callout">
+      <h3>Repère — l’essentiel du RGPD pour l’établissement</h3>
+      <ul>
+        <li>Le <strong>chef d’établissement est responsable de traitement</strong> ; il associe le <strong>DPD académique</strong> dès qu’un traitement de données d’élèves est en jeu.</li>
+        <li><strong>Base légale</strong> : le plus souvent la mission d’intérêt public (information des familles + droit d’opposition), pas le consentement.</li>
+        <li><strong>Minimisation</strong> des données ; pas de <strong>transfert hors UE</strong> non encadré ; <strong>AIPD</strong> pour les traitements à risque élevé.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <h3>Repère — outils référencés et souverains</h3>
+      <ul>
+        <li>Privilégier les ressources du <strong>GAR</strong> et un <strong>compte classe</strong> plutôt que des comptes individuels d’élèves ; désactiver historique et réutilisation des données ; appareils dédiés sans données personnelles.</li>
+        <li>Familles d’outils plus protectrices (citer des <em>familles</em> plutôt que des marques, pour éviter l’obsolescence)&nbsp;: comparateurs multi-modèles publics/souverains (ex. <a href="https://comparia.beta.gouv.fr/" target="_blank" rel="noopener">Compar:IA</a>)&nbsp;; assistants via passerelle anonymisante (ex. <a href="https://duck.ai" target="_blank" rel="noopener">DuckDuckGo AI Chat</a>)&nbsp;; plateformes pédagogiques sans inscription élève (ex. <a href="https://www.vittascience.com/" target="_blank" rel="noopener">Vittascience</a>)&nbsp;; moteurs de réponse à sources vérifiables (ex. <a href="https://www.perplexity.ai/" target="_blank" rel="noopener">Perplexity</a> sans compte).</li>
+      </ul>
+      <span class="warn">Toute liste d’outils doit être validée avec le DPD académique avant diffusion.</span>
+    </div>
+
+    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
+    <div id="p2items" class="grid"></div>
     <div class="actions-row"><button class="btn start-timer" type="button" data-md="p2">⏱ Lancer le minuteur</button>
       <button class="btn copy-md" type="button" data-md="p2">Copier mes réponses (Markdown)</button>
-      <button class="btn btn--trainer copy-prompt" type="button" data-md="p2">Voir le prompt d'analyse (formateur)</button></div>
-  </section>
-
-  <!-- PHASE 3 -->
-  <section role="tabpanel" id="panel-p3" aria-labelledby="tab-p3" tabindex="0" hidden>
-    <div class="panel-head"><h2>Tri des cas d'usage</h2><span class="panel-time">0:50–1:30 (40 min)</span></div>
-    <dl class="meta-block">
-      <dt>Objectif</dt><dd>Classer des situations d'usage en autorisé / encadré / interdit / à arbitrer et les rattacher à un repère et à un destinataire.</dd>
-      <dt>Modalités</dt><dd>Tri par groupes, puis confrontation en plénière (les désaccords deviennent des « à arbitrer »).</dd>
-    </dl>
-    <p class="panel-intro">Pour chaque situation, choisissez&nbsp;: <strong>autorisé</strong>, <strong>encadré</strong>, <strong>interdit</strong> ou <strong>à arbitrer</strong>. Les désaccords (« à arbitrer ») sont la matière la plus précieuse. Choisissez et débattez d'abord&nbsp;: sur les cas ouverts, <strong>« Voir la proposition »</strong> affiche un avis indicatif à discuter&nbsp;; sur les lignes rouges 🔴, la réponse se vérifie directement.</p>
-    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
-    <div id="cases" class="grid"></div>
-
-    <div class="phase-tag phase-tag--reflect">💬 Réflexion</div>
-    <details>
-      <summary>Variante — mise en situation (optionnel, +10–15 min)</summary>
-      <div class="details__body">
-        <p style="margin:0 0 10px">À réserver à une variante 3 h 30 ou au programme multi-séances. Choisir <strong>un</strong> scénario, le traiter en sous-groupes de rôle, puis relier la résolution à une clause de la charte.</p>
-        <ol style="margin:0 0 12px;padding-left:1.2em">
-          <li><strong>Contestation d'une sanction</strong> — un enseignant met 0 sur la foi d'un détecteur d'IA ; la famille conteste. Mener la médiation, rappeler l'invalidation des détecteurs, proposer une vérification orale équitable.</li>
-          <li><strong>Fuite de données nominatives</strong> — un personnel a versé un fichier élèves (dont aménagements) dans une IA grand public. Réagir en responsable de traitement : saisir le DPD, notifier la CNIL sous 72 h, informer les familles, rappeler l'interdiction absolue.</li>
-          <li><strong>Deepfake / cyberharcèlement</strong> — une vidéo truquée d'un élève ou d'un personnel circule. Activer le protocole de lutte contre le cyberharcèlement, saisir les autorités, lancer une campagne de sensibilisation au CDI.</li>
-        </ol>
-        <div class="field" style="margin-bottom:0">
-          <label for="p3-scenario">Notes — résolution et clause de charte associée</label>
-          <textarea id="p3-scenario" data-key="p3.scenario" placeholder="Décisions clés, acteurs à mobiliser, clause de la charte qui s'applique…"></textarea>
-        </div>
-      </div>
-    </details>
-
-    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p3">⏱ Lancer le minuteur</button>
-      <button class="btn copy-md" type="button" data-md="p3">Copier mes réponses (Markdown)</button>
-      <button class="btn btn--trainer copy-prompt" type="button" data-md="p3">Voir le prompt d'analyse (formateur)</button></div>
-  </section>
-
-  <!-- PHASE 4 -->
-  <section role="tabpanel" id="panel-p4" aria-labelledby="tab-p4" tabindex="0" hidden>
-    <div class="panel-head"><h2>Rédaction du noyau et des paliers</h2><span class="panel-time">1:40–2:30 (50 min)</span></div>
-    <dl class="meta-block">
-      <dt>Objectif</dt><dd>Rédiger le noyau de principes et des paliers d'autorisation, en séparant usages élèves et usages professionnels.</dd>
-      <dt>Modalités</dt><dd>Rédaction en deux sous-groupes (élèves / professionnels), puis échange croisé.</dd>
-    </dl>
-    <p class="panel-intro">Rédiger le noyau de principes et des paliers d'autorisation, en séparant clairement usages élèves et usages professionnels.</p>
-
-    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
-    <div class="card">
-      <h3>Usages élèves — trois paliers</h3>
-      <div class="field" style="margin-top:12px">
-        <label for="p4-libre">Libre <span class="hint">— ce que les élèves peuvent faire sans condition</span></label>
-        <textarea id="p4-libre" data-key="p4.libre"></textarea>
-      </div>
-      <div class="field">
-        <label for="p4-declare">Autorisé avec déclaration <span class="hint">— usage permis s'il est signalé / cité</span></label>
-        <textarea id="p4-declare" data-key="p4.declare"></textarea>
-      </div>
-      <div class="field">
-        <label for="p4-interdit">Interdit <span class="hint">— ce qui relève de la fraude ou du risque</span></label>
-        <textarea id="p4-interdit" data-key="p4.interdit"></textarea>
-      </div>
-      <div class="field">
-        <label for="p4-principes">Principes courts (un par repère) <span class="hint">— éthique · pédagogique · juridique · environnemental</span></label>
-        <textarea id="p4-principes" data-key="p4.principes"></textarea>
-      </div>
-      <div class="field">
-        <label for="p4-consigne">Consigne réécrite « robuste à l'IA » <span class="hint">— réécrire une consigne de devoir en privilégiant raisonnement, oral, étapes et ancrage au cours ; à relier au projet d'évaluation</span></label>
-        <textarea id="p4-consigne" data-key="p4.consigne"></textarea>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Usages professionnels</h3>
-      <p class="reminder" style="margin-top:10px"><strong>Obligations RGPD à rappeler&nbsp;:</strong> jamais de données personnelles dans un outil non référencé ; vérifier l'inscription du traitement au registre ; solliciter le DPD académique si nécessaire.</p>
-      <div class="callout">
-        <h3>Repère — outils référencés et souverains</h3>
-        <ul>
-          <li>Privilégier les ressources du <strong>GAR</strong> et un <strong>compte classe</strong> plutôt que des comptes individuels d'élèves ; désactiver historique et réutilisation des données ; appareils dédiés sans données personnelles.</li>
-          <li>Familles d'outils plus protectrices (citer des <em>familles</em> plutôt que des marques, pour éviter l'obsolescence)&nbsp;: comparateurs multi-modèles publics/souverains (ex. Compar:IA)&nbsp;; assistants via passerelle anonymisante (ex. DuckDuckGo AI Chat)&nbsp;; plateformes pédagogiques sans inscription élève (ex. Vittascience)&nbsp;; moteurs de réponse à sources vérifiables (ex. Perplexity sans compte).</li>
-        </ul>
-        <span class="warn">Toute liste d'outils doit être validée avec le DPD académique avant diffusion.</span>
-      </div>
-      <div class="field">
-        <label for="p4-outils">Outils autorisés et conditions</label>
-        <textarea id="p4-outils" data-key="p4.outils"></textarea>
-      </div>
-      <div class="field">
-        <label for="p4-transparence">Règle de transparence</label>
-        <textarea id="p4-transparence" data-key="p4.transparence"></textarea>
-      </div>
-      <p class="save-note">Enregistré sur cet appareil.</p>
-    </div>
-    <div class="actions-row"><button class="btn start-timer" type="button" data-md="p4">⏱ Lancer le minuteur</button>
-      <button class="btn copy-md" type="button" data-md="p4">Copier mes réponses (Markdown)</button>
-      <button class="btn btn--trainer copy-prompt" type="button" data-md="p4">Voir le prompt d'analyse (formateur)</button></div>
-  </section>
-
-  <!-- CODE DE CONDUITE -->
-  <section role="tabpanel" id="panel-cdc" aria-labelledby="tab-cdc" tabindex="0" hidden>
-    <div class="panel-head"><h2>Code de conduite IA — usages des personnels</h2><span class="panel-time">2:30–2:45 (15 min)</span></div>
-    <dl class="meta-block">
-      <dt>Objectif</dt><dd>Traduire les sept principes d'une IA responsable (HLEG 2019) en engagements concrets et applicables par les personnels.</dd>
-      <dt>Modalités</dt><dd>Rédaction guidée principe par principe (individuel ou sous-groupe), puis mise en commun.</dd>
-    </dl>
-    <p class="panel-intro">Sur le modèle des principes d'une IA responsable (HLEG 2019), formulez pour chaque principe un engagement court et applicable par les personnels. Inutile de tout remplir&nbsp;: priorisez les 3 à 4 principes les plus utiles à votre contexte. Les sept principes sont détaillés dans l'onglet <strong>Repères</strong>.</p>
-    <div class="card" id="cdc-fields"></div>
-    <div class="card">
-      <h3>Préambule (do-no-harm)</h3>
-      <p class="hint" style="margin:.3em 0 12px">Une phrase d'engagement transversal, dans l'esprit de la « section 0 » d'Utrecht.</p>
-      <div class="field">
-        <label for="cdc-preambule" class="sr-only" style="position:absolute;left:-999px">Préambule du code de conduite</label>
-        <textarea id="cdc-preambule" data-key="cdc.preambule" placeholder="Les personnels s'engagent à un usage de l'IA qui ne nuit pas aux personnes, à l'établissement ni à l'intégrité du service public d'éducation…"></textarea>
-      </div>
-      <p class="save-note">Enregistré sur cet appareil.</p>
-    </div>
-    <div class="actions-row"><button class="btn start-timer" type="button" data-md="cdc">⏱ Lancer le minuteur</button>
-      <button class="btn copy-md" type="button" data-md="cdc">Copier mes réponses (Markdown)</button>
-      <button class="btn btn--trainer copy-prompt" type="button" data-md="cdc">Voir le prompt d'analyse (formateur)</button></div>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="p2">Voir le prompt d’analyse (formateur)</button></div>
   </section>
 
   <!-- PHASE 5 -->
   <section role="tabpanel" id="panel-p5" aria-labelledby="tab-p5" tabindex="0" hidden>
-    <div class="panel-head"><h2>Architecture documentaire et gouvernance</h2><span class="panel-time">2:45–3:05 (20 min)</span></div>
+    <div class="panel-head"><h2>Architecture documentaire et gouvernance</h2><span class="panel-time">1:15–1:35 (20 min)</span></div>
     <dl class="meta-block">
       <dt>Objectif</dt><dd>Décider l'architecture documentaire, le circuit de validation et la révision annuelle.</dd>
       <dt>Modalités</dt><dd>Décisions en plénière (options par défaut à amender), puis engagement individuel.</dd>
     </dl>
     <p class="panel-intro">Quatre décisions à prendre pour que le texte vive et soit adopté.</p>
 
+    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
     <div class="card">
       <h3>1 · Architecture documentaire en 3 couches</h3>
       <p class="reminder" style="margin-top:10px">RI (sanctions) · charte numérique (services et comptes) · charte ou annexe IA (usages, transparence, données, évaluation).</p>
@@ -576,24 +540,24 @@
 
   <!-- CLÔTURE -->
   <section role="tabpanel" id="panel-cloture" aria-labelledby="tab-cloture" tabindex="0" hidden>
-    <div class="panel-head"><h2>Clôture — auto-positionnement</h2><span class="panel-time">3:05–3:15 (10 min)</span></div>
+    <div class="panel-head"><h2>Clôture — auto-positionnement</h2><span class="panel-time">1:35–1:45 (10 min)</span></div>
     <dl class="meta-block">
-      <dt>Objectif</dt><dd>Auto-évaluer sa maîtrise des quatre objectifs et formaliser un engagement de pilotage suivi.</dd>
+      <dt>Objectif</dt><dd>Auto-évaluer sa maîtrise des deux objectifs et formaliser un engagement de pilotage suivi.</dd>
       <dt>Modalités</dt><dd>Réflexion individuelle (checklist + engagement), puis partage en binôme.</dd>
     </dl>
-    <p class="panel-intro">Où en êtes-vous sur les quatre objectifs&nbsp;? Placez chaque curseur selon où vous en êtes, repérez l'objectif le moins assuré, puis formalisez un engagement suivi.</p>
+    <p class="panel-intro">Où en êtes-vous sur les deux objectifs&nbsp;? Placez chaque curseur selon où vous en êtes, repérez l'objectif le moins assuré, puis formalisez un engagement suivi.</p>
 
+    <div class="phase-tag phase-tag--explain">📖 Explication</div>
     <div class="card" id="recall-objectifs">
-      <h3 style="margin:0 0 8px">Rappel — les quatre objectifs de l'atelier</h3>
+      <h3 style="margin:0 0 8px">Rappel — les deux objectifs de l'atelier</h3>
       <ol style="margin:0;padding-left:1.2em">
-        <li><strong>Distinguer</strong> ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.</li>
-        <li><strong>Trier</strong> des situations d'usage en autorisé / encadré / interdit / à arbitrer.</li>
-        <li><strong>Rédiger</strong> le noyau de principes et la matrice d'usages de la charte v1.</li>
+        <li><strong>Identifier</strong> les obligations légales non négociables (RGPD, RIA) qui s'imposent à l'établissement.</li>
         <li><strong>Décider</strong> l'architecture documentaire, le circuit de validation et la révision annuelle.</li>
       </ol>
     </div>
 
 
+    <div class="phase-tag phase-tag--reflect">💬 Réflexion</div>
     <div class="card" id="checklist"></div>
 
     <h3 style="margin:24px 0 6px">Mon engagement de pilotage</h3>
@@ -638,34 +602,30 @@
   function phaseTag(type,label){return el("div",{class:"phase-tag phase-tag--"+type},label);}
 
   var TIMERS={
-    amorce:["Amorce",[["Amorce — réflexion personnelle",5]]],
-    p1:["Phase 1 — Usages réels et tensions",[["Notes individuelles",5],["Tour de table (plénière)",10]]],
-    p2:["Phase 2 — Socle, droit et marge locale",[["Tri individuel (app) : anticiper puis vérifier",6],["Travail en sous-groupes",9],["Restitution en plénière",5]]],
-    p3:["Phase 3 — Tri des cas d'usage",[["Tri des cas en groupes",30],["Confrontation en plénière",10]]],
-    p4:["Phase 4 — Rédaction du noyau et des paliers",[["Rédaction en sous-groupes",30],["Échange croisé",15],["Marge / mise en commun",5]]],
-    cdc:["Phase 5 — Code de conduite (7 principes d'une IA responsable)",[["Rédaction guidée (principes prioritaires)",10],["Mise en commun",5]]],
-    p5:["Phase 6 — Architecture et gouvernance",[["Décisions en plénière",15],["Engagement individuel",5]]],
+    p1:["Amorce — Usages réels et tensions",[["Cadrage et installation",5],["Notes individuelles",5],["Tour de table (plénière)",10]]],
+    appro:["Appropriation du cadre d’usage",[["Lecture en commun du guide",10],["Discussion",5]]],
+    p2:["Obligations légales non négociables",[["Test individuel (app) : anticiper puis vérifier",12],["Mise en commun en plénière",8]]],
+    p5:["Architecture et gouvernance",[["Décisions en plénière",15],["Engagement individuel",5]]],
     cloture:["Clôture — auto-positionnement",[["Auto-positionnement au curseur (individuel)",4],["Engagement Essayer/Observer/Rapporter",4],["Partage en binôme",2]]]
   };
   var AGENDA=[
-    ["0:00–0:05 (5 min)","Amorce","amorce",false],
-    ["0:05–0:15 (10 min)","Repères : la charte et la démarche",null,false],
-    ["0:15–0:30 (15 min)","Phase 1 — Usages réels et tensions","p1",false],
-    ["0:30–0:50 (20 min)","Phase 2 — Socle national, droit et marge locale","p2",false],
-    ["0:50–1:30 (40 min)","Phase 3 — Tri des cas d'usage","p3",false],
-    ["1:30–1:40 (10 min)","Pause",null,true],
-    ["1:40–2:30 (50 min)","Phase 4 — Rédaction du noyau et des paliers","p4",false],
-    ["2:30–2:45 (15 min)","Phase 5 — Code de conduite — 7 principes d'une IA responsable","cdc",false],
-    ["2:45–3:05 (20 min)","Phase 6 — Architecture documentaire et gouvernance","p5",false],
-    ["3:05–3:15 (10 min)","Clôture — Auto-positionnement","cloture",false]
+    ["0:00–0:20 (20 min)","Amorce — usages réels et tensions","p1",false],
+    ["0:20–0:30 (10 min)","Repères : la charte et la démarche",null,false,"Cadre national · sept idées-socles · démarche DRANE en 5 phases · principes HLEG"],
+    ["0:30–0:45 (15 min)","Appropriation du cadre d’usage","appro",false],
+    ["0:45–1:05 (20 min)","Obligations légales non négociables","p2",false],
+    ["1:05–1:15 (10 min)","Pause",null,true],
+    ["1:15–1:35 (20 min)","Architecture documentaire et gouvernance","p5",false],
+    ["1:35–1:45 (10 min)","Clôture — Auto-positionnement","cloture",false]
   ];
   var CADRE=[
-    "<strong>Un outil d'assistance, pas de substitution</strong> — l'usage de l'IA est autorisé sous conditions, dès lors qu'une plus-value pédagogique est avérée ; il ne doit jamais remplacer le travail intellectuel de l'élève.",
-    "<strong>Progressivité par âge</strong> — comptes IA grand public proscrits avant 13 ans ; usage autonome accompagné dès la 4e ; au lycée, usage autonome dans un cadre d'apprentissage explicitement défini par l'enseignant.",
-    "<strong>Définition de la fraude</strong> — utiliser l'IA pour tout ou partie d'un devoir sans autorisation explicite et sans travail personnel d'appropriation constitue une fraude.",
-    "<strong>Pas de détecteurs</strong> — les logiciels de détection de contenus générés par IA sont déconseillés (peu fiables) ; aucune sanction ne doit reposer sur leur seul résultat.",
-    "<strong>Protection des données</strong> — ne jamais saisir de données personnelles, confidentielles ou protégées par le droit d'auteur dans un service d'IA grand public.",
-    "<strong>Frugalité</strong> — privilégier un usage frugal : n'utiliser l'IA que si aucune autre solution moins coûteuse écologiquement ne répond au besoin. Le cadre repose sur quatre repères : éthique, pédagogique, juridique, environnemental."
+    "<strong>À retenir</strong> — l'IA s'emploie exclusivement au service des apprentissages et des pratiques professionnelles, dans le respect des valeurs de l'École de la République, du cadre légal sur les données personnelles, de la liberté pédagogique et des enjeux environnementaux (quatre repères : éthique, pédagogique, juridique, environnemental).",
+    "<strong>Plus-value avérée</strong> — n'utiliser l'IA que lorsqu'une plus-value pédagogique est avérée ; elle assiste, sans se substituer au travail intellectuel.",
+    "<strong>Données : vigilance sur le grand public</strong> — les services grand public ne garantissent pas la non-réutilisation des données saisies : n'y saisir que des données publiables (textes officiels, ressources libres, données anonymisées, domaine public…), jamais de données confidentielles ou personnelles ; ne pas faire créer de compte élève. Renoncer aux IA grand public dès que des données personnelles, confidentielles ou protégées par le droit d'auteur sont en jeu.",
+    "<strong>Impact environnemental</strong> — recourir à l'IA de façon raisonnée ; y renoncer si une solution moins coûteuse écologiquement suffit (p. ex. une simple recherche sur le Web).",
+    "<strong>Transparence</strong> — signaler tout usage de l'IA dans une prise de décision, en précisant comment elle a été utilisée et, si possible, le type d'outil.",
+    "<strong>Esprit critique</strong> — vérifier l'exactitude en croisant les sources et repérer les biais pour les corriger ; renoncer si l'on ne peut évaluer le résultat (exactitude, références, impartialité) ; privilégier les solutions libres (contrôle des corpus et des traitements).",
+    "<strong>Devoirs et évaluation</strong> — mettre au premier plan le raisonnement et la résolution de problème ; un devoir réalisé avec l'IA sans autorisation explicite ni travail personnel d'appropriation constitue une fraude ; éviter les détecteurs de contenus IA, peu fiables (risque de pénaliser à tort).",
+    "<strong>Progressivité par niveau</strong> — primaire : sensibilisation sans manipulation directe ; à partir de la 4e : usage pédagogique limité, encadré et accompagné par l'enseignant ; lycée : usage autonome dans un cadre d'apprentissage explicitement défini par l'enseignant."
   ];
   var HLEG=[
     ["Autonomie et supervision humaines","L'humain garde la main : supervision humaine pour tout usage critique ; l'IA assiste, elle ne remplace pas les personnels."],
@@ -693,58 +653,32 @@
     ["Information et diffusion","Communication aux familles, intégration aux actions de rentrée, supports accessibles.",false]
   ];
   var P2=[
-    "Informer les familles d'un traitement de données élèves",
-    "Choisir les outils d'IA autorisés dans l'établissement",
-    "Respecter la majorité numérique (15 ans) pour le consentement",
-    "Définir les paliers d'usage des élèves (libre / déclaré / interdit)",
-    "Solliciter le DPD académique pour un traitement de données élèves",
-    "Fixer les règles d'évaluation des travaux réalisés avec l'IA"
+    "Informer les familles et les élèves des traitements de données réalisés",
+    "Associer le DPD académique à tout traitement de données personnelles d'élèves",
+    "Réaliser une AIPD avant un traitement à risque élevé (profilage ou évaluation de mineurs)",
+    "Garder une supervision humaine sur un outil d'aide à l'évaluation ou à l'orientation",
+    "Signaler qu'un contenu est généré par IA et qu'on interagit avec une IA",
+    "Saisir des données nominatives d'élèves dans une IA grand public non référencée",
+    "Utiliser un système de reconnaissance des émotions des élèves en classe",
+    "Fonder une sanction sur le seul résultat d'un détecteur d'IA",
+    "Demander aux élèves de créer un compte personnel sur une IA grand public"
   ];
   var P2KEY=[
-    ["impose","Obligation d'information des familles (RGPD)."],
-    ["local","Choix de l'établissement, dans les limites du RGPD (outils référencés)."],
-    ["impose","Reste imposé, mais la règle dépend de la base légale : si l'usage repose sur le consentement, la majorité numérique est à 15 ans (autorisation parentale en dessous) ; s'il relève de la mission d'intérêt public de l'établissement, ce sont l'information des familles et le droit d'opposition qui s'appliquent (CNIL)."],
-    ["local","Relève de l'autonomie pédagogique de l'établissement."],
-    ["impose","Le DPD doit être associé à tout traitement de données personnelles."],
-    ["local","Autonomie pédagogique — mais aucune sanction ne peut reposer sur le seul résultat d'un détecteur (ligne rouge)."]
-  ];
-  var CASES=[
-    ["Rédiger un devoir maison entièrement avec un chatbot","élève"],
-    ["Vérifier une information avec l'IA avant de la citer","élève"],
-    ["Générer une image par IA pour illustrer un exposé","élève"],
-    ["Réviser avec un assistant IA qui interroge sur le cours","élève"],
-    ["Faire reformuler par l'IA un texte qu'on a écrit soi-même","élève"],
-    ["Utiliser un outil d'IA non référencé par l'établissement","élève"],
-    ["Traduire avec l'IA une consigne non comprise","élève"],
-    ["Saisir des données nominatives d'élèves dans un outil grand public","personnel"],
-    ["Corriger des copies à l'aide d'un outil IA","personnel"],
-    ["Générer des exercices différenciés avec l'IA","personnel"],
-    ["Rédiger un courrier type avec un assistant IA (sans données personnelles)","personnel"],
-    ["Fonder une sanction sur le seul résultat d'un détecteur d'IA","personnel"]
-  ];
-  /* Corrigé phase 3 — [ligne rouge ?, catégorie, repère, note]. Ferme si ligne rouge, sinon proposition à débattre. */
-  var CASEKEY=[
-    [false,"interdit","pédagogique / éthique","Substitution au travail personnel = fraude."],
-    [false,"encadre","pédagogique","L'IA hallucine : vérifier la source."],
-    [false,"encadre","éthique / juridique","Mention de l'usage, droits, marquage."],
-    [false,"autorise","pédagogique","Usage vertueux."],
-    [false,"encadre","pédagogique","Selon l'objectif d'apprentissage ; à déclarer (encadré ou à arbitrer)."],
-    [false,"encadre","juridique","Encadré, mais interdit si données personnelles dans un outil non référencé (🔴 sur ce point)."],
-    [false,"autorise","pédagogique","Accessibilité ; encadré en cours de langue."],
-    [true,"interdit","juridique","Ligne rouge RGPD : jamais de données nominatives dans un outil grand public."],
-    [false,"encadre","juridique / pédagogique","L'enseignant reste responsable ; aucune donnée nominative ; transparence (encadré ou à arbitrer)."],
-    [false,"autorise","pédagogique","Gain réel ; vérifier le contenu produit."],
-    [false,"autorise","—","Sans donnée personnelle."],
-    [true,"interdit","juridique / éthique","Ligne rouge : détecteurs non fiables, aucune sanction sur leur seul résultat."]
+    ["obligatoire","RGPD — obligation d'information des personnes concernées (élèves et familles)."],
+    ["obligatoire","RGPD — le DPD académique doit être associé à tout traitement de données personnelles."],
+    ["obligatoire","RGPD — une analyse d'impact (AIPD) est requise pour les traitements à risque élevé, notamment le profilage ou l'évaluation de mineurs."],
+    ["obligatoire","Règlement IA — système « haut risque » en éducation : supervision humaine obligatoire ; l'IA ne décide jamais seule."],
+    ["obligatoire","Règlement IA — obligation de transparence (art. 50) : informer qu'on interagit avec une IA et signaler les contenus générés."],
+    ["interdit","RGPD — jamais de données personnelles d'élèves dans un service grand public non référencé."],
+    ["interdit","Règlement IA — risque inacceptable : la reconnaissance des émotions est interdite dans les lieux d'enseignement (sauf exceptions médicales ou de sécurité)."],
+    ["interdit","Ligne rouge — détecteurs peu fiables : aucune sanction ne peut reposer sur leur seul résultat."],
+    ["interdit","Cadre national et RGPD — ne jamais demander à un élève de créer un compte personnel sur une IA grand public."]
   ];
   var CHECKS=[
-    "Je peux distinguer ce qu'imposent le cadre national et le droit de ce qui relève d'une décision locale.",
-    "Je peux trier une situation d'usage en autorisé / encadré / interdit / à arbitrer.",
-    "Je peux rédiger un palier d'autorisation et un principe applicable rattaché à un repère.",
+    "Je peux identifier les obligations légales non négociables (RGPD, RIA) qui s'imposent à l'établissement.",
     "Je peux décider l'architecture documentaire, le circuit de validation et la révision annuelle."
   ];
   var LEVELS=["Pas encore","J'ai des bases","Plutôt à l'aise","Tout à fait à l'aise"];
-  var CAT=[["autorise","Autorisé"],["encadre","Encadré"],["interdit","Interdit"],["arbitrer","À arbitrer"],["nsp","Ne se prononce pas"]];
   var PP=["Enseignants","AESH","Vie scolaire","Personnels administratifs","Familles","Élèves / CVL"];
 
   /* Déroulé */
@@ -757,6 +691,8 @@
     var key=a[2];
     if(key&&TIMERS[key]){
       b.appendChild(el("p",null,TIMERS[key][1].map(function(s){return s[0];}).join(" · ")));
+    }else if(a[4]){
+      b.appendChild(el("p",null,a[4]));
     }
     li.appendChild(b);ag.appendChild(li);
   });
@@ -765,34 +701,39 @@
   var cad=document.getElementById("cadre");
   if(cad){var cul=el("ul");CADRE.forEach(function(t){cul.appendChild(el("li",null,t));});var cbox=el("div",{class:"callout"});cbox.appendChild(cul);cad.appendChild(cbox);}
 
+  /* Rendu d'une ligne « repère » (titre + glose), sans accordéon imbriqué */
+  function repereRow(parent,i,title,desc,now,tag){
+    var row=el("div",{class:"repere-row"+(now?" repere-row--now":"")});
+    row.appendChild(el("span",{class:"badge-num"},String(i+1)));
+    var b=el("div");
+    var t=el("p",{class:"repere-row__t"},title+(tag?'<span class="repere-row__tag">'+tag+'</span>':''));
+    b.appendChild(t);
+    b.appendChild(el("p",{class:"repere-row__d"},desc));
+    row.appendChild(b);parent.appendChild(row);
+  }
   /* Socles */
   var sc=document.getElementById("socles");
-  SOCLES.forEach(function(s,i){
-    var d=el("details");var sum=el("summary");
-    sum.appendChild(el("span",{class:"badge-num"},String(i+1)));
-    sum.appendChild(el("span",null,s[0]));d.appendChild(sum);
-    d.appendChild(el("div",{class:"details__body"},s[1]));sc.appendChild(d);
-  });
+  if(sc)SOCLES.forEach(function(s,i){repereRow(sc,i+1,s[0],s[1],false,null);});
   /* Sept principes HLEG */
   var hl=document.getElementById("hleg");
-  if(hl)HLEG.forEach(function(p,i){
-    var d=el("details");var sum=el("summary");
-    sum.appendChild(el("span",{class:"badge-num"},String(i+1)));
-    sum.appendChild(el("span",null,p[0]));d.appendChild(sum);
-    d.appendChild(el("div",{class:"details__body"},p[1]));hl.appendChild(d);
-  });
+  if(hl)HLEG.forEach(function(p,i){repereRow(hl,i+1,p[0],p[1],false,null);});
   /* Phases DRANE */
   var ph=document.getElementById("phases");
-  PHASES.forEach(function(p,i){
-    var d=el("details",p[2]?{class:"phase-current",open:""}:null);var sum=el("summary");
-    sum.appendChild(el("span",{class:"badge-num"},String(i+1)));
-    sum.appendChild(el("span",null,p[0]));
-    if(p[2])sum.appendChild(el("span",{class:"tag-current"},"Cet atelier"));
-    d.appendChild(sum);d.appendChild(el("div",{class:"details__body"},p[1]));ph.appendChild(d);
-  });
+  if(ph)PHASES.forEach(function(p,i){repereRow(ph,i+1,p[0],p[1],p[2],p[2]?"Cet atelier":null);});
 
-  /* Phase 2 — imposé / local, en « anticiper puis vérifier » */
-  var P2OPT=[["impose","Imposé"],["local","À décider localement"],["nsp","Ne se prononce pas"]];
+  /* Repères — tout déplier / tout replier */
+  var repToggle=document.getElementById("reperes-toggle");
+  if(repToggle){
+    repToggle.addEventListener("click",function(){
+      var list=document.querySelectorAll("#panel-reperes details.repere");
+      var anyClosed=false;list.forEach(function(d){if(!d.open)anyClosed=true;});
+      list.forEach(function(d){d.open=anyClosed;});
+      repToggle.textContent=anyClosed?"Tout replier":"Tout déplier";
+    });
+  }
+
+  /* Obligations — « anticiper puis vérifier » */
+  var P2OPT=[["obligatoire","Obligatoire"],["interdit","Interdit"],["nsp","Ne se prononce pas"]];
   var p2w=document.getElementById("p2items");
   P2.forEach(function(txt,i){
     var card=el("article",{class:"card"});
@@ -822,61 +763,13 @@
     p2w.appendChild(card);
   });
 
-  /* Phase 3 — cases, en « anticiper puis vérifier » (ferme sur 🔴, proposition à débattre sinon) */
-  var cw=document.getElementById("cases");
-  CASES.forEach(function(c,i){
-    var card=el("article",{class:"card"});
-    card.appendChild(el("span",{class:"case__dest"},c[1]));
-    if(CASEKEY[i][0]){card.classList.add("case-rl");card.appendChild(el("span",{class:"tag tag-rl"},"🔴 Ligne rouge"));}
-    card.appendChild(el("p",{class:"case__q",id:"caseq"+i},c[0]));
-    var fs=el("fieldset",{"aria-labelledby":"caseq"+i});
-    fs.appendChild(el("legend",null,"Catégorie retenue"));
-    var ch=el("div",{class:"choices"});
-    var key=CASEKEY[i];
-    var reveal=el("div",{class:"tri-reveal","aria-live":"polite",id:"caser"+i});
-    var expected=mdLbl(CAT,key[1]);
-    var rep=(key[2]&&key[2]!=="—")?(" · repère "+key[2]):"";
-    function applyReveal(val){
-      if(val===key[1]){reveal.className="tri-reveal show ok";reveal.textContent="Exact — "+expected+" (ligne rouge). "+key[3];}
-      else if(val==="nsp"){reveal.className="tri-reveal show info";reveal.textContent="Ligne rouge — réponse attendue : "+expected+". "+key[3];}
-      else{reveal.className="tri-reveal show ko";reveal.textContent="À revoir — ligne rouge : "+expected+". "+key[3];}
-    }
-    var saved=store.get("case."+i);
-    CAT.forEach(function(cat){
-      var w=el("div",{class:"choice","data-cat":cat[0]});var id="c"+i+"_"+cat[0];
-      var inp=el("input",{type:"radio",name:"case"+i,id:id,value:cat[0]});
-      if(saved===cat[0])inp.setAttribute("checked","");
-      inp.addEventListener("change",function(){store.set("case."+i,cat[0]);if(key[0])applyReveal(cat[0]);});
-      w.appendChild(inp);w.appendChild(el("label",{"for":id},cat[1]));ch.appendChild(w);
-    });
-    fs.appendChild(ch);card.appendChild(fs);
-    if(key[0]){
-      card.appendChild(reveal);
-      if(saved)applyReveal(saved);
-    }else{
-      var btn=el("button",{type:"button",class:"btn reveal-btn"},"Voir la proposition");
-      btn.addEventListener("click",function(){reveal.className="tri-reveal show info";reveal.textContent="Proposition à débattre : "+expected+rep+". "+key[3];btn.style.display="none";});
-      card.appendChild(btn);card.appendChild(reveal);
-    }
-    var rwrap=el("div",{class:"case-remark"});var rid="rem"+i;rwrap.appendChild(el("label",{"for":rid},"Remarque (facultatif)"));rwrap.appendChild(el("textarea",{id:rid,"data-key":"caserem."+i,rows:"2",placeholder:"Argument, nuance, condition…"}));card.appendChild(rwrap);cw.appendChild(card);
-  });
-
-  /* Phase 5 — parties prenantes */
+  /* Gouvernance (architecture) — parties prenantes */
   var ppw=document.getElementById("p5pp");
   PP.forEach(function(name,i){
     var item=el("div",{class:"check-item"});var id="pp"+i;
     var inp=el("input",{type:"checkbox",id:id,"data-key":"p5.pp."+i});
     var lab=el("label",{"for":id},name);
     item.appendChild(inp);item.appendChild(lab);ppw.appendChild(item);
-  });
-
-  /* Code de conduite — un champ par principe HLEG */
-  var cdcw=document.getElementById("cdc-fields");
-  if(cdcw)HLEG.forEach(function(p,i){
-    var f=el("div",{class:"field"});var id="cdc"+i;
-    f.appendChild(el("label",{"for":id},p[0]+' <span class="hint">— '+p[1]+'</span>'));
-    f.appendChild(el("textarea",{id:id,"data-key":"cdc."+i,placeholder:"Engagement court et applicable…"}));
-    cdcw.appendChild(f);
   });
 
   /* Checklist */
@@ -966,14 +859,10 @@
   function mdField(k){return (store.get(k)||"").trim();}
   function mdLbl(map,v){for(var i=0;i<map.length;i++){if(map[i][0]===v)return map[i][1];}return "—";}
   var MDBUILD={
-    amorce:function(){return "## Amorce — votre expérience\n\n- Usage croisé et doute : "+(mdField("acc.amorce")||"—");},
-    p1:function(){return "## Phase 1 — Usages réels et tensions\n\n- Usage observé côté élèves : "+(mdField("p1.eleves")||"—")+"\n  - Doute : "+(mdField("p1.douteEleves")||"—")+"\n- Usage observé côté personnels : "+(mdField("p1.perso")||"—")+"\n  - Doute : "+(mdField("p1.doutePerso")||"—")+"\n- Doute principal (vue d'ensemble) : "+(mdField("p1.doute")||"—");},
-    p2:function(){var o="## Phase 2 — Socle national, droit et marge locale\n\n";P2.forEach(function(t,i){var r=(store.get("p2rem."+i)||"").replace(/\s*\n\s*/g," ").trim();o+="- "+t+" : **"+mdLbl(P2OPT,store.get("p2."+i))+"**"+(r?(" — "+r):"")+"\n";});return o.replace(/\n$/,"");},
-    p3:function(){var o="## Phase 3 — Tri des cas d'usage\n\n| Destinataire | Situation | Catégorie | Remarque |\n| --- | --- | --- | --- |\n";CASES.forEach(function(c,i){var r=(store.get("caserem."+i)||"").replace(/\|/g,"/").replace(/\s*\n\s*/g," ").trim();o+="| "+c[1]+" | "+c[0]+" | "+mdLbl(CAT,store.get("case."+i))+" | "+(r||"—")+" |\n";});o=o.replace(/\n$/,"");var sc=mdField("p3.scenario");if(sc)o+="\n\n### Mise en situation (variante)\n- "+sc;return o;},
-    p4:function(){return "## Phase 4 — Rédaction du noyau et des paliers\n\n### Usages élèves\n- Libre : "+(mdField("p4.libre")||"—")+"\n- Autorisé avec déclaration : "+(mdField("p4.declare")||"—")+"\n- Interdit : "+(mdField("p4.interdit")||"—")+"\n- Principes (par repère) : "+(mdField("p4.principes")||"—")+"\n- Consigne réécrite « robuste à l'IA » : "+(mdField("p4.consigne")||"—")+"\n\n### Usages professionnels\n- Outils autorisés et conditions : "+(mdField("p4.outils")||"—")+"\n- Règle de transparence : "+(mdField("p4.transparence")||"—");},
-    cdc:function(){var o="## Phase 5 — Code de conduite IA — usages des personnels\n\n### Engagements par principe (HLEG)\n";HLEG.forEach(function(p,i){o+="- "+p[0]+" : "+(mdField("cdc."+i)||"—")+"\n";});o+="\n### Préambule (do-no-harm)\n- "+(mdField("cdc.preambule")||"—");return o;},
-    p5:function(){var pp=[];PP.forEach(function(n,i){if(store.get("p5.pp."+i)==="1")pp.push(n);});return "## Phase 6 — Architecture documentaire et gouvernance\n\n- Architecture documentaire (3 couches) : "+(mdField("p5.archi")||"—")+"\n- Circuit de validation : "+(mdField("p5.circuit")||"—")+"\n- Parties prenantes à associer : "+(pp.length?pp.join(", "):"—")+"\n- Révision annuelle : "+(mdField("p5.revision")||"—")+"\n- Message aux familles (amorce de FAQ) : "+(mdField("p5.faq")||"—");},
-    cloture:function(){var o="## Clôture — auto-positionnement\n\n### Où en êtes-vous sur les quatre objectifs ?\n";CHECKS.forEach(function(t,i){var v=+(store.get("chk."+i)||0);o+="- "+t+" — **"+LEVELS[v]+"** ("+v+"/3)\n";});o+="\n### Mon engagement (Essayer / Observer / Rapporter)\n- Essayer : "+(mdField("eng.try")||"—")+"\n- Observer : "+(mdField("eng.notice")||"—")+"\n- Rapporter : "+(mdField("eng.report")||"—");return o;}
+    p1:function(){return "## Amorce — Usages réels et tensions\n\n- Usage observé côté élèves : "+(mdField("p1.eleves")||"—")+"\n  - Doute : "+(mdField("p1.douteEleves")||"—")+"\n- Usage observé côté personnels : "+(mdField("p1.perso")||"—")+"\n  - Doute : "+(mdField("p1.doutePerso")||"—")+"\n- Doute principal (vue d'ensemble) : "+(mdField("p1.doute")||"—");},
+    p2:function(){var o="## Obligations légales non négociables\n\n";P2.forEach(function(t,i){var r=(store.get("p2rem."+i)||"").replace(/\s*\n\s*/g," ").trim();o+="- "+t+" : **"+mdLbl(P2OPT,store.get("p2."+i))+"**"+(r?(" — "+r):"")+"\n";});return o.replace(/\n$/,"");},
+    p5:function(){var pp=[];PP.forEach(function(n,i){if(store.get("p5.pp."+i)==="1")pp.push(n);});return "## Architecture documentaire et gouvernance\n\n- Architecture documentaire (3 couches) : "+(mdField("p5.archi")||"—")+"\n- Circuit de validation : "+(mdField("p5.circuit")||"—")+"\n- Parties prenantes à associer : "+(pp.length?pp.join(", "):"—")+"\n- Révision annuelle : "+(mdField("p5.revision")||"—")+"\n- Message aux familles (amorce de FAQ) : "+(mdField("p5.faq")||"—");},
+    cloture:function(){var o="## Clôture — auto-positionnement\n\n### Où en êtes-vous sur les deux objectifs ?\n";CHECKS.forEach(function(t,i){var v=+(store.get("chk."+i)||0);o+="- "+t+" — **"+LEVELS[v]+"** ("+v+"/3)\n";});o+="\n### Mon engagement (Essayer / Observer / Rapporter)\n- Essayer : "+(mdField("eng.try")||"—")+"\n- Observer : "+(mdField("eng.notice")||"—")+"\n- Rapporter : "+(mdField("eng.report")||"—");return o;}
   };
   function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
   function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
@@ -981,7 +870,7 @@
 
 
   /* Copy trainer analysis prompt */
-  var MDPROMPT={"amorce":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Amorce — usages et doutes ».\n\nChaque participant fournit un bloc Markdown décrivant un usage de l'IA déjà croisé dans l'établissement et le doute qu'il soulève.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse des usages cités et des doutes ;\n- un regroupement en thèmes avec la fréquence de chaque thème ;\n- les trois doutes dominants ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p1":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 1 — usages réels et tensions ».\n\nChaque participant fournit un bloc Markdown listant un usage observé côté élèves et le doute associé, un usage côté personnels et le doute associé, puis le doute principal d'ensemble.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse séparant usages côté élèves et usages côté personnels ;\n- un regroupement en thèmes avec fréquences pour chaque catégorie ;\n- les doutes récurrents, par catégorie (élèves / personnels) et d'ensemble ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p2":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 2 — socle national et marge locale ».\n\nChaque participant fournit un bloc Markdown classant 6 énoncés en « Imposé » ou « À décider localement », avec une remarque libre facultative par énoncé.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des 6 énoncés, la répartition Imposé / À décider localement / Ne se prononce pas / non renseigné (distinguer « ne se prononce pas », choix explicite, de l'absence de réponse) ;\n- un repérage des écarts avec le droit : sont objectivement imposés l'information des familles, le respect de la majorité numérique (15 ans), la saisine du DPD pour un traitement de données élèves, et l'interdiction de fonder une sanction sur le seul résultat d'un détecteur ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances exprimées, regroupées par énoncé et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p3":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 3 — tri des cas d'usage ».\n\nChaque participant fournit un bloc Markdown classant une douzaine de cas en Autorisé / Encadré / Interdit / À arbitrer, avec le destinataire (élève ou personnel) et une remarque libre facultative par cas.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chaque cas, la répartition des catégories, y compris « Ne se prononce pas » (à distinguer de l'absence de réponse) ;\n- les cas les plus consensuels et les plus contestés (forte dispersion ou nombreux « à arbitrer ») ;\n- une agrégation par destinataire (élève / personnel) ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances exprimées, regroupés par cas et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p4":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 4 — rédaction du noyau et des paliers ».\n\nChaque participant fournit un bloc Markdown comportant les paliers d'usage élèves (libre / autorisé avec déclaration / interdit), des principes par repère, les outils professionnels autorisés et une règle de transparence.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse qualitative des convergences et divergences pour les paliers, les principes par repère, les outils autorisés et la transparence ;\n- une proposition de formulation consolidée par rubrique ;\n- la fréquence des principes ou règles récurrents ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","cdc":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 5 — Code de conduite IA — usages des personnels ».\n\nChaque participant fournit un bloc Markdown formulant, pour tout ou partie des sept principes d'une IA digne de confiance (HLEG 2019 : autonomie et supervision humaines ; robustesse technique et sécurité ; vie privée et gouvernance des données ; transparence ; diversité, non-discrimination et équité ; bien-être social et environnemental ; responsabilité), un engagement applicable par les personnels, ainsi qu'un préambule « do-no-harm ».\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des sept principes, une synthèse des engagements proposés et leur fréquence ;\n- les principes les plus et les moins investis par les participants ;\n- une proposition de formulation consolidée, un engagement par principe, prête à intégrer un code de conduite ;\n- une synthèse des préambules « do-no-harm » ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p5":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Phase 6 — architecture et gouvernance ».\n\nChaque participant fournit un bloc Markdown indiquant l'architecture documentaire, le circuit de validation, les parties prenantes à associer (cases cochées) et la révision annuelle.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- la fréquence de sélection de chaque partie prenante à associer ;\n- une synthèse des options dominantes pour l'architecture documentaire, le circuit de validation et la révision annuelle ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","cloture":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Clôture — auto-positionnement et engagement ».\n\nChaque participant fournit un bloc Markdown comportant un auto-positionnement au curseur (échelle de 4 paliers, de 0 « Pas encore » à 3 « Tout à fait à l'aise ») sur chacun des quatre objectifs et un engagement Essayer / Observer / Rapporter.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des quatre objectifs, la répartition des niveaux déclarés et le niveau moyen ;\n- l'objectif le moins maîtrisé ;\n- une thématisation des engagements (Essayer) et trois axes de suivi proposés ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n"};
+  var MDPROMPT={"p1":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Amorce — usages réels et tensions ».\n\nChaque participant fournit un bloc Markdown listant un usage observé côté élèves et le doute associé, un usage côté personnels et le doute associé, puis le doute principal d'ensemble.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse séparant usages côté élèves et usages côté personnels ;\n- un regroupement en thèmes avec fréquences pour chaque catégorie ;\n- les doutes récurrents, par catégorie (élèves / personnels) et d'ensemble ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p2":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « obligations légales non négociables ».\n\nChaque participant classe 9 énoncés portant sur le RGPD et le règlement européen sur l'IA en « Obligatoire » ou « Interdit » (ou « Ne se prononce pas »), avec une remarque libre facultative par énoncé.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des 9 énoncés, la répartition Obligatoire / Interdit / Ne se prononce pas / non renseigné (distinguer le choix explicite « ne se prononce pas » de l'absence de réponse) ;\n- un repérage des écarts avec le droit : sont des obligations l'information des personnes, la saisine du DPD, l'AIPD pour les traitements à risque élevé, la supervision humaine des systèmes à haut risque et la transparence (art. 50) ; sont des interdictions la saisie de données personnelles dans une IA grand public, la reconnaissance des émotions en classe, la sanction fondée sur le seul résultat d'un détecteur, et la création de comptes élèves sur une IA grand public ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances, regroupés par énoncé et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p5":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « architecture et gouvernance ».\n\nChaque participant fournit un bloc Markdown indiquant l'architecture documentaire, le circuit de validation, les parties prenantes à associer (cases cochées) et la révision annuelle.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- la fréquence de sélection de chaque partie prenante à associer ;\n- une synthèse des options dominantes pour l'architecture documentaire, le circuit de validation et la révision annuelle ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","cloture":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Clôture — auto-positionnement et engagement ».\n\nChaque participant fournit un bloc Markdown comportant un auto-positionnement au curseur (échelle de 4 paliers, de 0 « Pas encore » à 3 « Tout à fait à l'aise ») sur chacun des deux objectifs et un engagement Essayer / Observer / Rapporter.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des deux objectifs, la répartition des niveaux déclarés et le niveau moyen ;\n- l'objectif le moins maîtrisé ;\n- une thématisation des engagements (Essayer) et trois axes de suivi proposés ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n"};
   function promptCopy(key,btn){var text=MDPROMPT[key];if(!text)return;function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié \u2713";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
   Array.prototype.forEach.call(document.querySelectorAll(".copy-prompt"),function(b){b.addEventListener("click",function(){promptView(b.getAttribute("data-md"));});});
 
@@ -1017,7 +906,7 @@
   dlgCopy.addEventListener("click",function(){var text=dlgText.value;function ok(){if(!dlgCopy.getAttribute("data-label"))dlgCopy.setAttribute("data-label",dlgCopy.textContent);dlgCopy.textContent="Copié ✓";setTimeout(function(){dlgCopy.textContent=dlgCopy.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}});
 
   /* Per-tab step durations, rendered from TIMERS (single source of truth) */
-  var PANELOF={amorce:"panel-accueil",p1:"panel-p1",p2:"panel-p2",p3:"panel-p3",p4:"panel-p4",cdc:"panel-cdc",p5:"panel-p5",cloture:"panel-cloture"};
+  var PANELOF={p1:"panel-p1",appro:"panel-appro",p2:"panel-p2",p5:"panel-p5",cloture:"panel-cloture"};
   Object.keys(TIMERS).forEach(function(key){
     var panel=document.getElementById(PANELOF[key]);if(!panel)return;
     var steps=TIMERS[key][1];
