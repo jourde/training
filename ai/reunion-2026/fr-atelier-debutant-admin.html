@@ -220,6 +220,8 @@
  .steps-list li{padding:3px 0}
  .step-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
  .steps-dur{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-surface-variant);white-space:nowrap}
+ .meta-dur__list{margin:0;padding:0 0 0 22px}
+ .meta-dur__list li{padding:3px 0}
 
  /* ── FLOATING TIMER WIDGET ── */
  #runclock{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:60;
@@ -307,9 +309,9 @@
  /* ── CONTENT DATA ─────────────────────────────────── */
  var TABS=[
  ["accueil","Accueil",""],
- ["avant","Avant de commencer","0:00–0:10"],
- ["donnees","1 · Protéger les données","0:10–0:22"],
- ["outil","2 · Quel outil ?","0:22–0:36"],
+ ["avant","Amorce","0:00–0:10"],
+ ["donnees","1 · Protéger les données","0:10–0:26"],
+ ["outil","2 · Explorer les outils","0:26–0:36"],
  ["prompt","3 · Parler à l'IA","0:36–1:11"],
  ["multi","4 · Multimodal","1:11–1:33"],
  ["vibe","5 · Fabriquer un outil","1:53–2:37"],
@@ -317,20 +319,20 @@
  ];
 
  var TIMERS={
- "avant":["Avant de commencer",[
+ "avant":["Amorce",[
  ["Accueil & cadrage",2],
  ["Tour de table express (post-its)",6],
  ["Pont vers la suite",2]
  ]],
  "donnees":["1 · Protéger les données",[
  ["L'essentiel : ce que je ne confie jamais",6],
- ["Vote flash : GO / NO-GO / anonymiser",4],
- ["La check-list avant de coller",2]
+ ["Vote flash : GO / STOP / anonymiser",4],
+ ["Mini-tri : outil × tâche",4],
+ ["La check-list avant de saisir des données",2]
  ]],
- "outil":["2 · Quel outil ?",[
- ["L'essentiel : les 3 statuts",6],
- ["Mini-tri en binômes (outil × tâche)",5],
- ["Synthèse flash : le réflexe en 2 questions",3]
+ "outil":["2 · Explorer les outils",[
+ ["Les 3 statuts — grille de lecture",4],
+ ["Exploration du répertoire d'outils",6]
  ]],
  "prompt":["3 · Parler à l'IA",[
  ["Démo côte à côte (vague / contextualisé)",6],
@@ -362,12 +364,12 @@
  function mdField(k){return (store.get(k)||"").trim();}
  function mdLvl(k){var v=store.get(k);return (v==null||v==="")?"—":(LEVELS[+v]||LEVELS[0]);}
 
- var VOTE_LAB={go:"GO",anon:"GO après anonymisation",nogo:"NO-GO"};
+ var VOTE_LAB={go:"GO",anon:"GO après anonymisation",nogo:"STOP"};
  var STAT_LAB={autorise:"Autorisé / référencé",nonref:"Non référencé / grand public"};
 
  var MDBUILD={
  "accueil":function(){
- return "## Avant de commencer\n\n"+
+ return "## Amorce\n\n"+
  "- **Une tâche administrative que j'aimerais déléguer à l'IA** : "+(mdField("acc.tache")||"—")+"\n"+
  "- **Une inquiétude concrète sur les données** : "+(mdField("acc.inquiete")||"—");
  },
@@ -389,43 +391,43 @@
  },
  "donnees":function(){
  return "## 1 · Protéger les données\n\n"+
- "**Mes votes (vote flash GO / NO-GO / anonymiser) :**\n"+
+ "**Mes votes (vote flash GO / STOP / anonymiser) :**\n"+
  "- Un mail citant un élève par son nom : "+(VOTE_LAB[store.get("don.s1")]||"—")+"\n"+
  "- Une liste de classe (noms + dates de naissance) à mettre en forme : "+(VOTE_LAB[store.get("don.s2")]||"—")+"\n"+
  "- Une circulaire publique à reformuler : "+(VOTE_LAB[store.get("don.s3")]||"—")+"\n\n"+
+ "**Mon mini-tri (outil × tâche → décision) :**\n"+
+ "- Outil ENT pour un publipostage : "+(VOTE_LAB[store.get("out.c1")]||"—")+"\n"+
+ "- Assistant grand public pour reformuler une circulaire publique : "+(VOTE_LAB[store.get("out.c2")]||"—")+"\n"+
+ "- Assistant grand public pour résumer un dossier d'élève : "+(VOTE_LAB[store.get("out.c3")]||"—")+"\n\n"+
  "**Mes remarques :** "+(mdField("don.remarques")||"—");
  },
  "donneesAnim":function(){
  return "# Analyse des votes « détective de données » — étape 1 « Protéger les données »\n\n"+
  "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
- "CONTEXTE : à l'étape 1, chaque participant a voté (GO / NO-GO / GO après anonymisation) sur 3 situations de bureau, et a pu laisser des remarques. Je te transmets l'ensemble des relevés du groupe.\n\n"+
- "Les 3 situations :\n1. Un mail citant un élève par son nom.\n2. Une liste de classe (noms + dates de naissance) à mettre en forme.\n3. Une circulaire publique à reformuler.\n\n"+
+ "CONTEXTE : à l'étape 1, chaque participant a (a) voté (GO / STOP / GO après anonymisation) sur 3 situations de bureau, puis (b) réalisé un mini-tri « outil × tâche » sur 3 couples, et a pu laisser des remarques. Je te transmets l'ensemble des relevés du groupe.\n\n"+
+ "Les 3 situations (vote flash) :\n1. Un mail citant un élève par son nom.\n2. Une liste de classe (noms + dates de naissance) à mettre en forme.\n3. Une circulaire publique à reformuler.\n\n"+
+ "Les 3 couples (mini-tri outil × tâche) :\n1. Outil ENT pour un publipostage.\n2. Assistant grand public pour reformuler une circulaire publique.\n3. Assistant grand public pour résumer un dossier d'élève.\n\n"+
  "TA MISSION :\n"+
- "1. Pour chaque situation, donne la répartition approximative des votes et repère les hésitations.\n"+
- "2. Repère les confusions sur la notion de **donnée personnelle indirecte** (initiale + classe, matricule, date de naissance) et sur le sens d'**anonymiser** (≠ enlever seulement le nom).\n"+
+ "1. Pour chaque situation et chaque couple, donne la répartition approximative des votes/décisions et repère les hésitations.\n"+
+ "2. Repère les confusions sur la notion de **donnée personnelle indirecte** (initiale + classe, matricule, date de naissance), sur le sens d'**anonymiser** (≠ enlever seulement le nom), et sur la distinction **statut de l'outil** (référencé / non référencé) vs notoriété.\n"+
  "3. Synthétise les remarques en grands thèmes ; signale les idées fausses à corriger.\n"+
  "4. Propose 2 à 3 points à re-clarifier en priorité, avec pour chacun une façon concrète de le reprendre en 1 à 2 min.\n\n"+
  "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
  "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mon relevé » de l'étape 1]";
  },
  "outil":function(){
- return "## 2 · Quel outil ?\n\n"+
- "**Mon tri (outil × tâche → décision) :**\n"+
- "- Outil ENT pour un publipostage : "+(VOTE_LAB[store.get("out.c1")]||"—")+"\n"+
- "- Assistant grand public pour reformuler une circulaire publique : "+(VOTE_LAB[store.get("out.c2")]||"—")+"\n"+
- "- Assistant grand public pour résumer un dossier d'élève : "+(VOTE_LAB[store.get("out.c3")]||"—")+"\n\n"+
- "**Mes remarques :** "+(mdField("out.remarques")||"—");
+ return "## 2 · Explorer les outils\n\n"+
+ "**Outils repérés dans le répertoire & remarques :** "+(mdField("out.remarques")||"—");
  },
  "outilAnim":function(){
- return "# Analyse — étape 2 « Quel outil ? Autorisé ou non, et qu'ai-je le droit d'y mettre »\n\n"+
+ return "# Analyse — étape 2 « Explorer les outils »\n\n"+
  "Tu es un formateur expert en acculturation à l'IA générative, qui accompagne du personnel administratif grand débutant.\n\n"+
- "CONTEXTE : à l'étape 2, chaque binôme a trié des couples « outil × tâche » et décidé GO / GO si anonymisé / NO-GO en mobilisant le réflexe en deux questions (1. quel statut de l'outil ? 2. donc qu'ai-je le droit d'y mettre ?). Je te transmets l'ensemble des relevés du groupe.\n\n"+
- "Les 3 couples :\n1. Outil ENT pour un publipostage.\n2. Assistant grand public pour reformuler une circulaire publique.\n3. Assistant grand public pour résumer un dossier d'élève.\n\n"+
+ "CONTEXTE : à l'étape 2, après avoir revu les 3 statuts d'outil (référencé / non référencé / interdit) comme grille de lecture, chaque participant a exploré un répertoire d'outils IA et repéré 1 à 3 outils qu'il aimerait essayer, en notant ses remarques. Je te transmets l'ensemble des relevés du groupe.\n\n"+
  "TA MISSION :\n"+
- "1. Pour chaque couple, donne la répartition des décisions et repère les erreurs (ex. accepter un dossier d'élève dans un outil non référencé).\n"+
- "2. Vérifie que le groupe distingue bien **statut de l'outil** (référencé / non référencé) et **qualité/notoriété** de l'outil.\n"+
- "3. Synthétise les remarques ; signale les confusions sur ce qu'on peut mettre dans un outil non référencé (aucune donnée personnelle).\n"+
- "4. Propose 2 à 3 points à reclarifier, et le réflexe à réancrer.\n\n"+
+ "1. Synthétise les outils les plus souvent repérés et les besoins qu'ils recouvrent (pour quelles tâches administratives).\n"+
+ "2. Repère les confusions éventuelles sur le **statut** des outils cités (référencé / non référencé) et rappelle que la notoriété ne vaut pas conformité.\n"+
+ "3. Signale les outils cités qui appelleraient une vérification DPO avant tout usage avec des données.\n"+
+ "4. Propose 2 à 3 pistes concrètes pour la suite (outils libres et sobres, partir du besoin).\n\n"+
  "CONTRAINTES :\n- Reste factuel ; ne nomme personne.\n- Concis et directement actionnable.\n- Réponds en français.\n\n"+
  "RELEVÉS DU GROUPE (colle-les ci-dessous) :\n[Colle ici tous les relevés « Copier mes notes » de l'étape 2]";
  },
@@ -529,13 +531,13 @@
  '<div class="callout">'+
  "<h3>La règle d'or — pour tout l'atelier et après</h3>"+
  "<ul><li>Ne saisissez <strong>jamais</strong> de données personnelles (élèves, familles, collègues) dans un outil d'IA <strong>non référencé</strong> par votre établissement.</li></ul>"+
- "<span class=\"warn\">Vous êtes en première ligne : vous manipulez les données les plus sensibles de l'établissement. Tout est faisable sans créer de compte : démonstration de l'animateur + Prompt Builder, en local.</span>"+
+ "<span class=\"warn\">Vous êtes en première ligne : vous manipulez des données personnelles et parfois sensibles.</span>"+
  '</div>'+
  '<h3 style="margin:24px 0 10px">Au programme</h3>'+
  '<ol class="agenda">'+
- "<li><span class=\"time\">0:00–0:10</span><div><h3>Avant de commencer</h3><p>Tour de table : une tâche à déléguer, une inquiétude sur les données.</p></div></li>"+
- "<li><span class=\"time\">0:10–0:22</span><div><h3>1 · Protéger les données</h3><p>Le « détective de données » : ce que je ne confie jamais.</p></div></li>"+
- "<li><span class=\"time\">0:22–0:36</span><div><h3>2 · Quel outil ?</h3><p>Autorisé ou non, et ce que j'ai le droit d'y mettre.</p></div></li>"+
+ "<li><span class=\"time\">0:00–0:10</span><div><h3>Amorce</h3><p>Tour de table : une tâche à déléguer, une inquiétude sur les données.</p></div></li>"+
+ "<li><span class=\"time\">0:10–0:26</span><div><h3>1 · Protéger les données</h3><p>Le « détective de données » : ce que je ne confie jamais.</p></div></li>"+
+ "<li><span class=\"time\">0:26–0:36</span><div><h3>2 · Explorer les outils</h3><p>Statuts des outils et exploration du répertoire.</p></div></li>"+
  "<li><span class=\"time\">0:36–1:11</span><div><h3>3 · Parler à l'IA</h3><p>Formuler une bonne instruction (prompting &amp; Prompt Builder).</p></div></li>"+
  '<li><span class="time">1:11–1:33</span><div><h3>4 · La puissance multimodale</h3><p>Lire, synthétiser, mettre en forme — et ses limites.</p></div></li>'+
  '<li class="pause"><span class="time">1:33–1:53</span><div><h3>Pause</h3><p>20 minutes — les écrans restent ouverts.</p></div></li>'+
@@ -544,7 +546,7 @@
  '</ol>';
 
  PANELS.avant=
- '<div class="panel-head"><h2>Avant de commencer</h2><span class="panel-time">0:00–0:10 (10 min)</span></div>'+
+ '<div class="panel-head"><h2>Amorce</h2><span class="panel-time">0:00–0:10 (10 min)</span></div>'+
  '<dl class="meta-block">'+
  "<dt>Objectif</dt><dd>Faire émerger, en confiance, ce que le groupe aimerait déléguer à l'IA et ce qui l'inquiète côté données — pour démarrer à partir du réel.</dd>"+
  '<dt>Modalité</dt><dd>Note individuelle (pour soi) puis tour de table express — sans jugement.</dd>'+
@@ -564,50 +566,140 @@
  '</div>';
 
  PANELS.donnees=
- '<div class="panel-head"><h2>1 · Protéger les données</h2><span class="panel-time">0:10–0:22 (12 min)</span></div>'+
+ '<div class="panel-head"><h2>1 · Protéger les données</h2><span class="panel-time">0:10–0:26 (16 min)</span></div>'+
  '<dl class="meta-block">'+
- "<dt>Objectif</dt><dd>Adopter un réflexe simple : repérer dans une tâche réelle ce qui ne se confie jamais à un outil non référencé, et décider GO / NO-GO / GO après anonymisation.</dd>"+
+ "<dt>Objectif</dt><dd>Adopter un réflexe simple : repérer dans une tâche réelle ce qui ne se confie jamais à un outil non référencé, et décider GO / STOP / GO après anonymisation.</dd>"+
  '<dt>Modalité</dt><dd>En groupe — l\'essentiel, puis un vote flash sur 3 situations.</dd>'+
  '</dl>'+
- "<p class=\"panel-intro\">Vous manipulez les données les plus sensibles de l'établissement (état civil, adresses, situations familiales, santé, bourses, absences, sanctions). Avant de coller quoi que ce soit dans un outil, devenez <strong>détective</strong>. Principe directeur : <strong>un outil non référencé peut stocker et réutiliser ce qu'on lui confie</strong> (hébergement parfois hors UE).</p>"+
+ "<p class=\"panel-intro\">Vous manipulez des données personnelles et parfois  sensibles (état civil, adresses, situations familiales, santé, bourses, absences, sanctions). Avant de coller quoi que ce soit dans un outil, devenez <strong>détective</strong>. Principe directeur : <strong>un outil non référencé peut stocker et réutiliser ce qu'on lui confie</strong> (hébergement parfois hors UE).</p>"+
+ '<figure id="don-schema" style="background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);margin:16px 0;padding:16px" role="img" aria-label="Schéma de décision avant de saisir une donnée dans un outil. Par défaut, supposez que la donnée est personnelle. Étape 1 : donnée sensible (santé, origine, opinions, biométrie, émotions) ? Si oui, STOP. Étape 2 : contient des données personnelles ? Si non, GO. Étape 3 : outil référencé par votre établissement ? Si non, aller à l\'anonymisation. Étape 4 : usage autorisé pour ces données selon le registre ? Si oui, GO. Étape 5 : ré-identification rendue impossible (anonymisation réelle) ? Si oui, GO après anonymisation ; si non, STOP.">'+
+ '<figcaption style="font-weight:600;margin:0 0 14px">Le bon réflexe — par défaut, supposez des données personnelles</figcaption>'+
+ '<svg viewBox="0 0 800 760" width="100%" style="max-width:720px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, system-ui, sans-serif">'+
+ '<defs><marker id="don-ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3c474d"/></marker></defs>'+
+ // connectors
+ '<line x1="330" y1="56" x2="330" y2="104" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<line x1="330" y1="172" x2="330" y2="234" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="342" y="206" font-size="11" fill="#3c474d">Non</text>'+
+ '<line x1="480" y1="140" x2="591" y2="140" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="520" y="132" font-size="11" fill="#3c474d">Oui</text>'+
+ '<line x1="330" y1="298" x2="330" y2="356" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="342" y="330" font-size="11" fill="#3c474d">Oui</text>'+
+ '<line x1="480" y1="268" x2="591" y2="268" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="520" y="260" font-size="11" fill="#3c474d">Non</text>'+
+ '<line x1="330" y1="416" x2="330" y2="474" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="342" y="448" font-size="11" fill="#3c474d">Oui</text>'+
+ '<polyline points="180,388 72,388 72,628 178,628" fill="none" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="78" y="380" font-size="11" fill="#3c474d">Non</text>'+
+ '<line x1="480" y1="508" x2="591" y2="508" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="520" y="500" font-size="11" fill="#3c474d">Oui</text>'+
+ '<line x1="330" y1="538" x2="330" y2="594" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="342" y="570" font-size="11" fill="#3c474d">Non</text>'+
+ '<line x1="480" y1="628" x2="536" y2="628" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="508" y="620" font-size="11" fill="#3c474d">Oui</text>'+
+ '<line x1="330" y1="658" x2="330" y2="693" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
+ '<text x="342" y="680" font-size="11" fill="#3c474d">Non</text>'+
+ // start node
+ '<rect x="180" y="12" width="300" height="44" rx="10" fill="#37474f"/>'+
+ '<text x="330" y="30" text-anchor="middle" fill="#fff"><tspan x="330" font-size="13" font-weight="600">Donnée à traiter</tspan><tspan x="330" dy="15" font-size="10.5">par défaut, supposez qu\'elle est personnelle</tspan></text>'+
+ // Q1 sensible
+ '<rect x="180" y="108" width="300" height="64" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<text x="330" y="132" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Donnée SENSIBLE ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">santé, origine, opinions, biométrie, émotions…</tspan></text>'+
+ // Q2 personnelle
+ '<rect x="180" y="238" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<text x="330" y="262" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Données personnelles ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">prénom, classe, copie, e-mail, adresse IP…</tspan></text>'+
+ // Q3 référencé
+ '<rect x="180" y="360" width="300" height="56" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<text x="330" y="384" text-anchor="middle" font-size="13" font-weight="600" fill="#1b1f22"><tspan x="330">Outil référencé par</tspan><tspan x="330" dy="16">votre établissement ?</tspan></text>'+
+ // Q4 usage autorisé
+ '<rect x="180" y="478" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<text x="330" y="502" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Usage autorisé pour ces données ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">selon le registre des outils de l\'établissement</tspan></text>'+
+ // Q5 anonymisation
+ '<rect x="180" y="598" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<text x="330" y="622" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Ré-identification impossible ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">anonymisation réelle — retirer le nom ne suffit pas</tspan></text>'+
+ // outcome pills
+ '<rect x="595" y="126" width="90" height="28" rx="14" fill="#b3261e"/>'+
+ '<text x="640" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">STOP</text>'+
+ '<rect x="595" y="254" width="90" height="28" rx="14" fill="#1b5e20"/>'+
+ '<text x="640" y="273" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">GO</text>'+
+ '<rect x="595" y="494" width="90" height="28" rx="14" fill="#1b5e20"/>'+
+ '<text x="640" y="513" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">GO</text>'+
+ '<rect x="540" y="613" width="232" height="30" rx="15" fill="#8a4b00"/>'+
+ '<text x="656" y="632" text-anchor="middle" font-size="11.5" font-weight="600" fill="#fff">GO — anonymisation réelle</text>'+
+ '<rect x="285" y="697" width="90" height="30" rx="15" fill="#b3261e"/>'+
+ '<text x="330" y="717" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">STOP</text>'+
+ '</svg>'+
+ '<p style="margin:14px 0 0;background:var(--surface-3);border-left:6px solid var(--cat-encadre);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem">⚠️ <strong>L\'outil est un système d\'IA&nbsp;?</strong> Un « GO » côté données ne suffit pas&nbsp;: l\'<strong>AI Act</strong> impose aussi <strong>littératie IA</strong>, <strong>supervision humaine</strong> et <strong>transparence</strong> (informer les personnes), et <strong>interdit</strong> certaines pratiques (ex.&nbsp;: reconnaissance des émotions en milieu scolaire). En cas de doute&nbsp;: charte d\'établissement, DPO ou référent IA.</p>'+
+ '</figure>'+
  "<h3 style=\"margin:18px 0 8px\">Deux notions à avoir en tête</h3>"+
  '<details><summary><span class="badge-num">1</span><span>Donnée à caractère personnel</span></summary>'+
  "<div class=\"details__body\">Tout ce qui identifie une personne, <strong>directement OU indirectement</strong>. Par exemple : un nom, une photo, une empreinte, une adresse postale, une adresse mail, un numéro de téléphone, un numéro de sécurité sociale, un matricule interne, une adresse IP, un identifiant de connexion informatique, un enregistrement vocal, etc.<br><span class=\"hint\">⚠️ <strong>Anonymiser ≠ enlever le nom</strong> : c'est enlever <strong>tout ce qui permet de ré-identifier</strong> la personne.<br><strong>Attention :</strong> s'il est possible par recoupement de plusieurs informations (âge, sexe, ville, diplôme, etc.) ou par l'utilisation de moyens techniques divers, d'identifier une personne, les données sont toujours considérées comme personnelles.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/une-donnee-caractere-personnel-cest-quoi\" target=\"_blank\" rel=\"noopener\">Une donnée à caractère personnel, c'est quoi&nbsp;? (CNIL) ↗</a></p></div></details>"+
  '<details><summary><span class="badge-num">2</span><span>Donnée sensible</span></summary>'+
  "<div class=\"details__body\">Ce sont les informations qui révèlent la prétendue origine raciale ou ethnique, les opinions politiques, les convictions religieuses ou philosophiques ou l'appartenance syndicale.<br>Ce sont également les données génétiques, les données biométriques aux fins d'identifier une personne physique de manière unique, les données concernant la santé, la vie sexuelle ou l'orientation sexuelle d'une personne physique.<br><strong>Il est interdit de recueillir et d'utiliser ces données.</strong><br><span class=\"hint\">🔒 À ne jamais confier à un outil non référencé.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/1823\" target=\"_blank\" rel=\"noopener\">Qu'est-ce qu'une donnée sensible&nbsp;? (CNIL) ↗</a></p></div></details>"+
- "<h3 style=\"margin:22px 0 8px\">Vote flash — GO / NO-GO / anonymiser&nbsp;?</h3>"+
+ "<h3 style=\"margin:22px 0 8px\">Vote flash — GO / STOP / anonymiser&nbsp;?</h3>"+
  "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque situation, positionnez-vous, puis dépliez l'analyse. C'est pour vous (non transmis).</p>"+
  '<div class="card">'+
  "<p class=\"case__q\">Situation 1 — Je veux faire reformuler un <strong>mail qui cite un élève par son nom</strong> (et sa classe).</p>"+
  '<fieldset><legend>Mon vote</legend><div class="choices">'+
  '<span class="choice" data-cat="autorise"><input type="radio" id="don1-go" name="don.s1" data-key="don.s1" value="go"><label for="don1-go">GO</label></span>'+
  '<span class="choice" data-cat="encadre"><input type="radio" id="don1-anon" name="don.s1" data-key="don.s1" value="anon"><label for="don1-anon">GO après anonymisation</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="don1-nogo" name="don.s1" data-key="don.s1" value="nogo"><label for="don1-nogo">NO-GO</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don1-nogo" name="don.s1" data-key="don.s1" value="nogo"><label for="don1-nogo">STOP</label></span>'+
  '</div></fieldset>'+
  '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
- "<div class=\"details__body\">Sur un outil <strong>non référencé</strong> : <strong>NO-GO</strong> en l'état. Le nom est une donnée personnelle directe. <strong>GO après anonymisation</strong> est possible — mais retirer le nom ne suffit pas : <strong>initiale + classe</strong> peut suffire à ré-identifier. Remplacez par des données fictives ou des [CROCHETS].</div></details>"+
+ "<div class=\"details__body\">Sur un outil <strong>non référencé</strong> : <strong>STOP</strong> en l'état. Le nom est une donnée personnelle directe. <strong>GO après anonymisation</strong> est possible — mais retirer le nom ne suffit pas : <strong>initiale + classe</strong> peut suffire à ré-identifier. Remplacez par des données fictives ou des [CROCHETS].</div></details>"+
  '</div>'+
  '<div class="card">'+
  "<p class=\"case__q\">Situation 2 — Je veux <strong>mettre en forme une liste de classe</strong> (noms + dates de naissance) en tableau.</p>"+
  '<fieldset><legend>Mon vote</legend><div class="choices">'+
  '<span class="choice" data-cat="autorise"><input type="radio" id="don2-go" name="don.s2" data-key="don.s2" value="go"><label for="don2-go">GO</label></span>'+
  '<span class="choice" data-cat="encadre"><input type="radio" id="don2-anon" name="don.s2" data-key="don.s2" value="anon"><label for="don2-anon">GO après anonymisation</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="don2-nogo" name="don.s2" data-key="don.s2" value="nogo"><label for="don2-nogo">NO-GO</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don2-nogo" name="don.s2" data-key="don.s2" value="nogo"><label for="don2-nogo">STOP</label></span>'+
  '</div></fieldset>'+
  '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
- "<div class=\"details__body\">Outil <strong>non référencé</strong> : <strong>NO-GO</strong> tel quel (noms + dates de naissance = données personnelles). Pour tester la mise en forme : utilisez des <strong>données fictives</strong>, puis appliquez le format obtenu à votre vrai fichier <strong>en local</strong>. Sur un outil <strong>référencé/ENT</strong>, dans le cadre prévu, l'usage peut être plus serein — vérifiez avec le DPO.</div></details>"+
+ "<div class=\"details__body\">Outil <strong>non référencé</strong> : <strong>STOP</strong> tel quel (noms + dates de naissance = données personnelles). Pour tester la mise en forme : utilisez des <strong>données fictives</strong>, puis appliquez le format obtenu à votre vrai fichier <strong>en local</strong>. Sur un outil <strong>référencé/ENT</strong>, dans le cadre prévu, l'usage peut être plus serein — vérifiez avec le DPO.</div></details>"+
  '</div>'+
  '<div class="card">'+
  "<p class=\"case__q\">Situation 3 — Je veux <strong>reformuler une circulaire publique</strong> (aucune donnée personnelle).</p>"+
  '<fieldset><legend>Mon vote</legend><div class="choices">'+
  '<span class="choice" data-cat="autorise"><input type="radio" id="don3-go" name="don.s3" data-key="don.s3" value="go"><label for="don3-go">GO</label></span>'+
  '<span class="choice" data-cat="encadre"><input type="radio" id="don3-anon" name="don.s3" data-key="don.s3" value="anon"><label for="don3-anon">GO après anonymisation</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="don3-nogo" name="don.s3" data-key="don.s3" value="nogo"><label for="don3-nogo">NO-GO</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="don3-nogo" name="don.s3" data-key="don.s3" value="nogo"><label for="don3-nogo">STOP</label></span>'+
  '</div></fieldset>'+
  '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
  "<div class=\"details__body\"><strong>GO</strong> : un document <strong>déjà public</strong>, sans donnée personnelle, peut être confié. Restez vigilant : relisez le résultat (la reformulation peut introduire une erreur).</div></details>"+
  '</div>'+
- "<h3 style=\"margin:22px 0 8px\">La check-list avant de coller</h3>"+
+ "<h3 style=\"margin:22px 0 8px\">Mini-tri — quel outil pour quelle tâche&nbsp;?</h3>"+
+ "<p class=\"hint\" style=\"margin:-2px 0 10px\">On sait repérer une donnée&nbsp;; appliquons maintenant le réflexe au couple <strong>outil × tâche</strong>. Pour chaque cas, décidez, puis dépliez l\'analyse.</p>"+
+ '<div class="card">'+
+ "<p class=\"case__q\">A — <strong>Outil ENT</strong> pour un <strong>publipostage</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out1-go" name="out.c1" data-key="out.c1" value="go"><label for="out1-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out1-anon" name="out.c1" data-key="out.c1" value="anon"><label for="out1-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out1-nogo" name="out.c1" data-key="out.c1" value="nogo"><label for="out1-nogo">STOP</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Outil <strong>référencé</strong> → <strong>GO</strong> dans le cadre prévu : c'est l'usage le plus serein, y compris avec certaines données de service. En cas de doute sur le périmètre, vérifiez avec le DPO.</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">B — <strong>Assistant grand public</strong> pour <strong>reformuler une circulaire publique</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out2-go" name="out.c2" data-key="out.c2" value="go"><label for="out2-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out2-anon" name="out.c2" data-key="out.c2" value="anon"><label for="out2-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out2-nogo" name="out.c2" data-key="out.c2" value="nogo"><label for="out2-nogo">STOP</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\">Outil <strong>non référencé</strong>, mais document <strong>public sans donnée personnelle</strong> → <strong>GO</strong>. C'est exactement le bon usage d'un assistant grand public.</div></details>"+
+ '</div>'+
+ '<div class="card">'+
+ "<p class=\"case__q\">C — <strong>Assistant grand public</strong> pour <strong>résumer un dossier d'élève</strong>.</p>"+
+ '<fieldset><legend>Ma décision</legend><div class="choices">'+
+ '<span class="choice" data-cat="autorise"><input type="radio" id="out3-go" name="out.c3" data-key="out.c3" value="go"><label for="out3-go">GO</label></span>'+
+ '<span class="choice" data-cat="encadre"><input type="radio" id="out3-anon" name="out.c3" data-key="out.c3" value="anon"><label for="out3-anon">GO si anonymisé</label></span>'+
+ '<span class="choice" data-cat="interdit"><input type="radio" id="out3-nogo" name="out.c3" data-key="out.c3" value="nogo"><label for="out3-nogo">STOP</label></span>'+
+ '</div></fieldset>'+
+ '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
+ "<div class=\"details__body\"><strong>STOP</strong> : outil <strong>non référencé</strong> + données <strong>personnelles et sensibles</strong> = cas interdit. Même anonymisé, un dossier d'élève reste souvent ré-identifiable : à traiter dans un outil <strong>référencé</strong> uniquement, dans le cadre prévu.</div></details>"+
+ '</div>'+
+ "<h3 style=\"margin:22px 0 8px\">La check-list avant de saisir des données</h3>"+
  '<div class="card">'+
  '<div class="check-item"><input type="checkbox" id="dck1" data-key="don.ck1"><label for="dck1">Y a-t-il une donnée <strong>personnelle</strong> (directe ou indirecte) ?</label></div>'+
  '<div class="check-item"><input type="checkbox" id="dck2" data-key="don.ck2"><label for="dck2">Y a-t-il une donnée <strong>sensible</strong> ?</label></div>'+
@@ -622,60 +714,28 @@
  '<button type="button" class="btn copy-md" data-md="donnees">Copier mon relevé (Markdown)</button>'+
  '<button type="button" class="btn btn--trainer copy-md" data-md="donneesAnim">Animateur — copier le prompt d\'analyse</button>'+
  '</div>'+
- "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous savez ce que vous ne confiez jamais à la machine. Reste à savoir <strong>à quelle machine</strong> — car toutes ne se valent pas et toutes ne sont pas autorisées. C'est l'objet de l'<strong>étape 2</strong> : déterminer le statut d'un outil et en déduire ce qu'on a le droit d'y mettre.</p></div>";
+ "<div class=\"callout\"><h3>Et ensuite ?</h3><p>Vous savez ce que vous ne confiez jamais à la machine, et comment trier outil × tâche. Reste à découvrir <strong>quels outils existent</strong> — leurs statuts et un répertoire pour repérer ce qui peut vous être utile. C'est l'objet de l'<strong>étape 2</strong>.</p></div>";
 
  PANELS.outil=
- '<div class="panel-head"><h2>2 · Quel outil ?</h2><span class="panel-time">0:22–0:36 (14 min)</span></div>'+
+ '<div class="panel-head"><h2>2 · Explorer les outils</h2><span class="panel-time">0:26–0:36 (10 min)</span></div>'+
  '<dl class="meta-block">'+
- "<dt>Objectif</dt><dd>Déterminer le statut d'un outil (autorisé / non référencé) et en déduire ce qu'on a le droit d'y saisir.</dd>"+
- '<dt>Modalité</dt><dd>En groupe puis mini-tri en binômes sur des couples « outil × tâche ».</dd>'+
+ "<dt>Objectif</dt><dd>Découvrir le paysage des outils, distinguer leurs statuts (référencé / non référencé) et repérer des outils utiles à explorer.</dd>"+
+ '<dt>Modalité</dt><dd>En groupe (les 3 statuts comme grille de lecture), puis exploration libre du répertoire d\'outils.</dd>'+
  '</dl>'+
- "<p class=\"panel-intro\">Avant la qualité d'un outil, c'est son <strong>statut</strong> qui décide de ce que vous pouvez y saisir. La notoriété d'un outil <strong>ne change rien</strong> à son statut RGPD. <strong>Le réflexe en deux questions :</strong> <em>(1) Quel est le statut de cet outil&nbsp;? (2) Donc qu'ai-je le droit d'y mettre&nbsp;?</em></p>"+
- "<h3 style=\"margin:18px 0 8px\">Les trois statuts</h3>"+
+ "<p class=\"panel-intro\">La décision « <em>que puis-je y mettre&nbsp;?</em> » a été vue à l'<strong>étape&nbsp;1</strong>. Ici, on <strong>explore le paysage des outils</strong> : leur <strong>statut</strong> (la notoriété ne change rien au statut RGPD) et un <strong>répertoire</strong> pour repérer ce qui pourrait vous être utile.</p>"+
+ "<h3 style=\"margin:18px 0 8px\">Les trois statuts — grille de lecture</h3>"+
  '<details><summary><span class="badge-num">✅</span><span>Autorisé / référencé</span></summary>'+
  "<div class=\"details__body\">ENT, GAR, outil validé par le <strong>DPO / le rectorat</strong> — la conformité a été <strong>déjà vérifiée</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> usage le plus serein ; dans le cadre prévu, certaines <strong>données de service</strong>.</div></details>"+
  '<details><summary><span class="badge-num">⚠️</span><span>Non référencé / grand public</span></summary>'+
  "<div class=\"details__body\">Assistant en accès libre, <strong>non validé</strong> par l'institution.<br><strong>Ce que je peux y mettre :</strong> <strong>aucune donnée personnelle</strong> — uniquement des données fictives, des <strong>[CROCHETS]</strong>, des documents publics, avec précaution constante.</div></details>"+
  '<details><summary><span class="badge-num">⛔</span><span>Interdit</span></summary>'+
  "<div class=\"details__body\">Confier des <strong>données personnelles ou sensibles</strong> à un outil <strong>non référencé</strong>. On ne le fait pas.</div></details>"+
- "<h3 id=\"outil-minitri\" style=\"margin:22px 0 8px\">Mini-tri — outil × tâche → décision</h3>"+
- "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque couple, décidez, puis dépliez l'analyse.</p>"+
- '<div class="card">'+
- "<p class=\"case__q\">A — <strong>Outil ENT</strong> pour un <strong>publipostage</strong>.</p>"+
- '<fieldset><legend>Ma décision</legend><div class="choices">'+
- '<span class="choice" data-cat="autorise"><input type="radio" id="out1-go" name="out.c1" data-key="out.c1" value="go"><label for="out1-go">GO</label></span>'+
- '<span class="choice" data-cat="encadre"><input type="radio" id="out1-anon" name="out.c1" data-key="out.c1" value="anon"><label for="out1-anon">GO si anonymisé</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="out1-nogo" name="out.c1" data-key="out.c1" value="nogo"><label for="out1-nogo">NO-GO</label></span>'+
- '</div></fieldset>'+
- '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
- "<div class=\"details__body\">Outil <strong>référencé</strong> → <strong>GO</strong> dans le cadre prévu : c'est l'usage le plus serein, y compris avec certaines données de service. En cas de doute sur le périmètre, vérifiez avec le DPO.</div></details>"+
- '</div>'+
- '<div class="card">'+
- "<p class=\"case__q\">B — <strong>Assistant grand public</strong> pour <strong>reformuler une circulaire publique</strong>.</p>"+
- '<fieldset><legend>Ma décision</legend><div class="choices">'+
- '<span class="choice" data-cat="autorise"><input type="radio" id="out2-go" name="out.c2" data-key="out.c2" value="go"><label for="out2-go">GO</label></span>'+
- '<span class="choice" data-cat="encadre"><input type="radio" id="out2-anon" name="out.c2" data-key="out.c2" value="anon"><label for="out2-anon">GO si anonymisé</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="out2-nogo" name="out.c2" data-key="out.c2" value="nogo"><label for="out2-nogo">NO-GO</label></span>'+
- '</div></fieldset>'+
- '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
- "<div class=\"details__body\">Outil <strong>non référencé</strong>, mais document <strong>public sans donnée personnelle</strong> → <strong>GO</strong>. C'est exactement le bon usage d'un assistant grand public.</div></details>"+
- '</div>'+
- '<div class="card">'+
- "<p class=\"case__q\">C — <strong>Assistant grand public</strong> pour <strong>résumer un dossier d'élève</strong>.</p>"+
- '<fieldset><legend>Ma décision</legend><div class="choices">'+
- '<span class="choice" data-cat="autorise"><input type="radio" id="out3-go" name="out.c3" data-key="out.c3" value="go"><label for="out3-go">GO</label></span>'+
- '<span class="choice" data-cat="encadre"><input type="radio" id="out3-anon" name="out.c3" data-key="out.c3" value="anon"><label for="out3-anon">GO si anonymisé</label></span>'+
- '<span class="choice" data-cat="interdit"><input type="radio" id="out3-nogo" name="out.c3" data-key="out.c3" value="nogo"><label for="out3-nogo">NO-GO</label></span>'+
- '</div></fieldset>'+
- '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
- "<div class=\"details__body\"><strong>NO-GO</strong> : outil <strong>non référencé</strong> + données <strong>personnelles et sensibles</strong> = cas interdit. Même anonymisé, un dossier d'élève reste souvent ré-identifiable : à traiter dans un outil <strong>référencé</strong> uniquement, dans le cadre prévu.</div></details>"+
- '</div>'+
  "<p class=\"reminder\">🔎 Repère : le <strong>DPO</strong> tranche ; la liste des outils <strong>référencés (ENT / GAR)</strong> est la référence. À statut égal, privilégiez les <strong>solutions libres et sobres</strong> et partez du <strong>besoin</strong>, pas de l'outil.</p>"+
- '<div class="card">'+
- '<h3>Explorer le répertoire d\'outils IA</h3>'+
- "<p class=\"hint\" style=\"margin:.3em 0 12px\">Naviguez quelques minutes dans le <strong>répertoire interactif de la DRANE</strong> et repérez <strong>1 à 3 outils</strong> que vous aimeriez essayer — pas besoin de tester maintenant, juste repérer.</p>"+
- "<p class=\"hint\" style=\"margin:0 0 10px\">Pour identifier les outils : répertoire interactif d'outils IA pour un usage pédagogique (DRANE PACA).</p>"+
- '<p style="margin:0"><a class="btn btn--filled" href="https://repertoire-outils-ia-f0df4b.forge.apps.education.fr/" target="_blank" rel="noopener" style="text-decoration:none">Ouvrir le répertoire ↗</a> <span class="hint">— <a href="https://www.pedagogie.ac-nice.fr/drane/2026/02/27/rioiag/" target="_blank" rel="noopener">source (DRANE)</a></span></p>'+
+ '<div class="card" id="outil-repertoire">'+
+ '<h3>Explorer un catalogue d\'outils IA</h3>'+
+ "<p class=\"hint\" style=\"margin:.3em 0 12px\">Naviguez quelques minutes dans l'<strong>Explorateur d'IA</strong> (sélection d'outils pour le CDI et la classe) et repérez <strong>1 à 3 outils</strong> que vous aimeriez essayer — pas besoin de tester maintenant, juste repérer.</p>"+
+ "<p class=\"hint\" style=\"margin:0 0 10px\">Catalogue filtrable par usage : chatbots, images, vidéo, audio, code, recherche.</p>"+
+ '<p style="margin:0"><a class="btn btn--filled" href="https://iago.re/pratiks/selectionIA.html" target="_blank" rel="noopener" style="text-decoration:none">Ouvrir le catalogue ↗</a> <span class="hint">— <a href="https://iago.re/" target="_blank" rel="noopener">source (iago.re)</a></span></p>'+
  '</div>'+
  "<div class=\"field\" style=\"margin-top:10px\"><label for=\"out-remarques\">Mes remarques</label><textarea id=\"out-remarques\" data-key=\"out.remarques\" placeholder=\"outils de mon service, cas limites, questions pour le DPO…\"></textarea></div>"+
  '<p class="save-note" style="margin:6px 0 0">Enregistré automatiquement sur cet appareil.</p>'+
@@ -883,8 +943,8 @@
      if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
    },
    "donnees": function(p) {
-     var firstDetails = p.querySelector("details");
-     if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
+     var explainAnchor = p.querySelector("#don-schema") || p.querySelector("details");
+     if (explainAnchor) explainAnchor.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), explainAnchor);
      var card = p.querySelector(".card");
      if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
      var ta = p.querySelector("[data-key='don.remarques']");
@@ -896,7 +956,7 @@
    "outil": function(p) {
      var firstDetails = p.querySelector("details");
      if (firstDetails) firstDetails.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), firstDetails);
-     var mini = p.querySelector("#outil-minitri");
+     var mini = p.querySelector("#outil-repertoire");
      if (mini) mini.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), mini);
      var ta = p.querySelector("[data-key='out.remarques']");
      if (ta) {
@@ -1206,29 +1266,40 @@
    b.addEventListener("click", function(){ rcOpen(b.getAttribute("data-md")); });
  });
 
- /* ── STEPS DURATION BOXES ──────────────────────────── */
+ /* ── OBJECTIF + MODALITÉ + DURÉE : un seul bloc replié par étape ── */
  Object.keys(TIMERS).forEach(function(key) {
    var panel = document.getElementById("panel-" + key);
    if (!panel) return;
+   var mb = panel.querySelector(".meta-block");
+   if (!mb || !mb.parentNode) return;
    var steps = TIMERS[key][1];
    var total = 0;
    steps.forEach(function(st) { total += st[1]; });
-   var box = document.createElement("details");
-   box.className = "steps-list";
-   var h = '<summary class="steps-title">Étapes — ' + total + ' min au total</summary><ol>';
+
+   var det = document.createElement("details");
+   det.className = "card-fold meta-fold";
+   var sum = document.createElement("summary");
+   sum.textContent = "Objectif, modalité et durée — " + total + " min";
+   det.appendChild(sum);
+
+   var body = document.createElement("div");
+   body.className = "card-fold__body";
+
+   /* place le bloc replié là où était la meta-block, puis y déplace la meta-block */
+   mb.parentNode.insertBefore(det, mb);
+   body.appendChild(mb);
+
+   /* durée détaillée */
+   var dur = document.createElement("div");
+   var h = '<p class="steps-title" style="margin:14px 0 6px">Durée détaillée</p><ol class="meta-dur__list">';
    steps.forEach(function(st) {
      h += '<li><span class="step-row"><span class="step-lbl">' + st[0] + '</span><span class="steps-dur">' + st[1] + ' min</span></span></li>';
    });
    h += '</ol>';
-   box.innerHTML = h;
-   var mb = panel.querySelector(".meta-block");
-   if (mb && mb.parentNode) {
-     mb.parentNode.insertBefore(box, mb.nextSibling);
-   } else {
-     var pi = panel.querySelector(".panel-intro");
-     if (pi && pi.parentNode) { pi.parentNode.insertBefore(box, pi.nextSibling); }
-     else { panel.appendChild(box); }
-   }
+   dur.innerHTML = h;
+   body.appendChild(dur);
+
+   det.appendChild(body);
  });
 
 })();
