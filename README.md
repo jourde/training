@@ -1,6 +1,3 @@
 # training
 
-- [atelier - charte](https://jourde.github.io/training/ai/fr-atelier-charte.html)
-- [atelier - débutant](https://jourde.github.io/training/ai/fr-atelier-debutant.html)
-- [atelier - intermédiaire](https://jourde.github.io/training/ai/fr-atelier-intermediaire.html)
-- [atelier - débutant - admin](https://jourde.github.io/training/ai/fr-atelier-debutant-admin.html)
+- [La Réunion, 2026](https://github.com/jourde/training/tree/main/ai/reunion-2026) - lycée Lislet Geoffroy
