@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Découvrir l'IA générative · Espace de travail du participant (personnel administratif)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Polices : pile locale (Roboto si installée, sinon system-ui) — aucune requête externe, cohérence avec « rien n'est envoyé » -->
 <style>
  /* ── DESIGN TOKENS — Material Design 3 "Deep Grey" ── */
  :root{
@@ -43,7 +41,8 @@
  .skip-link:focus{left:0}
  .sr-only{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
  button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,
- textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #ffd54f;outline-offset:2px}
+ textarea:focus-visible,[role=tab]:focus-visible{outline:3px solid #102027;outline-offset:2px;
+ box-shadow:0 0 0 5px #ffd54f}
 
  /* ── TOP BAR ── */
  .topbar{position:sticky;top:0;z-index:30;box-shadow:var(--elev-2)}
@@ -68,7 +67,7 @@
  .panel-head h2{font-size:1.4rem;font-weight:700;margin:0}
  .panel-time{font-variant-numeric:tabular-nums;font-weight:700;color:var(--on-primary-container);
  background:var(--primary-container);border-radius:999px;padding:3px 12px;font-size:.85rem}
- .panel-intro{color:var(--on-surface-variant);margin:0 0 20px;text-align:justify}
+ .panel-intro{color:var(--on-surface-variant);margin:0 0 20px}
  h3{font-size:1.05rem;font-weight:500;margin:0}
  .grid{display:grid;gap:16px}
 
@@ -119,7 +118,7 @@
  padding:8px 16px;font-size:.88rem;font-weight:500;cursor:pointer;color:var(--on-surface);
  background:var(--surface-1)}
  .choice label:hover{background:var(--surface-2)}
- .choice input:focus-visible+label{outline:3px solid #ffd54f;outline-offset:2px}
+ .choice input:focus-visible+label{outline:3px solid #102027;outline-offset:2px;box-shadow:0 0 0 5px #ffd54f}
  .choice input:checked+label{color:#fff;border-color:transparent}
  .choice[data-cat=autorise] input:checked+label{background:var(--cat-autorise)}
  .choice[data-cat=encadre] input:checked+label{background:var(--cat-encadre)}
@@ -196,7 +195,7 @@
  .btn:hover{background:var(--surface-2)}
  .btn--filled{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
  .btn--filled:hover{background:var(--primary-hover)}
- .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer)}
+ .btn--trainer{border-style:dashed;color:var(--cat-arbitrer);border-color:var(--cat-arbitrer);margin-left:auto}
  .btn--trainer:hover{background:#e8f0fe}
  .btn--trainer::before{content:"\2699\00a0";font-size:.85em}
 
@@ -258,6 +257,16 @@
  .print-title{display:block!important}
  }
  .print-title{display:none}
+
+ /* ── SUB-STEP HEADERS (sections numérotées dans un panneau) ── */
+ .substep{display:flex;align-items:center;gap:10px;margin:30px 0 10px}
+ .substep .substep-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+   border-radius:50%;background:var(--primary);color:#fff;font-weight:700;font-size:.85rem;flex:0 0 auto}
+ .substep h3{font-size:1.12rem;font-weight:700;margin:0}
+
+ /* ── SCHEMA : défilement horizontal pour rester lisible sur petit écran ── */
+ .schema-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .schema-scroll svg{min-width:660px}
 
  /* ── PHASE SECTION TAGS ── */
  .phase-tag{display:flex;align-items:center;gap:8px;margin:28px 0 12px;
@@ -572,55 +581,62 @@
  '<dt>Modalité</dt><dd>En groupe — l\'essentiel, puis un vote flash sur 3 situations.</dd>'+
  '</dl>'+
  "<p class=\"panel-intro\">Vous manipulez des données personnelles et parfois  sensibles (état civil, adresses, situations familiales, santé, bourses, absences, sanctions). Avant de coller quoi que ce soit dans un outil, devenez <strong>détective</strong>. Principe directeur : <strong>un outil non référencé peut stocker et réutiliser ce qu'on lui confie</strong> (hébergement parfois hors UE).</p>"+
- '<figure id="don-schema" style="background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);margin:16px 0;padding:16px" role="img" aria-label="Schéma de décision avant de saisir une donnée dans un outil. Par défaut, supposez que la donnée est personnelle. Étape 1 : donnée sensible (santé, origine, opinions, biométrie, émotions) ? Si oui, STOP. Étape 2 : contient des données personnelles ? Si non, GO. Étape 3 : outil référencé par votre établissement ? Si non, aller à l\'anonymisation. Étape 4 : usage autorisé pour ces données selon le registre ? Si oui, GO. Étape 5 : ré-identification rendue impossible (anonymisation réelle) ? Si oui, GO après anonymisation ; si non, STOP.">'+
- '<figcaption style="font-weight:600;margin:0 0 14px">Le bon réflexe — par défaut, supposez des données personnelles</figcaption>'+
+ '<div class="substep" id="don-sub1"><span class="substep-num">1</span><h3>L\'essentiel — le bon réflexe avant de saisir une donnée</h3></div>'+
+ '<figure id="don-schema" style="background:var(--surface-1);border-radius:var(--radius);box-shadow:var(--elev-1);margin:16px 0;padding:16px" role="img" aria-label="Schéma de décision avant de saisir une donnée dans un outil. Par défaut, supposez que la donnée est personnelle. Étape 1 : contient des données personnelles ? Si non, GO. Étape 2 : donnée sensible (santé, origine, opinions, religion, biométrie) ? Si oui, STOP. Étape 3 : outil référencé par votre établissement ? Si non, aller à l\'anonymisation. Étape 4 : usage autorisé pour ces données selon le registre ? Si oui, GO. Étape 5 : ré-identification rendue impossible (anonymisation réelle) ? Si oui, GO après anonymisation ; si non, STOP.">'+
+ '<figcaption style="font-weight:600;margin:0 0 14px">Le bon réflexe — par défaut, supposez des données personnelles <span class="hint" style="font-weight:400">(sur petit écran : faites défiler, ou dépliez la version texte sous le schéma)</span></figcaption>'+
+ '<div class="schema-scroll">'+
  '<svg viewBox="0 0 800 760" width="100%" style="max-width:720px;height:auto;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, system-ui, sans-serif">'+
  '<defs><marker id="don-ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3c474d"/></marker></defs>'+
  // connectors
  '<line x1="330" y1="56" x2="330" y2="104" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
  '<line x1="330" y1="172" x2="330" y2="234" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="342" y="206" font-size="11" fill="#3c474d">Non</text>'+
+ '<text x="342" y="206" font-size="12.5" font-weight="700" fill="#3c474d">Oui</text>'+
  '<line x1="480" y1="140" x2="591" y2="140" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="520" y="132" font-size="11" fill="#3c474d">Oui</text>'+
+ '<text x="520" y="132" font-size="12.5" font-weight="700" fill="#3c474d">Non</text>'+
  '<line x1="330" y1="298" x2="330" y2="356" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="342" y="330" font-size="11" fill="#3c474d">Oui</text>'+
+ '<text x="342" y="330" font-size="12.5" font-weight="700" fill="#3c474d">Non</text>'+
  '<line x1="480" y1="268" x2="591" y2="268" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="520" y="260" font-size="11" fill="#3c474d">Non</text>'+
+ '<text x="520" y="260" font-size="12.5" font-weight="700" fill="#3c474d">Oui</text>'+
  '<line x1="330" y1="416" x2="330" y2="474" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="342" y="448" font-size="11" fill="#3c474d">Oui</text>'+
+ '<text x="342" y="448" font-size="12.5" font-weight="700" fill="#3c474d">Oui</text>'+
  '<polyline points="180,388 72,388 72,628 178,628" fill="none" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="78" y="380" font-size="11" fill="#3c474d">Non</text>'+
+ '<text x="78" y="380" font-size="12.5" font-weight="700" fill="#3c474d">Non</text>'+
  '<line x1="480" y1="508" x2="591" y2="508" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="520" y="500" font-size="11" fill="#3c474d">Oui</text>'+
+ '<text x="520" y="500" font-size="12.5" font-weight="700" fill="#3c474d">Oui</text>'+
  '<line x1="330" y1="538" x2="330" y2="594" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="342" y="570" font-size="11" fill="#3c474d">Non</text>'+
+ '<text x="342" y="570" font-size="12.5" font-weight="700" fill="#3c474d">Non</text>'+
  '<line x1="480" y1="628" x2="536" y2="628" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="508" y="620" font-size="11" fill="#3c474d">Oui</text>'+
+ '<text x="508" y="620" font-size="12.5" font-weight="700" fill="#3c474d">Oui</text>'+
  '<line x1="330" y1="658" x2="330" y2="693" stroke="#3c474d" stroke-width="2" marker-end="url(#don-ar)"/>'+
- '<text x="342" y="680" font-size="11" fill="#3c474d">Non</text>'+
+ '<text x="342" y="680" font-size="12.5" font-weight="700" fill="#3c474d">Non</text>'+
  // start node
  '<rect x="180" y="12" width="300" height="44" rx="10" fill="#37474f"/>'+
  '<text x="330" y="30" text-anchor="middle" fill="#fff"><tspan x="330" font-size="13" font-weight="600">Donnée à traiter</tspan><tspan x="330" dy="15" font-size="10.5">par défaut, supposez qu\'elle est personnelle</tspan></text>'+
- // Q1 sensible
+ // Q1 personnelle
  '<rect x="180" y="108" width="300" height="64" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
- '<text x="330" y="132" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Donnée SENSIBLE ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">santé, origine, opinions, biométrie, émotions…</tspan></text>'+
- // Q2 personnelle
+ '<circle cx="180" cy="108" r="13" fill="#37474f"/><text x="180" y="112.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>'+
+ '<text x="330" y="132" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Données personnelles ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">prénom, classe, copie, e-mail, adresse IP…</tspan></text>'+
+ // Q2 sensible
  '<rect x="180" y="238" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
- '<text x="330" y="262" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Données personnelles ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">prénom, classe, copie, e-mail, adresse IP…</tspan></text>'+
+ '<circle cx="180" cy="238" r="13" fill="#37474f"/><text x="180" y="242.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>'+
+ '<text x="330" y="262" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Donnée SENSIBLE ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">santé, origine, opinions, religion, biométrie…</tspan></text>'+
  // Q3 référencé
  '<rect x="180" y="360" width="300" height="56" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<circle cx="180" cy="360" r="13" fill="#37474f"/><text x="180" y="364.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>'+
  '<text x="330" y="384" text-anchor="middle" font-size="13" font-weight="600" fill="#1b1f22"><tspan x="330">Outil référencé par</tspan><tspan x="330" dy="16">votre établissement ?</tspan></text>'+
  // Q4 usage autorisé
  '<rect x="180" y="478" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<circle cx="180" cy="478" r="13" fill="#37474f"/><text x="180" y="482.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">4</text>'+
  '<text x="330" y="502" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Usage autorisé pour ces données ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">selon le registre des outils de l\'établissement</tspan></text>'+
  // Q5 anonymisation
  '<rect x="180" y="598" width="300" height="60" rx="10" fill="#f1f3f4" stroke="#c4ccd0" stroke-width="2"/>'+
+ '<circle cx="180" cy="598" r="13" fill="#37474f"/><text x="180" y="602.5" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">5</text>'+
  '<text x="330" y="622" text-anchor="middle" fill="#1b1f22"><tspan x="330" font-size="13" font-weight="600">Ré-identification impossible ?</tspan><tspan x="330" dy="16" font-size="10" fill="#3c474d">anonymisation réelle — retirer le nom ne suffit pas</tspan></text>'+
  // outcome pills
- '<rect x="595" y="126" width="90" height="28" rx="14" fill="#b3261e"/>'+
- '<text x="640" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">STOP</text>'+
- '<rect x="595" y="254" width="90" height="28" rx="14" fill="#1b5e20"/>'+
- '<text x="640" y="273" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">GO</text>'+
+ '<rect x="595" y="126" width="90" height="28" rx="14" fill="#1b5e20"/>'+
+ '<text x="640" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">GO</text>'+
+ '<rect x="595" y="254" width="90" height="28" rx="14" fill="#b3261e"/>'+
+ '<text x="640" y="273" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">STOP</text>'+
  '<rect x="595" y="494" width="90" height="28" rx="14" fill="#1b5e20"/>'+
  '<text x="640" y="513" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">GO</text>'+
  '<rect x="540" y="613" width="232" height="30" rx="15" fill="#8a4b00"/>'+
@@ -628,14 +644,31 @@
  '<rect x="285" y="697" width="90" height="30" rx="15" fill="#b3261e"/>'+
  '<text x="330" y="717" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">STOP</text>'+
  '</svg>'+
- '<p style="margin:14px 0 0;background:var(--surface-3);border-left:6px solid var(--cat-encadre);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem">⚠️ <strong>L\'outil est un système d\'IA&nbsp;?</strong> Un « GO » côté données ne suffit pas&nbsp;: l\'<strong>AI Act</strong> impose aussi <strong>littératie IA</strong>, <strong>supervision humaine</strong> et <strong>transparence</strong> (informer les personnes), et classe certains usages RH comme <strong>à haut risque</strong> (annexe&nbsp;III) — par exemple <strong>trier ou évaluer automatiquement des candidatures</strong> lors d\'un recrutement, ou évaluer le personnel en vue d\'une promotion. En cas de doute&nbsp;: charte d\'établissement, DPO ou référent IA.</p>'+
+ '</div>'+
+ '<div style="margin:14px 0 0;background:var(--surface-3);border-left:6px solid var(--cat-encadre);border-radius:0 10px 10px 0;padding:12px 16px;font-size:.92rem">'+
+ '<p style="margin:0 0 6px">⚠️ <strong>L\'outil est un système d\'IA&nbsp;?</strong> Un « GO » côté données ne suffit pas — l\'<strong>AI Act</strong> ajoute ses propres règles&nbsp;:</p>'+
+ '<ul style="margin:0;padding-left:20px">'+
+ '<li><strong>Littératie IA, supervision humaine, transparence</strong> — se former, garder la main sur la décision, informer les personnes concernées.</li>'+
+ '<li><strong>Usages RH à haut risque</strong> (annexe&nbsp;III) — ex. trier ou évaluer automatiquement des candidatures, évaluer le personnel en vue d\'une promotion.</li>'+
+ '<li><strong>Reconnaissance des émotions&nbsp;: interdite</strong> sur le lieu de travail et dans l\'éducation (art.&nbsp;5).</li>'+
+ '</ul>'+
+ '<p style="margin:6px 0 0">En cas de doute&nbsp;: charte d\'établissement, DPO ou référent IA.</p>'+
+ '</div>'+
  '</figure>'+
+ '<details><summary><span class="badge-num" aria-hidden="true">¶</span><span>Le schéma en version texte (lisible sur petit écran)</span></summary>'+
+ '<div class="details__body"><ol style="margin:.4em 0;padding-left:20px">'+
+ '<li>Des <strong>données personnelles</strong> (nom, prénom, classe, e-mail, adresse IP…)&nbsp;? Si non → <strong>GO</strong>.</li>'+
+ '<li>Donnée <strong>sensible</strong> (santé, origine, opinions, religion, biométrie…)&nbsp;? Si oui → <strong>STOP</strong>.</li>'+
+ '<li>Outil <strong>référencé</strong> par votre établissement&nbsp;? Si non → passez au point 5 (anonymisation).</li>'+
+ '<li><strong>Usage autorisé</strong> pour ces données (registre de l\'établissement)&nbsp;? Si oui → <strong>GO</strong>.</li>'+
+ '<li><strong>Ré-identification impossible</strong> (anonymisation réelle — retirer le nom ne suffit pas)&nbsp;? Si oui → <strong>GO après anonymisation</strong>&nbsp;; si non → <strong>STOP</strong>.</li>'+
+ '</ol></div></details>'+
  "<h3 style=\"margin:18px 0 8px\">Deux notions à avoir en tête</h3>"+
  '<details><summary><span class="badge-num">1</span><span>Donnée à caractère personnel</span></summary>'+
  "<div class=\"details__body\">Tout ce qui identifie une personne, <strong>directement OU indirectement</strong>. Par exemple : un nom, une photo, une empreinte, une adresse postale, une adresse mail, un numéro de téléphone, un numéro de sécurité sociale, un matricule interne, une adresse IP, un identifiant de connexion informatique, un enregistrement vocal, etc.<br><span class=\"hint\">⚠️ <strong>Anonymiser ≠ enlever le nom</strong> : c'est enlever <strong>tout ce qui permet de ré-identifier</strong> la personne.<br><strong>Attention :</strong> s'il est possible par recoupement de plusieurs informations (âge, sexe, ville, diplôme, etc.) ou par l'utilisation de moyens techniques divers, d'identifier une personne, les données sont toujours considérées comme personnelles.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/une-donnee-caractere-personnel-cest-quoi\" target=\"_blank\" rel=\"noopener\">Une donnée à caractère personnel, c'est quoi&nbsp;? (CNIL) ↗</a></p></div></details>"+
  '<details><summary><span class="badge-num">2</span><span>Donnée sensible</span></summary>'+
- "<div class=\"details__body\">Ce sont les informations qui révèlent la prétendue origine raciale ou ethnique, les opinions politiques, les convictions religieuses ou philosophiques ou l'appartenance syndicale.<br>Ce sont également les données génétiques, les données biométriques aux fins d'identifier une personne physique de manière unique, les données concernant la santé, la vie sexuelle ou l'orientation sexuelle d'une personne physique.<br><strong>Il est interdit de recueillir et d'utiliser ces données.</strong><br><span class=\"hint\">🔒 À ne jamais confier à un outil non référencé.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/1823\" target=\"_blank\" rel=\"noopener\">Qu'est-ce qu'une donnée sensible&nbsp;? (CNIL) ↗</a></p></div></details>"+
- "<h3 style=\"margin:22px 0 8px\">Vote flash — GO / STOP / anonymiser&nbsp;?</h3>"+
+ "<div class=\"details__body\">Ce sont les informations qui révèlent la prétendue origine raciale ou ethnique, les opinions politiques, les convictions religieuses ou philosophiques ou l'appartenance syndicale.<br>Ce sont également les données génétiques, les données biométriques aux fins d'identifier une personne physique de manière unique, les données concernant la santé, la vie sexuelle ou l'orientation sexuelle d'une personne physique.<br><strong>Leur traitement est interdit par principe</strong>, sauf exceptions strictes prévues par la loi (art. 9 RGPD : médecine scolaire, obligations légales, intérêt public important…). Votre service peut donc en traiter légalement dans le cadre prévu — mais <strong>jamais dans un outil d'IA non référencé</strong>.<br><span class=\"hint\">🔒 À ne jamais confier à un outil non référencé — quelle que soit la raison.</span><p class=\"hint\" style=\"margin:10px 0 0\"><a href=\"https://www.cnil.fr/fr/cnil-direct/question/1823\" target=\"_blank\" rel=\"noopener\">Qu'est-ce qu'une donnée sensible&nbsp;? (CNIL) ↗</a></p></div></details>"+
+ '<div class="substep" id="don-sub2"><span class="substep-num">2</span><h3>Vote flash — GO / STOP / anonymiser&nbsp;?</h3></div>'+
  "<p class=\"hint\" style=\"margin:-2px 0 10px\">Pour chaque situation, positionnez-vous, puis dépliez l'analyse. C'est pour vous (non transmis).</p>"+
  '<div class="card">'+
  "<p class=\"case__q\">Situation 1 — Je veux faire reformuler un <strong>mail qui cite un élève par son nom</strong> (et sa classe).</p>"+
@@ -667,7 +700,7 @@
  '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
  "<div class=\"details__body\"><strong>GO</strong> : un document <strong>déjà public</strong>, sans donnée personnelle, peut être confié. Restez vigilant : relisez le résultat (la reformulation peut introduire une erreur).</div></details>"+
  '</div>'+
- "<h3 style=\"margin:22px 0 8px\">Mini-tri — quel outil pour quelle tâche&nbsp;?</h3>"+
+ '<div class="substep" id="don-sub3"><span class="substep-num">3</span><h3>Mini-tri — quel outil pour quelle tâche&nbsp;?</h3></div>'+
  "<p class=\"hint\" style=\"margin:-2px 0 10px\">On sait repérer une donnée&nbsp;; appliquons maintenant le réflexe au couple <strong>outil × tâche</strong>. Pour chaque cas, décidez, puis dépliez l\'analyse.</p>"+
  '<div class="card">'+
  "<p class=\"case__q\">A — <strong>Outil ENT</strong> pour un <strong>publipostage</strong>.</p>"+
@@ -699,16 +732,17 @@
  '<details style="box-shadow:none;margin-top:10px;background:var(--surface-2)"><summary>Voir l\'analyse</summary>'+
  "<div class=\"details__body\"><strong>STOP</strong> : outil <strong>non référencé</strong> + données <strong>personnelles et sensibles</strong> = cas interdit. Même anonymisé, un dossier d'élève reste souvent ré-identifiable : à traiter dans un outil <strong>référencé</strong> uniquement, dans le cadre prévu.</div></details>"+
  '</div>'+
- "<h3 style=\"margin:22px 0 8px\">La check-list avant de saisir des données</h3>"+
+ '<div class="substep" id="don-sub4"><span class="substep-num">4</span><h3>La check-list avant de saisir des données</h3></div>'+
+ '<p class="hint" style="margin:-2px 0 10px">Cochez chaque vérification une fois faite.</p>'+
  '<div class="card">'+
- '<div class="check-item"><input type="checkbox" id="dck1" data-key="don.ck1"><label for="dck1">Y a-t-il une donnée <strong>personnelle</strong> (directe ou indirecte) ?</label></div>'+
- '<div class="check-item"><input type="checkbox" id="dck2" data-key="don.ck2"><label for="dck2">Y a-t-il une donnée <strong>sensible</strong> ?</label></div>'+
- '<div class="check-item"><input type="checkbox" id="dck3" data-key="don.ck3"><label for="dck3">L\'outil est-il <strong>référencé / autorisé</strong> par l\'établissement ?</label></div>'+
- '<div class="check-item"><input type="checkbox" id="dck4" data-key="don.ck4"><label for="dck4">Puis-je <strong>anonymiser</strong> sans dénaturer la tâche ? → si oui, <strong>GO après anonymisation</strong>.</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck1" data-key="don.ck1"><label for="dck1">J\'ai vérifié s\'il y a une donnée <strong>personnelle</strong> (directe ou indirecte).</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck2" data-key="don.ck2"><label for="dck2">J\'ai vérifié s\'il y a une donnée <strong>sensible</strong>.</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck3" data-key="don.ck3"><label for="dck3">J\'ai vérifié que l\'outil est <strong>référencé / autorisé</strong> par l\'établissement.</label></div>'+
+ '<div class="check-item"><input type="checkbox" id="dck4" data-key="don.ck4"><label for="dck4">Si besoin, j\'ai <strong>anonymisé réellement</strong> (ré-identification impossible) — sinon, <strong>STOP</strong>.</label></div>'+
  '</div>'+
  "<p class=\"reminder\">🧭 Repère : pour savoir si un outil est autorisé, votre interlocuteur est le <strong>DPO</strong>. Les outils de l'<strong>ENT / référencés par le rectorat</strong> ont déjà passé l'étape conformité.</p>"+
- "<div class=\"field\" style=\"margin-top:10px\"><label for=\"don-remarques\">Mes remarques</label><textarea id=\"don-remarques\" data-key=\"don.remarques\" placeholder=\"questions, cas concrets de mon service, points à creuser…\"></textarea></div>"+
- '<p class="save-note" style="margin:6px 0 0">Vos votes, cases et remarques sont enregistrés sur cet appareil. Récupérez votre relevé ci-dessous.</p>'+
+ "<div class=\"field\" style=\"margin-top:10px\"><label for=\"don-remarques\">Mes remarques</label><textarea id=\"don-remarques\" data-key=\"don.remarques\" placeholder=\"questions, situations types de mon service (sans aucun nom réel), points à creuser…\"></textarea></div>"+
+ '<p class="save-note" style="margin:6px 0 0">Vos votes, cases et remarques sont enregistrés sur cet appareil. Récupérez votre relevé ci-dessous.<br>💻 <strong>Poste partagé&nbsp;?</strong> N\'écrivez aucun nom réel et utilisez « Effacer mes saisies » (onglet Clôture) en fin d\'atelier.</p>'+
  '<div class="actions-row">'+
  '<button type="button" class="btn start-timer" data-md="donnees">Lancer le minuteur</button>'+
  '<button type="button" class="btn copy-md" data-md="donnees">Copier mon relevé (Markdown)</button>'+
@@ -943,9 +977,9 @@
      if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
    },
    "donnees": function(p) {
-     var explainAnchor = p.querySelector("#don-schema") || p.querySelector("details");
+     var explainAnchor = p.querySelector("#don-sub1") || p.querySelector("#don-schema") || p.querySelector("details");
      if (explainAnchor) explainAnchor.parentNode.insertBefore(phaseTag("explain", "📖 Explication"), explainAnchor);
-     var card = p.querySelector(".card");
+     var card = p.querySelector("#don-sub2") || p.querySelector(".card");
      if (card) card.parentNode.insertBefore(phaseTag("exercise", "✏️ Exercice"), card);
      var ta = p.querySelector("[data-key='don.remarques']");
      if (ta) {
@@ -1172,9 +1206,12 @@
    });
  });
  /* Lien vers le formulaire à côté de chaque bouton de copie participant.
-    ▸ À PERSONNALISER : remplacez l'URL ci-dessous par celle de votre formulaire admin. */
- var FORM_URL = "https://forms.gle/VOTRE-FORMULAIRE-ADMIN";
- document.querySelectorAll(".copy-md:not(.btn--trainer)").forEach(function(b) {
+    ▸ À PERSONNALISER : indiquez l'URL de votre formulaire INSTITUTIONNEL
+      (ex. Forms de la Forge / apps.education.fr — pas un formulaire grand public
+      non référencé : ce serait contraire à la grille de l'étape 1).
+      Laissez vide ("") pour masquer le bouton. */
+ var FORM_URL = "";
+ if (FORM_URL) document.querySelectorAll(".copy-md:not(.btn--trainer)").forEach(function(b) {
    var arrow = el("span", {"class":"flow-arrow","aria-hidden":"true"}, "→");
    var a = el("a", {"class":"btn",href:FORM_URL,target:"_blank",rel:"noopener",style:"text-decoration:none"}, "Coller dans le formulaire ↗");
    if (b.parentNode) { b.parentNode.insertBefore(arrow, b.nextSibling); b.parentNode.insertBefore(a, arrow.nextSibling); }
