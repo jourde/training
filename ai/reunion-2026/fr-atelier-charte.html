@@ -259,7 +259,7 @@
   <header class="app-bar">
     <div class="app-bar-inner">
       <h1>Co-construire la charte IA de l'établissement
-        <span class="subtitle">Support participant · atelier 1 h 45</span>
+        <span class="subtitle">Support participant · atelier 3 h</span>
       </h1>
     </div>
   </header>
@@ -271,6 +271,7 @@
       <button role="tab" id="tab-appro" aria-selected="false" aria-controls="panel-appro" tabindex="-1">Appropriation</button>
       <button role="tab" id="tab-p2" aria-selected="false" aria-controls="panel-p2" tabindex="-1">Obligations</button>
       <button role="tab" id="tab-p5" aria-selected="false" aria-controls="panel-p5" tabindex="-1">Gouvernance</button>
+      <button role="tab" id="tab-redac" aria-selected="false" aria-controls="panel-redac" tabindex="-1">Rédaction</button>
       <button role="tab" id="tab-cloture" aria-selected="false" aria-controls="panel-cloture" tabindex="-1">Clôture</button>
     </div>
   </nav>
@@ -282,7 +283,7 @@
   <!-- DÉROULÉ : rappel simple -->
   <section role="tabpanel" id="panel-deroule" aria-labelledby="tab-deroule" tabindex="0">
     <div class="panel-head"><h2>Déroulé de l'atelier</h2></div>
-    <p class="panel-intro" style="max-width:none">Une heure quarante-cinq, en présentiel. À l'issue&nbsp;: une charte v1 et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
+    <p class="panel-intro" style="max-width:none">Trois heures, en présentiel, pauses comprises. À l'issue&nbsp;: une trame de charte v1 rédigée et une feuille de route de co-construction, à finaliser avec la communauté éducative et à valider en conseil d'administration.</p>
     <ol class="agenda" id="agenda"></ol>
   </section>
 
@@ -416,7 +417,7 @@
 
   <!-- APPROPRIATION DU CADRE -->
   <section role="tabpanel" id="panel-appro" aria-labelledby="tab-appro" tabindex="0" hidden>
-    <div class="panel-head"><h2>Appropriation du cadre d’usage</h2><span class="panel-time">0:30–0:45 (15 min)</span></div>
+    <div class="panel-head"><h2>Appropriation du cadre d’usage</h2><span class="panel-time">0:30–0:50 (20 min)</span></div>
     <dl class="meta-block">
       <dt>Objectif</dt><dd>S’approprier concrètement ce que le cadre national autorise, interdit et encadre, côté personnels.</dd>
       <dt>Modalités</dt><dd>Lecture en commun et discutée du guide, en plénière.</dd>
@@ -442,7 +443,7 @@
 
   <!-- PHASE 1 — OBLIGATIONS -->
   <section role="tabpanel" id="panel-p2" aria-labelledby="tab-p2" tabindex="0" hidden>
-    <div class="panel-head"><h2>Obligations légales non négociables</h2><span class="panel-time">0:45–1:05 (20 min)</span></div>
+    <div class="panel-head"><h2>Obligations légales non négociables</h2><span class="panel-time">0:55–1:20 (25 min)</span></div>
     <dl class="meta-block">
       <dt>Objectif</dt><dd>Identifier les obligations et interdictions légales non négociables qui s’imposent à l’établissement (RGPD et règlement européen sur l’IA), quels que soient les choix pédagogiques locaux.</dd>
       <dt>Modalités</dt><dd>Test individuel sur l’app, puis mise en commun en plénière.</dd>
@@ -454,10 +455,10 @@
       <h3>Repère — calendrier du RIA (juin 2026)</h3>
       <ul>
         <li><strong>Interdictions</strong> (risque inacceptable)&nbsp;: en vigueur depuis février 2025 — p. ex. la reconnaissance des émotions des élèves en classe est interdite.</li>
-        <li><strong>Marquage</strong> des contenus générés par IA (art. 50.2)&nbsp;: 2 décembre 2026.</li>
+        <li><strong>Marquage</strong> des contenus générés par IA (art. 50.2)&nbsp;: article applicable au 2 août 2026&nbsp;; les systèmes déjà sur le marché ont jusqu'au <strong>2 décembre 2026</strong> pour le marquage lisible par machine.</li>
         <li><strong>Obligations « haut risque » éducation</strong> (Annexe III)&nbsp;: reportées au 2 décembre 2027.</li>
       </ul>
-      <span class="warn">Report sous réserve d’adoption formelle du <em>Digital Omnibus</em>&nbsp;; à défaut, le calendrier initial (2 août 2026) s’applique. À retenir aussi&nbsp;: une sanction ne doit jamais reposer sur le seul résultat d’un détecteur d’IA.</span>
+      <span class="warn">Report sous réserve d’adoption formelle du <em>Digital Omnibus</em>&nbsp;; à défaut, le calendrier initial (2 août 2026) s’applique. Le report ne suspend pas la <strong>supervision humaine</strong> de l’évaluation, déjà exigée par le cadre d’usage national et le RGPD (art. 22). À retenir aussi&nbsp;: une sanction ne doit jamais reposer sur le seul résultat d’un détecteur d’IA.</span>
     </div>
     <div class="callout">
       <h3>Repère — l’essentiel du RGPD pour l’établissement</h3>
@@ -485,7 +486,7 @@
 
   <!-- PHASE 5 -->
   <section role="tabpanel" id="panel-p5" aria-labelledby="tab-p5" tabindex="0" hidden>
-    <div class="panel-head"><h2>Architecture documentaire et gouvernance</h2><span class="panel-time">1:15–1:35 (20 min)</span></div>
+    <div class="panel-head"><h2>Architecture documentaire et gouvernance</h2><span class="panel-time">1:20–1:45 (25 min)</span></div>
     <dl class="meta-block">
       <dt>Objectif</dt><dd>Décider l'architecture documentaire, le circuit de validation et la révision annuelle.</dd>
       <dt>Modalités</dt><dd>Décisions en plénière (options par défaut à amender), puis engagement individuel.</dd>
@@ -538,21 +539,70 @@
       <button class="btn btn--trainer copy-prompt" type="button" data-md="p5">Voir le prompt d'analyse (formateur)</button></div>
   </section>
 
+  <!-- RÉDACTION -->
+  <section role="tabpanel" id="panel-redac" aria-labelledby="tab-redac" tabindex="0" hidden>
+    <div class="panel-head"><h2>Co-rédaction — trame de charte v1</h2><span class="panel-time">2:00–2:40 (40 min)</span></div>
+    <dl class="meta-block">
+      <dt>Objectif</dt><dd>Rédiger, en groupes, les sections de la trame de charte v1 — des règles concrètes adossées aux décisions prises et aux planchers légaux.</dd>
+      <dt>Modalités</dt><dd>3 à 4 groupes, une section par groupe (25 min), puis lecture croisée éclair en plénière (12 min). Un texte court par section&nbsp;: 5 à 8 lignes + 3 à 5 règles concrètes — une v1 de travail, pas un texte définitif.</dd>
+    </dl>
+    <p class="panel-intro">Appuyez-vous sur ce que la séance a déjà produit&nbsp;: le tour de table (Amorce), le guide POUVEZ / NE POUVEZ PAS (Appropriation), le corrigé des 9 énoncés (Obligations) et les quatre décisions (Gouvernance). La trame circulera ensuite en conseil pédagogique, CVL et CA.</p>
+
+    <div class="phase-tag phase-tag--exercise">✏️ Exercice</div>
+    <div class="card">
+      <h3>Section A · Usages des élèves</h3>
+      <p class="reminder" style="margin-top:10px">Paliers clairs selon les tâches (libre / déclaré / interdit), transparence attendue, et ce qui constitue une fraude (cadre national).</p>
+      <div class="field">
+        <label for="redac-eleves" class="sr-only" style="position:absolute;left:-999px">Section usages des élèves</label>
+        <textarea id="redac-eleves" data-key="redac.eleves" placeholder="Règles d'usage côté élèves (paliers, transparence, fraude)…"></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Section B · Usages professionnels et données</h3>
+      <p class="reminder" style="margin-top:10px">Outils référencés vs non référencés, règle d'or des données, registre des traitements, DPD.</p>
+      <div class="field">
+        <label for="redac-pro" class="sr-only" style="position:absolute;left:-999px">Section usages professionnels et données</label>
+        <textarea id="redac-pro" data-key="redac.pro" placeholder="Règles d'usage côté personnels (outils, données, registre, DPD)…"></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Section C · Transparence, évaluation, information des familles</h3>
+      <p class="reminder" style="margin-top:10px">Signalement des usages de l'IA, supervision humaine de l'évaluation, détecteurs (jamais seuls), messages aux familles (amorce de FAQ).</p>
+      <div class="field">
+        <label for="redac-transp" class="sr-only" style="position:absolute;left:-999px">Section transparence, évaluation, familles</label>
+        <textarea id="redac-transp" data-key="redac.transp" placeholder="Transparence, évaluation, information des familles…"></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Section D · Gouvernance et révision <span class="hint">(si 4ᵉ groupe)</span></h3>
+      <p class="reminder" style="margin-top:10px">Met en forme les décisions de la phase Gouvernance&nbsp;: emboîtement documentaire, circuit de validation, révision annuelle.</p>
+      <div class="field">
+        <label for="redac-gouv" class="sr-only" style="position:absolute;left:-999px">Section gouvernance et révision</label>
+        <textarea id="redac-gouv" data-key="redac.gouv" placeholder="Gouvernance, validation, révision annuelle…"></textarea>
+      </div>
+      <p class="save-note">Enregistré sur cet appareil.</p>
+    </div>
+    <div class="actions-row"><button class="btn start-timer" type="button" data-md="redac">⏱ Lancer le minuteur</button>
+      <button class="btn copy-md" type="button" data-md="redac">Copier mes réponses (Markdown)</button>
+      <button class="btn btn--trainer copy-prompt" type="button" data-md="redac">Voir le prompt d'analyse (formateur)</button></div>
+  </section>
+
   <!-- CLÔTURE -->
   <section role="tabpanel" id="panel-cloture" aria-labelledby="tab-cloture" tabindex="0" hidden>
-    <div class="panel-head"><h2>Clôture — auto-positionnement</h2><span class="panel-time">1:35–1:45 (10 min)</span></div>
+    <div class="panel-head"><h2>Clôture — auto-positionnement</h2><span class="panel-time">2:40–2:55 (15 min)</span></div>
     <dl class="meta-block">
-      <dt>Objectif</dt><dd>Auto-évaluer sa maîtrise des deux objectifs et formaliser un engagement de pilotage suivi.</dd>
+      <dt>Objectif</dt><dd>Auto-évaluer sa maîtrise des trois objectifs et formaliser un engagement de pilotage suivi.</dd>
       <dt>Modalités</dt><dd>Réflexion individuelle (checklist + engagement), puis partage en binôme.</dd>
     </dl>
-    <p class="panel-intro">Où en êtes-vous sur les deux objectifs&nbsp;? Placez chaque curseur selon où vous en êtes, repérez l'objectif le moins assuré, puis formalisez un engagement suivi.</p>
+    <p class="panel-intro">Où en êtes-vous sur les trois objectifs&nbsp;? Placez chaque curseur selon où vous en êtes, repérez l'objectif le moins assuré, puis formalisez un engagement suivi.</p>
 
     <div class="phase-tag phase-tag--explain">📖 Explication</div>
     <div class="card" id="recall-objectifs">
-      <h3 style="margin:0 0 8px">Rappel — les deux objectifs de l'atelier</h3>
+      <h3 style="margin:0 0 8px">Rappel — les trois objectifs de l'atelier</h3>
       <ol style="margin:0;padding-left:1.2em">
         <li><strong>Identifier</strong> les obligations légales non négociables (RGPD, RIA) qui s'imposent à l'établissement.</li>
         <li><strong>Décider</strong> l'architecture documentaire, le circuit de validation et la révision annuelle.</li>
+        <li><strong>Rédiger</strong>, en groupe, une section de la trame de charte v1, adossée aux décisions prises et aux planchers légaux.</li>
       </ol>
     </div>
 
@@ -603,19 +653,23 @@
 
   var TIMERS={
     p1:["Amorce — Usages réels et tensions",[["Cadrage et installation",5],["Notes individuelles",5],["Tour de table (plénière)",10]]],
-    appro:["Appropriation du cadre d’usage",[["Lecture en commun du guide",10],["Discussion",5]]],
-    p2:["Obligations légales non négociables",[["Test individuel (app) : anticiper puis vérifier",12],["Mise en commun en plénière",8]]],
-    p5:["Architecture et gouvernance",[["Décisions en plénière",15],["Engagement individuel",5]]],
-    cloture:["Clôture — auto-positionnement",[["Auto-positionnement au curseur (individuel)",4],["Engagement Essayer/Observer/Rapporter",4],["Partage en binôme",2]]]
+    appro:["Appropriation du cadre d’usage",[["Lecture en commun du guide",12],["Discussion",8]]],
+    p2:["Obligations légales non négociables",[["Test individuel (app) : anticiper puis vérifier",15],["Mise en commun en plénière",10]]],
+    p5:["Architecture et gouvernance",[["Décisions en plénière",18],["Engagement individuel",7]]],
+    redac:["Co-rédaction — trame de charte v1",[["Répartition des sections et consignes",3],["Rédaction par groupes",25],["Lecture croisée éclair",12]]],
+    cloture:["Clôture — auto-positionnement",[["Auto-positionnement au curseur (individuel)",4],["Engagement Essayer/Observer/Rapporter",5],["Partage en binôme",6]]]
   };
   var AGENDA=[
     ["0:00–0:20 (20 min)","Amorce — usages réels et tensions","p1",false],
     ["0:20–0:30 (10 min)","Repères : la charte et la démarche",null,false,"Cadre national · sept idées-socles · démarche DRANE en 5 phases · principes HLEG"],
-    ["0:30–0:45 (15 min)","Appropriation du cadre d’usage","appro",false],
-    ["0:45–1:05 (20 min)","Obligations légales non négociables","p2",false],
-    ["1:05–1:15 (10 min)","Pause",null,true],
-    ["1:15–1:35 (20 min)","Architecture documentaire et gouvernance","p5",false],
-    ["1:35–1:45 (10 min)","Clôture — Auto-positionnement","cloture",false]
+    ["0:30–0:50 (20 min)","Appropriation du cadre d’usage","appro",false],
+    ["0:50–0:55 (5 min)","Micro-pause (sonnerie)",null,true],
+    ["0:55–1:20 (25 min)","Obligations légales non négociables","p2",false],
+    ["1:20–1:45 (25 min)","Architecture documentaire et gouvernance","p5",false],
+    ["1:45–2:00 (15 min)","Pause",null,true],
+    ["2:00–2:40 (40 min)","Co-rédaction — trame de charte v1","redac",false],
+    ["2:40–2:55 (15 min)","Clôture — Auto-positionnement","cloture",false],
+    ["2:55–3:00 (5 min)","Marge — questions individuelles",null,true]
   ];
   var CADRE=[
     "<strong>À retenir</strong> — l'IA s'emploie exclusivement au service des apprentissages et des pratiques professionnelles, dans le respect des valeurs de l'École de la République, du cadre légal sur les données personnelles, de la liberté pédagogique et des enjeux environnementaux (quatre repères : éthique, pédagogique, juridique, environnemental).",
@@ -676,7 +730,8 @@
   ];
   var CHECKS=[
     "Je peux identifier les obligations légales non négociables (RGPD, RIA) qui s'imposent à l'établissement.",
-    "Je peux décider l'architecture documentaire, le circuit de validation et la révision annuelle."
+    "Je peux décider l'architecture documentaire, le circuit de validation et la révision annuelle.",
+    "Je peux rédiger, en groupe, une section de la trame de charte v1, adossée aux décisions prises et aux planchers légaux."
   ];
   var LEVELS=["Pas encore","J'ai des bases","Plutôt à l'aise","Tout à fait à l'aise"];
   var PP=["Enseignants","AESH","Vie scolaire","Personnels administratifs","Familles","Élèves / CVL"];
@@ -862,7 +917,8 @@
     p1:function(){return "## Amorce — Usages réels et tensions\n\n- Usage observé côté élèves : "+(mdField("p1.eleves")||"—")+"\n  - Doute : "+(mdField("p1.douteEleves")||"—")+"\n- Usage observé côté personnels : "+(mdField("p1.perso")||"—")+"\n  - Doute : "+(mdField("p1.doutePerso")||"—")+"\n- Doute principal (vue d'ensemble) : "+(mdField("p1.doute")||"—");},
     p2:function(){var o="## Obligations légales non négociables\n\n";P2.forEach(function(t,i){var r=(store.get("p2rem."+i)||"").replace(/\s*\n\s*/g," ").trim();o+="- "+t+" : **"+mdLbl(P2OPT,store.get("p2."+i))+"**"+(r?(" — "+r):"")+"\n";});return o.replace(/\n$/,"");},
     p5:function(){var pp=[];PP.forEach(function(n,i){if(store.get("p5.pp."+i)==="1")pp.push(n);});return "## Architecture documentaire et gouvernance\n\n- Architecture documentaire (3 couches) : "+(mdField("p5.archi")||"—")+"\n- Circuit de validation : "+(mdField("p5.circuit")||"—")+"\n- Parties prenantes à associer : "+(pp.length?pp.join(", "):"—")+"\n- Révision annuelle : "+(mdField("p5.revision")||"—")+"\n- Message aux familles (amorce de FAQ) : "+(mdField("p5.faq")||"—");},
-    cloture:function(){var o="## Clôture — auto-positionnement\n\n### Où en êtes-vous sur les deux objectifs ?\n";CHECKS.forEach(function(t,i){var v=+(store.get("chk."+i)||0);o+="- "+t+" — **"+LEVELS[v]+"** ("+v+"/3)\n";});o+="\n### Mon engagement (Essayer / Observer / Rapporter)\n- Essayer : "+(mdField("eng.try")||"—")+"\n- Observer : "+(mdField("eng.notice")||"—")+"\n- Rapporter : "+(mdField("eng.report")||"—");return o;}
+    redac:function(){return "## Co-rédaction — trame de charte v1\n\n### Section A · Usages des élèves\n"+(mdField("redac.eleves")||"—")+"\n\n### Section B · Usages professionnels et données\n"+(mdField("redac.pro")||"—")+"\n\n### Section C · Transparence, évaluation, familles\n"+(mdField("redac.transp")||"—")+"\n\n### Section D · Gouvernance et révision\n"+(mdField("redac.gouv")||"—");},
+    cloture:function(){var o="## Clôture — auto-positionnement\n\n### Où en êtes-vous sur les trois objectifs ?\n";CHECKS.forEach(function(t,i){var v=+(store.get("chk."+i)||0);o+="- "+t+" — **"+LEVELS[v]+"** ("+v+"/3)\n";});o+="\n### Mon engagement (Essayer / Observer / Rapporter)\n- Essayer : "+(mdField("eng.try")||"—")+"\n- Observer : "+(mdField("eng.notice")||"—")+"\n- Rapporter : "+(mdField("eng.report")||"—");return o;}
   };
   function mdFallback(text,ok){var ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="absolute";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");ok();}catch(e){window.prompt("Copiez le Markdown :",text);}document.body.removeChild(ta);}
   function mdCopy(key,btn){var b=MDBUILD[key];if(!b)return;var text=b();function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié ✓";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
@@ -870,7 +926,7 @@
 
 
   /* Copy trainer analysis prompt */
-  var MDPROMPT={"p1":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Amorce — usages réels et tensions ».\n\nChaque participant fournit un bloc Markdown listant un usage observé côté élèves et le doute associé, un usage côté personnels et le doute associé, puis le doute principal d'ensemble.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse séparant usages côté élèves et usages côté personnels ;\n- un regroupement en thèmes avec fréquences pour chaque catégorie ;\n- les doutes récurrents, par catégorie (élèves / personnels) et d'ensemble ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p2":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « obligations légales non négociables ».\n\nChaque participant classe 9 énoncés portant sur le RGPD et le règlement européen sur l'IA en « Obligatoire » ou « Interdit » (ou « Ne se prononce pas »), avec une remarque libre facultative par énoncé.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des 9 énoncés, la répartition Obligatoire / Interdit / Ne se prononce pas / non renseigné (distinguer le choix explicite « ne se prononce pas » de l'absence de réponse) ;\n- un repérage des écarts avec le droit : sont des obligations l'information des personnes, la saisine du DPD, l'AIPD pour les traitements à risque élevé, la supervision humaine des systèmes à haut risque et la transparence (art. 50) ; sont des interdictions la saisie de données personnelles dans une IA grand public, la reconnaissance des émotions en classe, la sanction fondée sur le seul résultat d'un détecteur, et la création de comptes élèves sur une IA grand public ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances, regroupés par énoncé et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p5":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « architecture et gouvernance ».\n\nChaque participant fournit un bloc Markdown indiquant l'architecture documentaire, le circuit de validation, les parties prenantes à associer (cases cochées) et la révision annuelle.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- la fréquence de sélection de chaque partie prenante à associer ;\n- une synthèse des options dominantes pour l'architecture documentaire, le circuit de validation et la révision annuelle ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","cloture":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Clôture — auto-positionnement et engagement ».\n\nChaque participant fournit un bloc Markdown comportant un auto-positionnement au curseur (échelle de 4 paliers, de 0 « Pas encore » à 3 « Tout à fait à l'aise ») sur chacun des deux objectifs et un engagement Essayer / Observer / Rapporter.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des deux objectifs, la répartition des niveaux déclarés et le niveau moyen ;\n- l'objectif le moins maîtrisé ;\n- une thématisation des engagements (Essayer) et trois axes de suivi proposés ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n"};
+  var MDPROMPT={"p1":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Amorce — usages réels et tensions ».\n\nChaque participant fournit un bloc Markdown listant un usage observé côté élèves et le doute associé, un usage côté personnels et le doute associé, puis le doute principal d'ensemble.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- une synthèse séparant usages côté élèves et usages côté personnels ;\n- un regroupement en thèmes avec fréquences pour chaque catégorie ;\n- les doutes récurrents, par catégorie (élèves / personnels) et d'ensemble ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p2":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « obligations légales non négociables ».\n\nChaque participant classe 9 énoncés portant sur le RGPD et le règlement européen sur l'IA en « Obligatoire » ou « Interdit » (ou « Ne se prononce pas »), avec une remarque libre facultative par énoncé.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des 9 énoncés, la répartition Obligatoire / Interdit / Ne se prononce pas / non renseigné (distinguer le choix explicite « ne se prononce pas » de l'absence de réponse) ;\n- un repérage des écarts avec le droit : sont des obligations l'information des personnes, la saisine du DPD, l'AIPD pour les traitements à risque élevé, la supervision humaine des systèmes à haut risque et la transparence (art. 50) ; sont des interdictions la saisie de données personnelles dans une IA grand public, la reconnaissance des émotions en classe, la sanction fondée sur le seul résultat d'un détecteur, et la création de comptes élèves sur une IA grand public ;\n- une synthèse des remarques libres : arguments récurrents, conditions et nuances, regroupés par énoncé et par thème ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","p5":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « architecture et gouvernance ».\n\nChaque participant fournit un bloc Markdown indiquant l'architecture documentaire, le circuit de validation, les parties prenantes à associer (cases cochées) et la révision annuelle.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- la fréquence de sélection de chaque partie prenante à associer ;\n- une synthèse des options dominantes pour l'architecture documentaire, le circuit de validation et la révision annuelle ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n","redac":"Tu es secrétaire de rédaction d'une charte IA d'établissement scolaire. Tu reçois les sections rédigées par plusieurs groupes lors d'un atelier de co-rédaction (direction et référents numériques) — étape « Co-rédaction — trame de charte v1 ».\n\nChaque bloc Markdown contient une à quatre sections : A · Usages des élèves ; B · Usages professionnels et données ; C · Transparence, évaluation, familles ; D · Gouvernance et révision.\n\nÀ partir de l'ENSEMBLE des blocs, produis, en français :\n- une trame de charte v1 consolidée, section par section (fusionne les doublons, harmonise le ton, conserve les règles concrètes) ;\n- un repérage des contradictions entre groupes et des points à arbitrer en instances ;\n- une vérification de conformité : signale toute règle proposée qui contredirait les planchers légaux (information des familles, DPD, AIPD, supervision humaine, transparence art. 50, données personnelles dans une IA grand public, reconnaissance des émotions, sanction sur seul détecteur, compte élève) ;\n- une liste des trous à combler avant passage en conseil pédagogique / CVL / CA.\n\nContraintes : texte sobre et concret, prêt à coller dans un document de travail ; n'invente aucune règle non proposée par les groupes ; distingue clairement « consolidé » / « à arbitrer » / « à vérifier ».\n\nColle ci-dessous les exports Markdown de tous les groupes, séparés par une ligne « --- » :\n\n---\n","cloture":"Tu es analyste de données pédagogiques. Tu reçois les réponses de plusieurs participants (personnels de direction et référents numériques) à un atelier de co-construction de la charte IA d'établissement — étape « Clôture — auto-positionnement et engagement ».\n\nChaque participant fournit un bloc Markdown comportant un auto-positionnement au curseur (échelle de 4 paliers, de 0 « Pas encore » à 3 « Tout à fait à l'aise ») sur chacun des trois objectifs et un engagement Essayer / Observer / Rapporter.\n\nAnalyse l'ENSEMBLE des réponses et produis, en français :\n- pour chacun des trois objectifs, la répartition des niveaux déclarés et le niveau moyen ;\n- l'objectif le moins maîtrisé ;\n- une thématisation des engagements (Essayer) et trois axes de suivi proposés ;\n- des représentations statistiques faciles à visualiser : tableaux de fréquences ET un graphique en barres (en Markdown/texte), plus un bloc CSV prêt à coller dans un tableur.\n\nContraintes : rapport TRÈS CONCIS et structuré (titres courts, puces) ; reste neutre et factuel ; n'invente aucune donnée ; compte les réponses manquantes comme « non renseigné » ; indique le nombre de participants analysés.\n\nColle ci-dessous les exports Markdown de tous les participants, séparés par une ligne « --- » :\n\n---\n"};
   function promptCopy(key,btn){var text=MDPROMPT[key];if(!text)return;function ok(){if(!btn.getAttribute("data-label"))btn.setAttribute("data-label",btn.textContent);btn.textContent="Copié \u2713";setTimeout(function(){btn.textContent=btn.getAttribute("data-label");},1600);}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,function(){mdFallback(text,ok);});}else{mdFallback(text,ok);}}
   Array.prototype.forEach.call(document.querySelectorAll(".copy-prompt"),function(b){b.addEventListener("click",function(){promptView(b.getAttribute("data-md"));});});
 
