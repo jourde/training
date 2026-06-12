@@ -396,6 +396,7 @@
       lines+="- 🎯 **Le changement que je teste** : "+dash(mdField("liv.engage"))+"\n";
       lines+="- 🗓️ **Quand / dans quel contexte** : "+dash(mdField("liv.quand"))+"\n";
       lines+="- 👣 **Mon premier pas cette semaine** : "+dash(mdField("liv.pas"))+"\n";
+      lines+="- 🗣️ **À qui j'en rendrai compte** : "+dash(mdField("liv.compte"))+"\n";
       return lines;
     },
 
@@ -456,7 +457,7 @@
     "livrablesAnim": function(){
       return "# Analyse des livrables — clôture\n\n"
         + "Tu es un formateur expert en développement professionnel des enseignants et en IA générative, qui prépare la séance 2 d'un parcours.\n\n"
-        + "CONTEXTE : en clôture d'un atelier d'une seule séance, chaque participant a consolidé ses livrables (une évaluation revisitée, une source convertie en Markdown), noté ce dont il aura besoin, et formulé un engagement concret : un changement à tester, quand et dans quel contexte, et un premier pas dès cette semaine. Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
+        + "CONTEXTE : en clôture d'un atelier d'une seule séance, chaque participant a consolidé ses livrables (une évaluation revisitée, une source convertie en Markdown), noté ce dont il aura besoin, et formulé un engagement concret : un changement à tester, quand et dans quel contexte, un premier pas dès cette semaine, et à qui il en rendra compte (collègue, formateur relais FIL, séance 2). Je te transmets ci-dessous l'ensemble des relevés du groupe.\n\n"
         + "TA MISSION :\n"
         + "1. Synthétise les livrables produits : disciplines, types d'évaluations revisitées, sources converties.\n"
         + "2. Dégage les grands thèmes communs ; repère la faisabilité des engagements pris (sont-ils concrets, datés, réalistes ?).\n"
@@ -512,7 +513,7 @@
 
     var golden=el("div",{class:"callout callout--danger"});
     golden.innerHTML="<h3>🔒 La règle d'or — pour tout l'atelier et après</h3>"
-      +"<ul><li><strong>Ne saisissez jamais de données personnelles</strong> ni de données non susceptibles d'être rendues publiques dans l’IA sans l'autorisation de votre établissement.</li></ul>";
+      +"<ul><li><strong>Ne saisissez jamais de données personnelles</strong> (élèves, familles, collègues) ni de données non publiques dans un outil d'IA <strong>non référencé</strong> par votre établissement. Travaillez sur des consignes et des documents qui n'en contiennent pas.</li></ul>";
     p.appendChild(golden);
 
     var prog=el("div",{class:"card"});
@@ -885,6 +886,7 @@
     engage.appendChild(field("liv-quand","liv.quand","Quand et dans quel cours / contexte",null,"ex. la semaine prochaine, en 1re…"));
     engage.appendChild(field("liv-pas","liv.pas","Mon tout premier pas, dès cette semaine",null,"…"));
     engage.appendChild(field("liv-relais","liv.relais","Ce dont j'aurai besoin (personne, ressource, temps…)",null,"…"));
+    engage.appendChild(field("liv-compte","liv.compte","À qui j'en rendrai compte (collègue, formateur relais FIL, séance 2 si programmée)",null,"…"));
     engage.appendChild(el("p",{class:"save-note"},"Enregistré automatiquement sur cet appareil."));
     p.appendChild(engage);
 
