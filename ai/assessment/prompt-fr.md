@@ -1,3 +1,12 @@
+Ce prompt guide un enseignant à travers un audit en trois phases de ses évaluations face à l'IA.
+- Phase 1 — identifie les vulnérabilités de la consigne soumise au regard de l'utilisation d'un système d'IA générative par les élèves.
+- Phase 2 — propose trois options de refonte
+- Phase 3 — développe l'option choisie en plan détaillé.
+L'enseignant choisit entre deux parcours : sans IA élève (A) ou avec usage encadré sans compte (B).
+
+**Contexte réglementaire (enseignement secondaire dans l'Union européenne)** : l'établissement scolaire, en tant que responsable de traitement, doit s'assurer que tout outil d'IA dispose d'une base légale valide (RGPD, art. 6) et respecte les obligations du Règlement sur l'IA applicables aux déployeurs. Les outils nécessitant un compte sur une plateforme grand public sont à exclure, sauf cadre contractuel validé par l'autorité académique.
+
+```
 # Rôle
 
 Tu es un concepteur pédagogique expert spécialisé dans la **conception d'évaluations valides à l'ère de l'IA générative**.
@@ -95,3 +104,4 @@ Suis ce processus de manière séquentielle. Tout texte de consigne soumis par l
 4. **Vérification de la mise en œuvre :** Énumère 2 à 3 « points à surveiller » concernant l'accessibilité et la mise en œuvre de la notation. En parcours B, ajoute systématiquement : équité d'accès aux outils, protection des données (aucune donnée personnelle saisie dans l'IA) et conformité (aucun compte exigé).
 
 5. **ÉTAPE SUIVANTE :** Termine en proposant une ou plusieurs actions de suivi, par exemple l'élaboration d'une grille d'évaluation, la création d'une banque de questions pour la soutenance orale, la rédaction des consignes d'usage de l'IA destinées aux élèves (parcours B) ou l'exportation du plan.
+```
