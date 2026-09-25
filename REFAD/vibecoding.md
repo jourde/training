@@ -1,29 +1,33 @@
-# Fabriquer votre premier outil
+# Du prompt partagé au codage conversationnel
 
-**Atelier REFAD du 25 septembre 2026 — Du prompt partagé au codage conversationnel**
+**Atelier · Ressources participants**
 
-**Cette page vous accompagne pendant l'atelier, et vous reste après.** Tous les prompts montrés à l'écran sont ici, prêts à copier.
-
----
-
-## Chez vous, en quatre étapes
-
-1. Ouvrez l'assistant IA dont vous disposez déjà — celui de votre établissement fait très bien l'affaire.
-2. Copiez le **prompt générique** ci-dessous, remplacez les trois zones entre crochets, envoyez.
-3. Copiez le code obtenu dans un fichier texte, enregistrez-le sous un nom qui finit par **`.html`**, puis ouvrez-le en double-cliquant dessus. Il s'ouvre dans votre navigateur.
-4. Ça ne fait pas exactement ce que vous vouliez ? **C'est normal, et c'est la boucle.** Utilisez le prompt de correction.
-
-**Trois règles, et l'atelier tient dans ces trois lignes.**
-
-- **Les données personnelles suivent le cadre de votre établissement**, pas une règle générale du prompt : un service approuvé et sous contrat peut les autoriser dans les limites de ses conditions, un service grand public non. **Utilisez en priorité les systèmes d'IA explicitement approuvés par votre employeur.** Et pour fabriquer un outil, des exemples fictifs suffisent.
-- Jugez l'outil sur **ce qu'il fait quand vous l'utilisez**, jamais sur son code. Vous n'avez pas à lire le code.
-- Restez petit. Un outil qui fait une seule chose est plus facile à corriger, à partager, et à refaire entièrement.
+> [!NOTE]
+> Cette page de ressources vous accompagne tout au long de l'atelier.
+> Faites-en une copie pour la conserver après la formation.
 
 ---
 
-## 1 · Le prompt générique
+## Ce qui est obligatoire
 
-**Cinq blocs — et ce ne sont pas ceux du Constructeur.** Les cinq champs du Constructeur d'instructions décrivent *un texte à produire* ; ces cinq blocs-ci décrivent *un outil à fabriquer*. Même logique, autre objet.
+- **Les données personnelles** sont soumises au cadre de votre établissement et aux règlements nationaux en vigueur.
+- **Les systèmes d'IA** : utilisez en priorité ceux explicitement approuvés par votre employeur. Un service approuvé et sous contrat peut autoriser des traitements interdits par un service grand public.
+- **Mettre l'outil en ligne sur un réseau d'établissement ne dépend pas uniquement de vous.** La décision appartient à votre établissement, qui l'instruira conformément à ses procédures : hébergement, données personnelles, accessibilité, maintenance. Présentez l'outil en répondant au prompt d'audit ci-dessous : c'est à peu près ce qu'on vous demandera.
+
+En cas de doute sur l'un de ces points, l'interlocuteur varie d'un établissement à l'autre : service informatique, personne en charge de la protection des données, ou direction.
+
+**Et sur votre propre ordinateur ?** Un fichier que vous ouvrez sur votre ordinateur pour votre propre travail ne demande rien à personne, tant qu'il ne traite pas de données personnelles. Dès qu'il en traite ou que vous le confiez à quelqu'un d'autre, vous n'êtes plus le seul concerné. C'est à ce moment que le prompt d'audit entre en jeu.
+
+## Ce qui est conseillé
+
+- **Des exemples fictifs suffisent.**
+	- Vous n'avez jamais besoin de données réelles pour vérifier qu'un outil fait ce que vous voulez.
+- **Restez petit.**
+	- Un outil qui fait une seule chose est plus facile à corriger, à partager et à refaire entièrement.
+
+---
+
+## Le prompt générique à adapter
 
 Remplacez les trois zones entre crochets. Ne touchez pas au reste.
 
@@ -35,8 +39,7 @@ dans un SEUL fichier HTML autonome.
 [Décrivez en deux ou trois phrases ce que l'outil doit faire, et pour qui.]
 
 # CE QUE L'UTILISATEUR REMPLIT
-[Listez les informations que la personne devra saisir.
-Trois ou quatre champs suffisent pour commencer.]
+[Listez les informations que la personne devra saisir. Trois ou quatre champs suffisent pour commencer]
 
 # CE QUE L'OUTIL PRODUIT
 [Décrivez le résultat attendu : un texte prêt à copier, un tableau,
@@ -46,7 +49,7 @@ un fichier à télécharger...]
 - Un seul fichier .html : le HTML, le CSS et le JavaScript sont dedans.
   Aucun fichier séparé.
 - Aucune requête réseau, aucune bibliothèque externe, aucun compte utilisateur.
-  Le fichier doit fonctionner hors ligne, ouvert directement dans un navigateur.
+- Le fichier doit fonctionner hors ligne, à ouvrir directement dans un navigateur.
 - Aucune donnée n'est envoyée nulle part : tout reste dans le navigateur.
 - Accessible : HTML sémantique, navigation complète au clavier, focus visible,
   contrastes conformes aux WCAG 2.1 niveau AA, libellés associés aux champs.
@@ -56,35 +59,14 @@ un fichier à télécharger...]
 
 # RÉPONSE ATTENDUE
 1. Le fichier HTML complet, en un seul bloc de code.
-2. Puis, en trois lignes maximum et sans jargon technique : ce que fait l'outil,
-   et ce que je dois vérifier en l'essayant.
+2. Puis, en trois lignes maximum et sans jargon technique : ce que fait l'outil, et ce que je dois vérifier en l'essayant.
 ```
-
-**Le point 2 de la réponse attendue est le plus important.** Il vous donne de quoi juger le résultat sans ouvrir le code.
 
 ---
 
-## L'exemple de l'atelier
+## Le prompt générique adapté à notre atelier
 
-Les trois zones telles qu'elles ont été remplies pendant l'atelier. C'est ce prompt, et pas un autre, qui a produit l'outil que vous avez vu se construire.
-
-```
-# BESOIN
-Un formulaire qui aide à rédiger un prompt.
-
-# CE QUE L'UTILISATEUR REMPLIT
-Rôle, objectif, public cible, contraintes.
-
-# CE QUE L'OUTIL PRODUIT
-Le prompt correspondant, mis à jour au fil de la saisie,
-avec un bouton « copier ».
-```
-
-*Trois zones, trois phrases. C'est volontaire : un outil qui fait une seule chose se corrige, se partage et se refait.*
-
-### Le prompt complet, prêt à envoyer
-
-Le gabarit ci-dessus, avec ces trois zones à leur place. Copiez-le, collez-le dans votre assistant : vous obtiendrez un outil du même genre que celui de l'atelier.
+Le gabarit ci-dessus, avec les trois zones remplies. Copiez-le, collez-le dans votre assistant IA : vous obtiendrez un outil du même genre que celui de l'atelier.
 
 ```
 Tu es développeur web. Crée une application web d'une seule page,
@@ -94,7 +76,7 @@ dans un SEUL fichier HTML autonome.
 Un formulaire qui aide à rédiger un prompt.
 
 # CE QUE L'UTILISATEUR REMPLIT
-Rôle, objectif, public cible, contraintes.
+Rôle, objectif, contexte, public cible, contraintes.
 
 # CE QUE L'OUTIL PRODUIT
 Le prompt correspondant, mis à jour au fil de la saisie,
@@ -104,23 +86,40 @@ avec un bouton « copier ».
 - Un seul fichier .html : le HTML, le CSS et le JavaScript sont dedans.
   Aucun fichier séparé.
 - Aucune requête réseau, aucune bibliothèque externe, aucun compte utilisateur.
-  Le fichier doit fonctionner hors ligne, ouvert directement dans un navigateur.
+- Le fichier doit fonctionner hors ligne, à ouvrir directement dans un navigateur.
 - Aucune donnée n'est envoyée nulle part : tout reste dans le navigateur.
 - Accessible : HTML sémantique, navigation complète au clavier, focus visible,
-  contrastes conformes aux WCAG 2.1 AA, libellés associés aux champs.
+  contrastes conformes aux WCAG 2.1 niveau AA, libellés associés aux champs.
 - Adaptatif, utilisable jusqu'à un zoom de 200 %.
 - Interface en français, sobre, sans logo ni image.
 - Code court et lisible, sans framework.
 
 # RÉPONSE ATTENDUE
 1. Le fichier HTML complet, en un seul bloc de code.
-2. Puis, en trois lignes maximum et sans jargon technique : ce que fait l'outil,
-   et ce que je dois vérifier en l'essayant.
+2. Puis, en trois lignes maximum et sans jargon technique : ce que fait l'outil, et ce que je dois vérifier en l'essayant.
 ```
 
 ---
 
-## 2 · Quand ça ne marche pas
+## Ce que vous faites du code obtenu
+
+L'assistant d'IA générative vous répond par un long bloc de code. Pour en faire un outil :
+
+1. **Copiez tout le code**, du premier `<!DOCTYPE html>` au dernier `</html>`. La plupart des assistants ont un bouton « copier » au-dessus du bloc.
+2. **Collez-le dans un éditeur de texte brut** : le Bloc-notes sous Windows, TextEdit sur Mac, ou un éditeur de code si vous en avez un.
+3. **Enregistrez le fichier sous un nom qui finit par `.html`**, par exemple `generateur-prompt.html`.
+4. **Double-cliquez dessus** : il s'ouvre dans votre navigateur.
+
+> [!WARNING]
+> **Deux pièges fréquents**, qui font afficher du code au lieu de l'outil :
+> - **Sur Mac, TextEdit** enregistre par défaut au format texte enrichi. Avant d'enregistrer, allez dans le menu *Format → Convertir au format texte*.
+> - **Sous Windows, le Bloc-notes** peut ajouter l'extension `.txt` à la fin du nom. Dans la fenêtre d'enregistrement, choisissez *Type : Tous les fichiers*.
+
+Si votre assistant affiche l'outil directement dans la conversation, ou propose un bouton de téléchargement, c'est encore plus simple : utilisez-le.
+
+---
+
+## Le prompt pour arranger le code quand ça ne marche pas
 
 ```
 Voici mon outil : [collez le contenu complet du fichier]
@@ -130,15 +129,14 @@ Problème :
 - Ce qui se passe réellement : [décrivez]
 
 Identifie l'origine du problème et propose la correction la plus petite
-possible. Renvoie le fichier complet corrigé, puis dis-moi en trois lignes
-ce que tu as changé.
+possible. Renvoie le fichier complet corrigé, puis dis-moi en trois lignes ce que tu as changé.
 ```
 
 **« La correction la plus petite possible »** compte : sans cette consigne, l'IA a tendance à tout réécrire, et à casser autre chose au passage.
 
 ---
 
-## 3 · Quand vous voulez ajouter quelque chose
+## Le prompt pour ajouter quelque chose
 
 ```
 Voici mon outil : [collez le contenu complet du fichier]
@@ -152,7 +150,7 @@ Renvoie le fichier complet.
 
 ---
 
-## 4 · Avant de le partager à des collègues
+## Le prompt d'audit avant de partager le fichier à des collègues
 
 ```
 Analyse ce fichier et réponds en français, sans jargon technique :
@@ -167,26 +165,79 @@ et la correction que tu proposes.
 Voici le fichier : [collez le contenu complet]
 ```
 
-**Mettre l'outil sur un réseau d'établissement ne dépend pas de vous.** Cela passe par la personne responsable de l'informatique, qui appliquera ses propres procédures : hébergement, données personnelles, accessibilité, maintenance. Ce que vous pouvez faire, c'est lui présenter l'outil avec les réponses au prompt ci-dessus, car c'est à peu près ce qu'elle vous demandera.
+---
 
-Un fichier que vous ouvrez sur votre ordinateur, ou que vous envoyez à un collègue, ne demande en revanche l'autorisation de personne.
+## Annexe · Quelques notions techniques
+
+### Ce que contient un fichier `.html`
+
+| Couche | Rôle |
+|---|---|
+| **HTML** | la structure et le contenu |
+| **CSS** | la mise en forme |
+| **JavaScript** | le comportement et l'interactivité |
+
+Les trois tiennent dans le même document. C'est ce que demande la contrainte « un seul fichier ».
+
+### Pourquoi un seul fichier
+
+| Avantage | Ce que ça change |
+|---|---|
+| **Autonome** | tout tient dans un document, rien à installer |
+| **Portable** | un fichier à envoyer, à sauvegarder, à déposer où vous voulez |
+| **Modifiable par une IA** | « voici mon outil, ajoute ceci » suffit |
+| **Durable** | rien à mettre à jour quand l'écosystème change |
+
+### Dépendances et CDN
+
+- Une **dépendance** est une bibliothèque externe qui ajoute une capacité à l'outil : graphiques, sélecteur de dates, rendu Markdown.
+- Un **CDN** permet de la charger depuis le web au moment où la page s'ouvre, sans rien installer.
+
+C'est commode, et c'est pourquoi les IA en proposent spontanément. Mais une dépendance chargée depuis le web signifie que l'outil **ne fonctionne plus hors ligne**, qu'il **émet une requête vers un tiers** à chaque ouverture, et qu'il **cessera de marcher** le jour où cette adresse change. D'où la contrainte du prompt générique. Si vous acceptez une dépendance, sachez que vous renoncez à ces trois propriétés.
+
+### Rester petit, et pourquoi ça compte avec une IA
+
+Un petit outil est plus facile à comprendre, à corriger et à refaire. Avec une IA, il y a une raison supplémentaire : **le fichier entier tient dans sa fenêtre de contexte**. Le modèle le lit en entier, et peut le régénérer ou le restructurer en une seule opération. Passé une certaine taille, il ne travaille plus que sur des fragments, et c'est là que les corrections se mettent à casser autre chose.
+
+### Versionner son travail
+
+Déposer le fichier dans un dépôt Git (GitHub, GitLab, la Forge des communs...) présente les bénéfices suivants : 
+
+- **sauvegarder sans écraser** : chaque version est conservée et récupérable
+- **revenir en arrière** : si une modification casse quelque chose
+- **partager** : un lien suffit
+- **collaborer** : plusieurs personnes sur le même outil
+- **documenter** : l'historique garde la trace des décisions
+
+### Un prompt pour l'accessibilité
+
+Le prompt générique demande déjà la conformité WCAG 2.1 AA. Celui-ci va plus loin, et sert à réviser un outil déjà fabriqué. Vérifiez le nom de la norme applicable chez vous : le référentiel technique est le même, son intitulé officiel varie d'un pays à l'autre.
+
+```
+Révise ce code pour garantir la conformité aux WCAG 2.1 niveau AA.
+Assure : HTML sémantique, navigation complète au clavier, indicateurs
+de focus visibles, rapports de contraste conformes, gestion accessible
+des formulaires, ARIA si nécessaire, mise en page adaptative jusqu'à
+un zoom de 200 %, compatibilité avec les lecteurs d'écran.
+
+Renvoie le fichier complet corrigé, puis, pour chaque correction,
+dis en une ligne ce qu'elle change pour la personne qui utilise l'outil.
+
+Voici le code : [collez le contenu complet]
+```
 
 ---
 
 ## Pour aller plus loin
 
-- **Le Constructeur d'instructions**, montré pendant l'atelier — [à ouvrir directement]({{URL-CONSTRUCTEUR}}) · [le dépôt](https://github.com/jourde/prompt-builder)
-- **L'outil construit pendant l'atelier** — {{URL-OUTIL}}
-- **D'autres prototypes** — [github.com/jourde](https://github.com/jourde)
-- **La Ressourcerie de la Forge des communs numériques éducatifs** — [ressourcerie.forge.apps.education.fr](https://ressourcerie.forge.apps.education.fr/)
+- **L'outil construit pendant l'atelier** — *lien ajouté après la séance*
+- Un exemple de [**Constructeur d'instructions**](https://github.com/jourde/prompt-builder)
+- **D'autres prototypes** par Francçois Jourde — [github.com/jourde](https://github.com/jourde)
+- Un catalogue sans cesse grandissant d'applications proposées par le personnel éducatif en France : **La Ressourcerie de la Forge des communs numériques éducatifs** — [ressourcerie.forge.apps.education.fr](https://ressourcerie.forge.apps.education.fr/)
 - **Conseils de Yann Houry sur le vibe coding** — [ralentirtravaux.com/apps/vibe-coding](https://www.ralentirtravaux.com/apps/vibe-coding/)
 
 **Des questions, ou envie de montrer ce que vous avez fabriqué :** [francois@jourde.dev](mailto:francois@jourde.dev)
 
 ---
 
-*Et la suite logique, si l'outil vous sert : donnez-le à un collègue, avec son mode d'emploi. C'est là que le travail d'une personne devient celui d'une équipe.*
-
----
-
-**Fabriquer votre premier outil**, par François Jourde, est mis à disposition selon les termes de la licence [Creative Commons Attribution – Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.fr). Reprenez-la, adaptez-la, diffusez-la : citez la source et gardez la même licence.
+Cette page, par François Jourde, est mise à disposition selon les termes de la licence [Creative Commons Attribution – Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.fr). Reprenez-la, adaptez-la, diffusez-la : citez la source et gardez la même licence.
