@@ -4,6 +4,7 @@
 
 > [!NOTE]
 > Cette page de ressources vous accompagne tout au long de l'atelier.
+> **Pendant l'atelier, vous lancerez vous-même le prompt générique ci-dessous** : gardez dès maintenant un onglet ouvert sur votre assistant, et connectez-vous.
 > Faites-en une copie pour la conserver après la formation.
 
 ---
@@ -119,7 +120,7 @@ Si votre assistant affiche l'outil directement dans la conversation, ou propose 
 
 ---
 
-## Le prompt pour arranger le code quand ça ne marche pas
+## Le prompt de réparation, quand ça ne marche pas
 
 ```
 Voici mon outil : [collez le contenu complet du fichier]
@@ -136,7 +137,7 @@ possible. Renvoie le fichier complet corrigé, puis dis-moi en trois lignes ce q
 
 ---
 
-## Le prompt pour ajouter quelque chose
+## Le prompt d'ajout, pour une fonctionnalité de plus
 
 ```
 Voici mon outil : [collez le contenu complet du fichier]
@@ -150,7 +151,7 @@ Renvoie le fichier complet.
 
 ---
 
-## Le prompt d'audit avant de partager le fichier à des collègues
+## Le prompt d'audit, avant de partager le fichier
 
 ```
 Analyse ce fichier et réponds en français, sans jargon technique :
@@ -232,7 +233,7 @@ Voici le code : [collez le contenu complet]
 
 - **L'outil construit pendant l'atelier** — *lien ajouté après la séance*
 - Un exemple de [**Constructeur d'instructions**](https://github.com/jourde/prompt-builder)
-- **D'autres prototypes** par Francçois Jourde — [github.com/jourde](https://github.com/jourde)
+- **D'autres prototypes** par François Jourde — [github.com/jourde](https://github.com/jourde)
 - Un catalogue sans cesse grandissant d'applications proposées par le personnel éducatif en France : **La Ressourcerie de la Forge des communs numériques éducatifs** — [ressourcerie.forge.apps.education.fr](https://ressourcerie.forge.apps.education.fr/)
 - **Conseils de Yann Houry sur le vibe coding** — [ralentirtravaux.com/apps/vibe-coding](https://www.ralentirtravaux.com/apps/vibe-coding/)
 
