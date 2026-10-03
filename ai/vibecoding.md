@@ -1,10 +1,18 @@
 # Fabriquer un outil sur mesure, en un seul fichier
 
-**Décrire ce qu'on veut à une IA, sans écrire de code · prompts prêts à copier**
+**Codage conversationnel · prompts prêts à copier**
 
 > [!NOTE]
 > Cette page rassemble ce qu'il faut pour fabriquer un outil qui ne sert qu'à vous, à votre classe ou à votre service : une page HTML, un seul fichier, qui s'ouvre hors ligne et s'envoie comme un document.
-> Les prompts se copient tels quels. Faites-en une copie pour la conserver.
+> Les prompts proposés peuvent être copiés tels quels ou modifiés selon vos besoins.
+
+---
+
+## La méthode, en deux mots
+
+Vous n'écrivez pas de code : vous **décrivez en langage naturel** ce que l'outil doit faire à un assistant d'IA générative (comme ChatGPT, Claude, Mistral ou Copilot) et c'est lui qui produit le code. Vous ouvrez le résultat, vous l'essayez, vous décrivez ce qui ne va pas, il corrige. Et ainsi de suite.
+
+On appelle cela le **codage conversationnel**, ou *vibe coding*, terme popularisé par Andrej Karpathy en 2025.  C'est comme coder sans se soucier du code.
 
 ---
 
