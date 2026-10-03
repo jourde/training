@@ -28,23 +28,46 @@ En cas de doute sur l'un de ces points, l'interlocuteur varie d'un établissemen
 
 ---
 
-## Le prompt générique à adapter
+## Le prompt générique minimal, pour essayer tout de suite
 
-Remplacez les trois zones entre crochets. Ne touchez pas au reste.
+Quatre lignes, à adapter en remplaçant la seule zone entre crochets. C'est le plus court chemin vers une première page qui s'ouvre.
+
+```
+Crée un outil web dans un SEUL fichier HTML autonome, qui fonctionne hors ligne, sans bibliothèque externe et sans envoyer de données nulle part.
+
+Besoin : [ce que l'outil doit faire, et pour qui]
+
+Donne-moi le fichier complet, puis dis-moi en trois lignes ce que je dois vérifier.
+```
+
+Il vous laisse sans prise sur le reste : l'accessibilité, le zoom, la langue de l'interface, les champs. Pour un outil que vous garderez, ou que vous donnerez à quelqu'un, passez au gabarit ci-dessous.
+
+---
+
+## Le prompt générique plus avancé et à adapter
+
+Remplacez les zones entre crochets. Ne touchez pas au reste.
+
+**Seule la première est obligatoire.** Si vous ne savez pas encore ce que la personne fera ni ce qu'elle obtiendra, écrivez dans les deux autres : *à toi de proposer, je corrigerai*. Vous déciderez en voyant le résultat.
+
+Ce gabarit ne suppose pas un formulaire : il vaut aussi bien pour un calculateur, un minuteur, une liste de vérification, un tirage au sort ou un tableau de suivi.
 
 ```
 Tu es développeur web. Crée une application web d'une seule page,
 dans un SEUL fichier HTML autonome.
 
 # BESOIN
-[Décrivez en deux ou trois phrases ce que l'outil doit faire, et pour qui.]
+[Deux ou trois phrases : ce que l'outil doit faire, pour qui,
+et ce que la personne y gagne.]
 
-# CE QUE L'UTILISATEUR REMPLIT
-[Listez les informations que la personne devra saisir. Trois ou quatre champs suffisent pour commencer]
+# CE QUE LA PERSONNE FAIT
+[Ce qu'elle saisit, choisit, coche, déplace ou déclenche
+— ou : à toi de proposer, je corrigerai]
 
-# CE QUE L'OUTIL PRODUIT
-[Décrivez le résultat attendu : un texte prêt à copier, un tableau,
-un fichier à télécharger...]
+# CE QU'ELLE OBTIENT
+[Un texte prêt à copier, un calcul, une liste, un tableau, un minuteur
+qui tourne, un fichier à télécharger…
+— ou : à toi de proposer, je corrigerai]
 
 # CONTRAINTES TECHNIQUES — à ne pas modifier
 - Un seul fichier .html : le HTML, le CSS et le JavaScript sont dedans.
@@ -53,7 +76,7 @@ un fichier à télécharger...]
 - Le fichier doit fonctionner hors ligne, à ouvrir directement dans un navigateur.
 - Aucune donnée n'est envoyée nulle part : tout reste dans le navigateur.
 - Accessible : HTML sémantique, navigation complète au clavier, focus visible,
-  contrastes conformes aux WCAG 2.1 niveau AA, libellés associés aux champs.
+  contrastes conformes aux WCAG 2.2 niveau AA, libellés associés aux champs.
 - Adaptatif, utilisable jusqu'à un zoom de 200 %.
 - Interface en français, sobre, sans logo ni image.
 - Code court et lisible, sans framework.
@@ -67,21 +90,26 @@ un fichier à télécharger...]
 
 ## Le prompt générique adapté à notre atelier
 
-Le gabarit ci-dessus, avec les trois zones remplies. Copiez-le, collez-le dans votre assistant IA : vous obtiendrez un outil du même genre que celui de l'atelier.
+Le gabarit ci-dessus, rempli. Il sert aussi d'exemple : **remarquez le niveau de détail du besoin** — deux ou trois phrases qui disent ce que fait l'outil, pour qui, et ce que la personne y gagne. C'est ce niveau-là qui évite de devoir tout reprendre au deuxième essai. Copiez-le, collez-le dans votre assistant : vous obtiendrez un outil du même genre que celui de l'atelier.
 
 ```
 Tu es développeur web. Crée une application web d'une seule page,
 dans un SEUL fichier HTML autonome.
 
 # BESOIN
-Un formulaire qui aide à rédiger un prompt.
+Un formulaire qui aide à rédiger un prompt structuré, pour des collègues
+qui se servent d'une IA sans être à l'aise avec la formulation des consignes.
+Ils remplissent des champs, l'outil écrit le prompt à leur place : ils n'ont
+plus à savoir comment on rédige un prompt, seulement à dire ce qu'ils veulent.
 
-# CE QUE L'UTILISATEUR REMPLIT
-Rôle, objectif, contexte, public cible, contraintes.
+# CE QUE LA PERSONNE FAIT
+Elle remplit cinq champs, dans cet ordre : rôle, objectif, contexte,
+public cible, contraintes. Chacun avec un exemple court en texte d'aide,
+pour montrer ce qu'on attend sans avoir à l'expliquer.
 
-# CE QUE L'OUTIL PRODUIT
-Le prompt correspondant, mis à jour au fil de la saisie,
-avec un bouton « copier ».
+# CE QU'ELLE OBTIENT
+Le prompt correspondant, affiché en permanence et mis à jour au fil de la
+saisie, avec un bouton « copier » qui confirme que la copie a eu lieu.
 
 # CONTRAINTES TECHNIQUES — à ne pas modifier
 - Un seul fichier .html : le HTML, le CSS et le JavaScript sont dedans.
@@ -90,7 +118,7 @@ avec un bouton « copier ».
 - Le fichier doit fonctionner hors ligne, à ouvrir directement dans un navigateur.
 - Aucune donnée n'est envoyée nulle part : tout reste dans le navigateur.
 - Accessible : HTML sémantique, navigation complète au clavier, focus visible,
-  contrastes conformes aux WCAG 2.1 niveau AA, libellés associés aux champs.
+  contrastes conformes aux WCAG 2.2 niveau AA, libellés associés aux champs.
 - Adaptatif, utilisable jusqu'à un zoom de 200 %.
 - Interface en français, sobre, sans logo ni image.
 - Code court et lisible, sans framework.
@@ -212,10 +240,10 @@ Déposer le fichier dans un dépôt Git (GitHub, GitLab, la Forge des communs...
 
 ### Un prompt pour l'accessibilité
 
-Le prompt générique demande déjà la conformité WCAG 2.1 AA. Celui-ci va plus loin, et sert à réviser un outil déjà fabriqué. Vérifiez le nom de la norme applicable chez vous : le référentiel technique est le même, son intitulé officiel varie d'un pays à l'autre.
+Le prompt générique demande déjà la conformité WCAG 2.2 AA. Celui-ci va plus loin, et sert à réviser un outil déjà fabriqué. WCAG 2.2 est la version courante du référentiel, et elle contient la 2.1 : viser 2.2 satisfait 2.1. Vérifiez le nom de la norme applicable chez vous — au Canada, CAN/ASC-EN 301 549:2024 renvoie encore à WCAG 2.1 — car le référentiel technique est le même, seul son intitulé officiel varie.
 
 ```
-Révise ce code pour garantir la conformité aux WCAG 2.1 niveau AA.
+Révise ce code pour garantir la conformité aux WCAG 2.2 niveau AA.
 Assure : HTML sémantique, navigation complète au clavier, indicateurs
 de focus visibles, rapports de contraste conformes, gestion accessible
 des formulaires, ARIA si nécessaire, mise en page adaptative jusqu'à
