@@ -269,7 +269,7 @@ Déposer le fichier dans un dépôt Git (GitHub, GitLab, la Forge des communs...
 
 ### Deux prompts pour l'accessibilité
 
-Le prompt générique demande déjà la conformité WCAG 2.2 AA. Ces deux-ci servent à réviser un outil déjà fabriqué : **le premier constate, le second corrige**. WCAG 2.2 est la version courante du référentiel, et elle contient la 2.1 : viser 2.2 satisfait 2.1. Vérifiez le nom de la norme applicable chez vous — au Canada, CAN/ASC-EN 301 549:2024 renvoie encore à WCAG 2.1 — car le référentiel technique est le même, seul son intitulé officiel varie.
+Le prompt générique demande déjà la conformité WCAG 2.2 AA. Ces deux-ci servent à réviser un outil déjà fabriqué : **le premier constate, le second corrige**.
 
 **1. Constater**
 
