@@ -334,6 +334,8 @@ Une licence dit ce que les autres ont le droit de faire de votre outil.
 
 **En contexte européen, l'EUPL 1.2.** La licence publique de l'Union européenne, publiée en français comme dans les vingt-deux autres langues officielles, encadre le partage à l'identique : qui reprend votre outil doit le laisser aussi libre que vous. [Texte officiel](https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
 
+N.B. : La licence GPL, plus connue, protège de la même façon et reste compatible avec l'EUPL. Celle-ci lui est préférable ici : elle existe en français avec pleine valeur juridique, et elle couvre aussi l'outil simplement mis en ligne, sans fichier distribué.
+
 **Si vous préférez laisser toute liberté, la MIT.** Il suffit qu'on garde votre nom. [Texte officiel](https://opensource.org/licenses/MIT).
 
 **Vous n'avez pas à toucher au code.** Les deux gabarits de création réclament déjà la mention de licence ; pour un outil déjà fabriqué, ce prompt l'ajoute :
