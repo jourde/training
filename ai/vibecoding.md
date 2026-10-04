@@ -12,7 +12,7 @@
 
 Vous n'écrivez pas de code : vous **décrivez en langage naturel** ce que l'outil doit faire à un assistant d'IA générative (comme ChatGPT, Claude, Mistral ou Copilot) et c'est lui qui produit le code. Vous ouvrez le résultat, vous l'essayez, vous décrivez ce qui ne va pas, il corrige. Et ainsi de suite.
 
-On appelle cela le **codage conversationnel**, ou *vibe coding*, terme popularisé par Andrej Karpathy en 2025.  C'est comme coder sans se soucier du code.
+On appelle cela le **codage conversationnel**, ou *vibe coding*, terme popularisé par Andrej Karpathy en 2025. C'est comme coder sans se soucier du code.
 
 ---
 
@@ -37,7 +37,7 @@ En cas de doute sur l'un de ces points, l'interlocuteur varie d'un établissemen
 
 ## Le prompt générique minimal, pour essayer tout de suite
 
-Quatre lignes, à adapter en remplaçant la seule zone entre crochets. C'est le plus court chemin vers une première page qui s'ouvre.
+Trois phrases, à adapter en remplaçant la seule zone entre crochets. C'est le plus court chemin vers une première page qui s'ouvre.
 
 ```
 Crée un outil web dans un SEUL fichier HTML autonome, qui fonctionne hors ligne, sans bibliothèque externe et sans envoyer de données nulle part.
@@ -87,6 +87,8 @@ qui tourne, un fichier à télécharger…
 - Adaptatif, utilisable jusqu'à un zoom de 200 %.
 - Interface en français, sobre, sans logo ni image.
 - Code court et lisible, sans framework.
+- Un commentaire en tête du fichier et une mention discrète en pied de page :
+  « [votre nom], [année] — licence [EUPL-1.2 ou MIT] ».
 
 # RÉPONSE ATTENDUE
 1. Le fichier HTML complet, en un seul bloc de code.
@@ -129,6 +131,8 @@ saisie, avec un bouton « copier » qui confirme que la copie a eu lieu.
 - Adaptatif, utilisable jusqu'à un zoom de 200 %.
 - Interface en français, sobre, sans logo ni image.
 - Code court et lisible, sans framework.
+- Un commentaire en tête du fichier et une mention discrète en pied de page :
+  « [votre nom], [année] — licence [EUPL-1.2 ou MIT] ».
 
 # RÉPONSE ATTENDUE
 1. Le fichier HTML complet, en un seul bloc de code.
@@ -321,6 +325,38 @@ ce qu'elle change pour la personne qui utilise l'outil.
 ```
 
 **Et quatre vérifications que vous seul pouvez faire**, en deux minutes et sans aucun outil : parcourez toute la page à la touche de tabulation, en vérifiant que vous voyez toujours où vous êtes et que vous n'êtes jamais bloqué ; zoomez à 200 % ; réduisez la fenêtre à la largeur d'un téléphone ; et faites une action qui déclenche un message — une copie, une erreur — pour vérifier qu'il se voit. Une relecture par l'IA ne remplace pas un essai réel, et ne vous autorise pas à déclarer l'outil conforme.
+
+---
+
+## Quelle licence pour votre outil ?
+
+Une licence dit ce que les autres ont le droit de faire de votre outil.
+
+**En contexte européen, l'EUPL 1.2.** La licence publique de l'Union européenne, publiée en français comme dans les vingt-deux autres langues officielles, encadre le partage à l'identique : qui reprend votre outil doit le laisser aussi libre que vous. [Texte officiel](https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12).
+
+**Si vous préférez laisser toute liberté, la MIT.** Il suffit qu'on garde votre nom. [Texte officiel](https://opensource.org/licenses/MIT).
+
+**Vous n'avez pas à toucher au code.** Les deux gabarits de création réclament déjà la mention de licence ; pour un outil déjà fabriqué, ce prompt l'ajoute :
+
+```
+Ajoute la licence [EUPL-1.2 ou MIT] à cet outil, sans rien changer d'autre :
+
+- l'avis de licence en commentaire au début du fichier, avec [votre nom]
+  et [année]
+- en pied de page, une mention discrète : « [votre nom], [année] —
+  licence [EUPL-1.2 ou MIT] », le nom de la licence étant un lien vers
+  son texte officiel
+
+Ne modifie ni le comportement, ni l'apparence, ni le contenu existant.
+Renvoie le fichier complet.
+
+Voici le fichier : [collez le contenu complet]
+```
+
+Si vous déposez l'outil sur GitHub, GitLab ou la Forge des communs, ajoutez-y aussi un fichier `LICENCE` contenant le texte officiel. C'est un fichier texte, créé depuis le site, sans toucher à l'outil.
+
+> [!WARNING]
+> Le statut juridique du code produit par une IA reste incertain et varie d'un pays à l'autre : ce qui est généré sans apport créatif humain n'est pas toujours protégeable, et donc pas toujours cessible. La mention de licence vaut alors surtout comme **déclaration d'intention**. C'est suffisant entre collègues ; pour un usage à enjeu, demandez à votre établissement.
 
 ---
 
